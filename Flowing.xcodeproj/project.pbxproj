@@ -7,14 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E38C30E2B5AE487009E160D /* VariableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38C30D2B5AE487009E160D /* VariableManager.swift */; };
+		3E38C3102B608188009E160D /* DaySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38C30F2B608187009E160D /* DaySelector.swift */; };
+		3E4059532B50EB3D00BA643E /* EditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4059522B50EB3D00BA643E /* EditTask.swift */; };
+		3E4059562B50F19400BA643E /* SymbolPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 3E4059552B50F19400BA643E /* SymbolPicker */; };
+		3E4059582B51B63E00BA643E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4059572B51B63E00BA643E /* MainView.swift */; };
 		3E580D222B4E4CA6004534BF /* FlowingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E580D212B4E4CA6004534BF /* FlowingApp.swift */; };
 		3E580D242B4E4CA6004534BF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E580D232B4E4CA6004534BF /* ContentView.swift */; };
 		3E580D262B4E4CA6004534BF /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E580D252B4E4CA6004534BF /* Item.swift */; };
 		3E580D282B4E4CA9004534BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E580D272B4E4CA9004534BF /* Assets.xcassets */; };
 		3E580D2B2B4E4CA9004534BF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E580D2A2B4E4CA9004534BF /* Preview Assets.xcassets */; };
+		3EC18BD82B4E4EB900C9FA4B /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD72B4E4EB900C9FA4B /* Functions.swift */; };
+		3EC18BDA2B4E504B00C9FA4B /* TaskObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3E38C30D2B5AE487009E160D /* VariableManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableManager.swift; sourceTree = "<group>"; };
+		3E38C30F2B608187009E160D /* DaySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DaySelector.swift; path = Flowing/DaySelector.swift; sourceTree = "<group>"; };
+		3E4059522B50EB3D00BA643E /* EditTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTask.swift; sourceTree = "<group>"; };
+		3E4059572B51B63E00BA643E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		3E580D1E2B4E4CA6004534BF /* Flowing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flowing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E580D212B4E4CA6004534BF /* FlowingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowingApp.swift; sourceTree = "<group>"; };
 		3E580D232B4E4CA6004534BF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -23,6 +34,8 @@
 		3E580D2A2B4E4CA9004534BF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3E580D2C2B4E4CA9004534BF /* Flowing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Flowing.entitlements; sourceTree = "<group>"; };
 		3E580D2D2B4E4CA9004534BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3EC18BD72B4E4EB900C9FA4B /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
+		3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskObj.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -30,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E4059562B50F19400BA643E /* SymbolPicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -39,6 +53,7 @@
 		3E580D152B4E4CA6004534BF = {
 			isa = PBXGroup;
 			children = (
+				3E38C30F2B608187009E160D /* DaySelector.swift */,
 				3E580D202B4E4CA6004534BF /* Flowing */,
 				3E580D1F2B4E4CA6004534BF /* Products */,
 			);
@@ -55,8 +70,13 @@
 		3E580D202B4E4CA6004534BF /* Flowing */ = {
 			isa = PBXGroup;
 			children = (
+				3E4059572B51B63E00BA643E /* MainView.swift */,
 				3E580D212B4E4CA6004534BF /* FlowingApp.swift */,
+				3E4059522B50EB3D00BA643E /* EditTask.swift */,
 				3E580D232B4E4CA6004534BF /* ContentView.swift */,
+				3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */,
+				3EC18BD72B4E4EB900C9FA4B /* Functions.swift */,
+				3E38C30D2B5AE487009E160D /* VariableManager.swift */,
 				3E580D252B4E4CA6004534BF /* Item.swift */,
 				3E580D272B4E4CA9004534BF /* Assets.xcassets */,
 				3E580D2C2B4E4CA9004534BF /* Flowing.entitlements */,
@@ -90,6 +110,9 @@
 			dependencies = (
 			);
 			name = Flowing;
+			packageProductDependencies = (
+				3E4059552B50F19400BA643E /* SymbolPicker */,
+			);
 			productName = Flowing;
 			productReference = 3E580D1E2B4E4CA6004534BF /* Flowing.app */;
 			productType = "com.apple.product-type.application";
@@ -118,6 +141,9 @@
 				Base,
 			);
 			mainGroup = 3E580D152B4E4CA6004534BF;
+			packageReferences = (
+				3E4059542B50F19400BA643E /* XCRemoteSwiftPackageReference "SymbolPicker" */,
+			);
 			productRefGroup = 3E580D1F2B4E4CA6004534BF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -145,8 +171,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E580D242B4E4CA6004534BF /* ContentView.swift in Sources */,
+				3E38C30E2B5AE487009E160D /* VariableManager.swift in Sources */,
+				3E4059582B51B63E00BA643E /* MainView.swift in Sources */,
+				3E38C3102B608188009E160D /* DaySelector.swift in Sources */,
 				3E580D262B4E4CA6004534BF /* Item.swift in Sources */,
+				3E4059532B50EB3D00BA643E /* EditTask.swift in Sources */,
 				3E580D222B4E4CA6004534BF /* FlowingApp.swift in Sources */,
+				3EC18BD82B4E4EB900C9FA4B /* Functions.swift in Sources */,
+				3EC18BDA2B4E504B00C9FA4B /* TaskObj.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +388,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3E4059542B50F19400BA643E /* XCRemoteSwiftPackageReference "SymbolPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/xnth97/SymbolPicker.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3E4059552B50F19400BA643E /* SymbolPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3E4059542B50F19400BA643E /* XCRemoteSwiftPackageReference "SymbolPicker" */;
+			productName = SymbolPicker;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3E580D162B4E4CA6004534BF /* Project object */;
 }
