@@ -11,6 +11,9 @@ struct MainView: View {
     var body: some View {
         VStack{
             TaskObj()
+            ToDoObj()
+            ProgressiveObj()
+            
         }
     }
 }

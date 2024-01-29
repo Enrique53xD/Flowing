@@ -10,12 +10,12 @@ import SymbolPicker
 
 struct EditTask: View {
     
-    @State var color = Color.blue
-    @State var name = "Name"
-    @State var description = ""
-    @State var symbol = "house"
-    @State var start = 440
-    @State var end = 441
+    @Binding var color: Color
+    @Binding var name: String
+    @Binding var description: String
+    @Binding var symbol: String
+    @Binding var start: Int
+    @Binding var end: Int
     
     @State var days: [Day] = [
         Day(name: "Monday", isSelected: false),
@@ -39,10 +39,12 @@ struct EditTask: View {
         VStack{
             
             HStack{
-                ColorPicker(selection: $color, label: {Text("")})
+                
+                ColorPicker(selection: $color, supportsOpacity: false, label: {Text("")})
                     .labelsHidden()
                     .padding(.horizontal)
                     .frame(width: 60)
+                    
                 
                 TextField("\(name)", text: $name)
                     .font(.title)
@@ -90,21 +92,22 @@ struct EditTask: View {
                 
                 
                 Button(action: {dateEPicking=true}, label: {
-                    Text("\(transformDate(date: dateE))")
+                    Text("\(transformDate(date:dateE))")
                         .fontWeight(.heavy)
                         .font(.title2)
                         .frame(width: 90)
                         .foregroundStyle(color)
-                        
                 })
                 
                 .buttonStyle(.bordered)
-                .sheet(isPresented: $dateEPicking, content: {
+                .sheet(isPresented: $dateEPicking, onDismiss: {end = convertToMinutes(from: transformDate(date: dateE))}, content: {
                     DatePicker(selection: $dateE, displayedComponents: .hourAndMinute, label: {Text("")})
                         .labelsHidden()
                         .datePickerStyle(.wheel)
                         .presentationDetents([.fraction(0.3)])
+                    
                 })
+                
                 
                 
                 
@@ -142,6 +145,3 @@ struct EditTask: View {
     }
 }
 
-#Preview {
-    EditTask()
-}

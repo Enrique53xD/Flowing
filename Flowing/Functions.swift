@@ -46,9 +46,18 @@ func transformDate(date: Date) -> String {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "HH:mm"
     let dateString = dateFormatter.string(from: date)
-   
-    
-
     
     return dateString
 }
+
+func formatProgressive(prefix: String = "", suffix: String = "", progress: Any, goal: Any) -> String {
+    if let progressInt = progress as? Int, let goalInt = goal as? Int {
+        return "\(prefix)\(progressInt)\(suffix) / \(prefix)\(goalInt)\(suffix)"
+    } else {
+        let progressValue = (progress as? Double) ?? (Double("\(progress)") ?? progress)
+        let goalValue = (goal as? Double) ?? (Double("\(goal)") ?? goal)
+        return "\(prefix)\(progressValue)\(suffix) / \(prefix)\(goalValue)\(suffix)"
+    }
+}
+
+
