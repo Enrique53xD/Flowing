@@ -54,11 +54,9 @@ struct RoundedSlider: View {
                     Rectangle()
                         .fill(color.opacity(0.5))
                         .onAppear{
-                            
                             update()
                         }
                         .frame(width: sliderWidth)
-                    
                     
                 })
                 

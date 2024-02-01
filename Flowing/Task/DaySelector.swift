@@ -4,16 +4,7 @@ import SwiftUI
 
 struct DaySelector: View {
     
-    @State var days: [Day] = [
-        Day(name: "Monday", isSelected: true),
-        Day(name: "Tuesday", isSelected: true),
-        Day(name: "Wednesday", isSelected: true),
-        Day(name: "Thursday", isSelected: true),
-        Day(name: "Friday", isSelected: true),
-        Day(name: "Saturday", isSelected: true),
-        Day(name: "Sunday", isSelected: true)
-    ]
-    
+    @Binding var days: [Day]
     @Binding var color: Color
     
     var body: some View {
@@ -45,21 +36,12 @@ struct DaySelector: View {
         
         .padding()
         .background(
-            RoundedRectangle(cornerRadius: 15)
+            RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(Color.gray.opacity(0.3))
         )
     }
 }
 
-struct DaySelectorPreview: View {
-    @State var color = Color.blue
-    var body: some View {
-        DaySelector(color: $color)
-    }
-}
 
-#Preview {
-    DaySelectorPreview()
-}
    
 

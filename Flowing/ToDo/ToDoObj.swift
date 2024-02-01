@@ -14,6 +14,7 @@ struct ToDoObj: View {
     @State var name = "todo"
     @State var symbol = "checkmark.circle"
     @State var done = false
+    @State var description = ""
     
     @State private var editing = false
     
@@ -21,9 +22,10 @@ struct ToDoObj: View {
         HStack{
             Button(action: { withAnimation{ if !editing {done.toggle()}} }, label: {
                 Image(systemName: symbol)
+                    
                     .font(.title)
                     .fontWeight(.heavy)
-                    .foregroundStyle(done ? Color.primary.opacity(0.5) : color)
+                    .foregroundStyle(colorScheme == .dark ? done ? Color.black.opacity(0.5) : color : done ? Color.white.opacity(0.5) : color)
                     .background(RoundedRectangle(cornerRadius: 45) .frame(width: 60, height: 60)
                         .foregroundStyle(done ? color : color.opacity(0.5)))
                     .frame(width: 60, height: 60)
@@ -31,8 +33,9 @@ struct ToDoObj: View {
             .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in editing.toggle()}))
             .sheet(isPresented: $editing, content: {
                 
-               Text("a")
-                    
+               EditToDo(color: $color, name: $name, description: $description, symbol: $symbol)
+                    .padding()
+                    .presentationDetents([.fraction(0.36)])
             
             })
             
@@ -50,8 +53,9 @@ struct ToDoObj: View {
             
         }
         .padding(.horizontal)
- 
+        
     }
+    
 }
 
 

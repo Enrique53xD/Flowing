@@ -18,15 +18,26 @@ struct TaskObj: View {
     @State var end = 449
     @State var done = false
     
+    @State var days: [Day] = [
+        Day(name: "Monday", isSelected: false),
+        Day(name: "Tuesday", isSelected: false),
+        Day(name: "Wednesday", isSelected: false),
+        Day(name: "Thursday", isSelected: false),
+        Day(name: "Friday", isSelected: false),
+        Day(name: "Saturday", isSelected: false),
+        Day(name: "Sunday", isSelected: false)
+    ]
+    
     @State private var editing = false
     
     var body: some View {
         HStack{
             Button(action: { withAnimation{ if !editing {done.toggle()}} }, label: {
                 Image(systemName: symbol)
+                    
                     .font(.title)
                     .fontWeight(.heavy)
-                    .foregroundStyle(done ? Color.primary.opacity(0.5) : color)
+                    .foregroundStyle(colorScheme == .dark ? done ? Color.black.opacity(0.5) : color : done ? Color.white.opacity(0.5) : color)
                     .background(RoundedRectangle(cornerRadius: 45) .frame(width: 60, height: 60)
                         .foregroundStyle(done ? color : color.opacity(0.5)))
                     .frame(width: 60, height: 60)
@@ -34,7 +45,7 @@ struct TaskObj: View {
             .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in editing.toggle()}))
             .sheet(isPresented: $editing, content: {
                 
-                EditTask(color: $color, name: $name, description: $description, symbol: $symbol, start: $start, end: $end)
+                EditTask(color: $color, name: $name, description: $description, symbol: $symbol, start: $start, end: $end, days: $days)
                     .padding()
                     .presentationDetents([.medium])
                     
@@ -58,6 +69,7 @@ struct TaskObj: View {
         }
         .padding(.horizontal)
         .onAppear(perform: {if start>end {(start, end)=(end, start)}})
+        
     }
 }
 

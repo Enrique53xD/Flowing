@@ -20,6 +20,7 @@
 		3E580D262B4E4CA6004534BF /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E580D252B4E4CA6004534BF /* Item.swift */; };
 		3E580D282B4E4CA9004534BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E580D272B4E4CA9004534BF /* Assets.xcassets */; };
 		3E580D2B2B4E4CA9004534BF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E580D2A2B4E4CA9004534BF /* Preview Assets.xcassets */; };
+		3E71936D2B68597C00DE4C83 /* EditProgressive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E71936C2B68597C00DE4C83 /* EditProgressive.swift */; };
 		3E9303D92B65A7370087660E /* RoundedSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9303D82B65A7370087660E /* RoundedSlider.swift */; };
 		3EC18BD82B4E4EB900C9FA4B /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD72B4E4EB900C9FA4B /* Functions.swift */; };
 		3EC18BDA2B4E504B00C9FA4B /* TaskObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */; };
@@ -41,6 +42,7 @@
 		3E580D2A2B4E4CA9004534BF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3E580D2C2B4E4CA9004534BF /* Flowing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Flowing.entitlements; sourceTree = "<group>"; };
 		3E580D2D2B4E4CA9004534BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3E71936C2B68597C00DE4C83 /* EditProgressive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProgressive.swift; sourceTree = "<group>"; };
 		3E9303D82B65A7370087660E /* RoundedSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedSlider.swift; sourceTree = "<group>"; };
 		3EC18BD72B4E4EB900C9FA4B /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskObj.swift; sourceTree = "<group>"; };
@@ -61,8 +63,8 @@
 		3E0359F12B6228A2003ABF17 /* ToDo */ = {
 			isa = PBXGroup;
 			children = (
-				3E0359ED2B62288D003ABF17 /* EditToDo.swift */,
 				3E0359EE2B62288D003ABF17 /* ToDoObj.swift */,
+				3E0359ED2B62288D003ABF17 /* EditToDo.swift */,
 			);
 			path = ToDo;
 			sourceTree = "<group>";
@@ -71,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				3E0359F52B630CAC003ABF17 /* ProgressiveObj.swift */,
+				3E71936C2B68597C00DE4C83 /* EditProgressive.swift */,
 				3E9303D82B65A7370087660E /* RoundedSlider.swift */,
 			);
 			path = Progressive;
@@ -96,15 +99,14 @@
 			isa = PBXGroup;
 			children = (
 				3E4059572B51B63E00BA643E /* MainView.swift */,
-				3E38C30F2B608187009E160D /* DaySelector.swift */,
 				3E580D212B4E4CA6004534BF /* FlowingApp.swift */,
+				3EC18BD72B4E4EB900C9FA4B /* Functions.swift */,
+				3E38C30D2B5AE487009E160D /* VariableManager.swift */,
 				3E0359F42B630C83003ABF17 /* Progressive */,
 				3E0359F12B6228A2003ABF17 /* ToDo */,
 				3ED60F472B62260E00C7BC5A /* Task */,
-				3E580D232B4E4CA6004534BF /* ContentView.swift */,
-				3EC18BD72B4E4EB900C9FA4B /* Functions.swift */,
-				3E38C30D2B5AE487009E160D /* VariableManager.swift */,
 				3E580D252B4E4CA6004534BF /* Item.swift */,
+				3E580D232B4E4CA6004534BF /* ContentView.swift */,
 				3E580D272B4E4CA9004534BF /* Assets.xcassets */,
 				3E580D2C2B4E4CA9004534BF /* Flowing.entitlements */,
 				3E580D2D2B4E4CA9004534BF /* Info.plist */,
@@ -124,8 +126,9 @@
 		3ED60F472B62260E00C7BC5A /* Task */ = {
 			isa = PBXGroup;
 			children = (
-				3E4059522B50EB3D00BA643E /* EditTask.swift */,
 				3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */,
+				3E38C30F2B608187009E160D /* DaySelector.swift */,
+				3E4059522B50EB3D00BA643E /* EditTask.swift */,
 			);
 			path = Task;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 				3E9303D92B65A7370087660E /* RoundedSlider.swift in Sources */,
 				3E580D242B4E4CA6004534BF /* ContentView.swift in Sources */,
 				3E0359EF2B62288D003ABF17 /* EditToDo.swift in Sources */,
+				3E71936D2B68597C00DE4C83 /* EditProgressive.swift in Sources */,
 				3E0359F62B630CAC003ABF17 /* ProgressiveObj.swift in Sources */,
 				3E38C30E2B5AE487009E160D /* VariableManager.swift in Sources */,
 				3E0359F02B62288D003ABF17 /* ToDoObj.swift in Sources */,

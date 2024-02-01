@@ -12,10 +12,11 @@ struct ProgressiveObj: View {
     
     @State var color = Color.blue
     @State var name = "progr"
+    @State var description = ""
     @State var symbol = "drop"
     @State var progress: CGFloat = 2
     @State var goal: CGFloat = 15
-    @State var prefix = ""
+    @State var preffix = ""
     @State var suffix = "ml"
     
     @State var changing = false
@@ -28,7 +29,7 @@ struct ProgressiveObj: View {
         if changing {
             
             
-            RoundedSlider(normalHeight: 40, maxHeight: 60, maxWidth: 200, progress: $progress, goal: $goal, changing: $changing, done: $done)
+            RoundedSlider(normalHeight: 40, maxHeight: 60, maxWidth: 200, color: color, progress: $progress, goal: $goal, changing: $changing, done: $done)
             
             
             
@@ -36,9 +37,10 @@ struct ProgressiveObj: View {
             HStack{
                 Button(action: { withAnimation{ if !editing {changing.toggle()}} }, label: {
                     Image(systemName: symbol)
+                        
                         .font(.title)
                         .fontWeight(.heavy)
-                        .foregroundStyle(done ? Color.primary.opacity(0.5) : color)
+                        .foregroundStyle(colorScheme == .dark ? done ? Color.black.opacity(0.5) : color : done ? Color.white.opacity(0.5) : color)
                         .background(RoundedRectangle(cornerRadius: 45) .frame(width: 60, height: 60)
                             .foregroundStyle(done ? color : color.opacity(0.5)))
                         .frame(width: 60, height: 60)
@@ -48,7 +50,9 @@ struct ProgressiveObj: View {
                 .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in editing.toggle()}))
                 .sheet(isPresented: $editing, content: {
                     
-                    Text("a")
+                    EditProgressive(color: $color, name: $name, description: $description, symbol: $symbol, progress: $progress, goal: $goal, preffix: $preffix, suffix: $suffix)
+                        .padding()
+                        .presentationDetents([.fraction(0.54)])
                     
                     
                 })
@@ -64,7 +68,7 @@ struct ProgressiveObj: View {
                 
                 Spacer()
                 
-                Text(formatProgressive(suffix: "ml", progress: Int(progress), goal: Int(goal)))
+                Text(formatProgressive(preffix: preffix, suffix: suffix, progress: Int(progress), goal: Int(goal)))
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundStyle(.opacity(0.5))
@@ -72,6 +76,7 @@ struct ProgressiveObj: View {
             }
             
             .padding(.horizontal)
+            
         }
         
     }

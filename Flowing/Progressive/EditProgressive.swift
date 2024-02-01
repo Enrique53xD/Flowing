@@ -1,19 +1,23 @@
 //
-//  EditToDo.swift
+//  EditProgressive.swift
 //  Flowing
 //
-//  Created by Saúl González on 24/01/24.
+//  Created by Saúl González on 29/01/24.
 //
 
 import SwiftUI
 import SymbolPicker
 
-struct EditToDo: View {
+struct EditProgressive: View {
+    
     @Binding var color: Color
     @Binding var name: String
     @Binding var description: String
     @Binding var symbol: String
-
+    @Binding var progress: CGFloat
+    @Binding var goal: CGFloat
+    @Binding var preffix: String
+    @Binding var suffix: String
     
     @State private var symbolPicking = false
     
@@ -27,6 +31,7 @@ struct EditToDo: View {
                     .padding(.horizontal)
                     .frame(width: 60)
                     
+                
                 TextField("\(name)", text: $name)
                     .font(.title)
                     .fontWeight(.bold)
@@ -44,7 +49,48 @@ struct EditToDo: View {
             }
             .padding(.vertical)
             
+            HStack{
+                TextField("Preffix", text: $preffix)
+                    .font(.title2)
+                    .fontWeight(.heavy)
+                    .padding(10)
+                    .foregroundStyle(color)
+                    .multilineTextAlignment(.center)
+                    .background(
+                        Color.gray.opacity(0.3)
+                            .cornerRadius(10))
+                
+                Text("-")
+                    .font(.title2)
+                    .fontWeight(.heavy)
+                    
+                TextField("Suffix", text: $suffix)
+                    .font(.title2)
+                    .fontWeight(.heavy)
+                    .padding(10)
+                    .foregroundStyle(color)
+                    .multilineTextAlignment(.center)
+                    .background(
+                        Color.gray.opacity(0.3)
+                            .cornerRadius(10))
+            }.padding(.horizontal)
             
+            TextField("Goal", value: Binding(
+                get: { Int(goal) },
+                set: { newValue in
+                    goal = CGFloat(newValue)
+                }
+            ), formatter: NumberFormatter())
+            .keyboardType(.numberPad)
+            .font(.title2)
+            .fontWeight(.heavy)
+            .padding(10)
+            .foregroundStyle(color)
+            .multilineTextAlignment(.center)
+            .background(
+                Color.gray.opacity(0.3)
+                    .cornerRadius(10))
+            .padding([.horizontal, .top])
             ZStack{
                 
                 TextEditor(text: $description)
@@ -66,6 +112,7 @@ struct EditToDo: View {
         }
         .scrollDisabled(true)
     }
+
 }
 
 

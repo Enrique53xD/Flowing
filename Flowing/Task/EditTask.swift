@@ -10,22 +10,14 @@ import SymbolPicker
 
 struct EditTask: View {
     
+    
     @Binding var color: Color
     @Binding var name: String
     @Binding var description: String
     @Binding var symbol: String
     @Binding var start: Int
     @Binding var end: Int
-    
-    @State var days: [Day] = [
-        Day(name: "Monday", isSelected: false),
-        Day(name: "Tuesday", isSelected: false),
-        Day(name: "Wednesday", isSelected: false),
-        Day(name: "Thursday", isSelected: false),
-        Day(name: "Friday", isSelected: false),
-        Day(name: "Saturday", isSelected: false),
-        Day(name: "Sunday", isSelected: false)
-    ]
+    @Binding var days: [Day]
     
     @State private var dateS = Date()
     @State private var dateE = Date()
@@ -59,9 +51,9 @@ struct EditTask: View {
                         .frame(width: 60)
                         .foregroundStyle(color)
                 })
-                .sheet(isPresented: $symbolPicking, content: { SymbolPicker(symbol: $symbol)})
+                .sheet(isPresented: $symbolPicking, content: { SymbolPicker(symbol: $symbol) .presentationDetents([.fraction(0.7), .large])})
             }
-            .padding(.vertical)
+            .padding(.top)
             
             
             
@@ -108,14 +100,10 @@ struct EditTask: View {
                     
                 })
                 
-                
-                
-                
-                
             }
             .padding(.vertical)
             
-            DaySelector(days: days, color: $color)
+            DaySelector(days: $days, color: $color)
             
             ZStack{
                 
@@ -123,7 +111,6 @@ struct EditTask: View {
                     .font(.title2)
                     .scrollContentBackground(.hidden)
                     .padding(10)
-                
                     .background(
                         Color.gray.opacity(0.3)
                             .cornerRadius(10))

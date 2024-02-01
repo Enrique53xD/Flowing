@@ -8,18 +8,20 @@
 import Foundation
 import SwiftUI
 
-struct TaskVariables {
-    var color: Color
-    var name: String
-    var description: String
-    var symbol: String
-    var start: Int
-    var end: Int
-
-}
-
 struct Day: Identifiable {
     let id = UUID()
     let name: String
     var isSelected: Bool
+}
+
+struct TaskVariables: Identifiable {
+    let id = UUID()
+    let color: Color
+    let name: String
+    let description: String
+    let symbol: String
+    let start: Int
+    let end: Int
+    let done: Bool
+    
 }
