@@ -6,7 +6,26 @@
 //
 
 import Foundation
+import SwiftUI
 
+extension UIScreen{
+   static let screenWidth = UIScreen.main.bounds.size.width
+   static let screenHeight = UIScreen.main.bounds.size.height
+   static let screenSize = UIScreen.main.bounds.size
+}
+
+func checkCurrentTime(start: Int, end: Int) -> Bool {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "HH:mm"
+    let currentTime = dateFormatter.string(from: Date())
+    let actual = convertToMinutes(from: currentTime)
+
+    if actual >= start && actual <= end {
+        return true
+    } else {
+        return false
+    }
+}
 
 func transforMinutes(minute: Int) -> String {
     var minutes = minute

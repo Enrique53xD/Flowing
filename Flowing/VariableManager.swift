@@ -16,12 +16,10 @@ struct Day: Identifiable {
 
 struct TaskVariables: Identifiable {
     let id = UUID()
-    let color: Color
+
     let name: String
-    let description: String
-    let symbol: String
+
     let start: Int
-    let end: Int
-    let done: Bool
+
     
 }

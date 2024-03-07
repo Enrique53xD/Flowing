@@ -15,7 +15,6 @@ struct RoundedSlider: View {
     @Binding var changing: Bool
     @Binding var done: Bool
     
-    
     @State var sliderProgress: CGFloat = 0
     @State var sliderWidth: CGFloat = 0
     @State var lastDragValue: CGFloat = 0
@@ -64,12 +63,12 @@ struct RoundedSlider: View {
                 .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
                 .overlay(
                     
-                    
                     Text("\(Int(progress))/\(Int(goal))")
                         .fontWeight(.heavy)
                         .font(weightFont)
                         .foregroundStyle(color)
                         .multilineTextAlignment(.center)
+                    
                 )
                 
                 .gesture(

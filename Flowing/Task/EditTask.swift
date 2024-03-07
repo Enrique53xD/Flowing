@@ -9,8 +9,7 @@ import SwiftUI
 import SymbolPicker
 
 struct EditTask: View {
-    
-    
+
     @Binding var color: Color
     @Binding var name: String
     @Binding var description: String
@@ -18,6 +17,7 @@ struct EditTask: View {
     @Binding var start: Int
     @Binding var end: Int
     @Binding var days: [Day]
+    @Binding var active: Bool
     
     @State private var dateS = Date()
     @State private var dateE = Date()
@@ -73,6 +73,8 @@ struct EditTask: View {
                         .labelsHidden()
                         .datePickerStyle(.wheel)
                         .presentationDetents([.fraction(0.3)])
+                        .onDisappear{withAnimation {if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)} ; active = checkCurrentTime(start: start, end: end)}}
+                        
                     
                 })
                 
@@ -97,6 +99,7 @@ struct EditTask: View {
                         .labelsHidden()
                         .datePickerStyle(.wheel)
                         .presentationDetents([.fraction(0.3)])
+                        .onDisappear{withAnimation {if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)} ; active = checkCurrentTime(start: start, end: end)}}
                     
                 })
                 
@@ -122,13 +125,17 @@ struct EditTask: View {
                     
                 }
             }.padding()
+            
+    
         }
+        
         .scrollDisabled(true)
         .onAppear(perform: {
             formatter.dateFormat = "yyyy/MM/dd HH:mm"
             dateS = formatter.date(from: "2016/10/08 \(transforMinutes(minute: start))") ?? formatter.date(from: "2016/10/08 22:31")!
             dateE = formatter.date(from: "2016/10/08 \(transforMinutes(minute: end))") ?? formatter.date(from: "2016/10/08 22:31")!
         })
+        
     }
 }
 
