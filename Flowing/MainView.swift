@@ -6,16 +6,26 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MainView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.modelContext) private var context
+    
+    @Query(sort: \taskItem.start, animation: .default) private var taskItems: [taskItem]
+    
+    
     @State var deg: Double = 0
     @State var menu: Int = 0
-    @State var mainColor = Color(UIColor.systemBackground)
+    @State var mainColor = Color.primary
+    @State var defaultColor = Color.primary
+    @State var customColor = false
+    @State var allTasks = false
 
     
     var body: some View {
         ZStack{
-            MenuCircle(deg: $deg, mainColor: $mainColor)
+            MenuCircle(deg: $deg, color: customColor ? $mainColor : $defaultColor)
                 
                 .offset(y:-500)
             
@@ -23,9 +33,10 @@ struct MainView: View {
                 ScrollView{
                     
                     
-                    ForEach(1...15, id: \.self){ _ in
+                    
+                    ForEach(taskItems){ item in
                         
-                        TaskObj()
+                        TaskObj(item: item, context: context)
                             .clipped(antialiased: true)
                             .scrollTransition { content, phase in
                                 content
@@ -35,6 +46,28 @@ struct MainView: View {
                                 
                             }
                     }
+                    
+                    Button(action: { withAnimation{newTask(context)} }, label: {
+                        
+                        Text("+")
+                            .font(.largeTitle)
+                            .fontWeight(.heavy)
+                            .frame(width: 350, height: 60)
+                            .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                            .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor : defaultColor))
+                            .padding()
+                            .sensoryFeedback(.increase, trigger: taskItems)
+                       
+                    })
+                    .scrollTransition { content, phase in
+                        content
+                            .opacity(phase.isIdentity ? 1 : 0)
+                            .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                            .blur(radius: phase.isIdentity ? 0 : 10)
+                        
+                    }
+
+                    
                 }
                 .scrollClipDisabled()
                 .frame(height: UIScreen.screenHeight-150)
@@ -62,15 +95,57 @@ struct MainView: View {
                 .offset(y: 50)
             } else if (menu == 2){
                 ScrollView{
-                    Text("a")
+                    
+                    Group{
+                        Toggle(isOn: $customColor.animation()) {
+                            Text("Custom main color")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                            
+                        }
+                  
+                        
+                        .frame(height: 60)
                         .scrollTransition { content, phase in
                             content
                                 .opacity(phase.isIdentity ? 1 : 0)
                                 .scaleEffect(phase.isIdentity ? 1 : 0.75)
                                 .blur(radius: phase.isIdentity ? 0 : 10)
                         }
+                        
+                        if customColor {
+                            ColorPicker(selection: $mainColor.animation(), supportsOpacity: false) {
+                                Text("Main color")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                            }
+                       
+                            .frame(height: 60)
+                            .scrollTransition { content, phase in
+                                content
+                                    .opacity(phase.isIdentity ? 1 : 0)
+                                    .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                    .blur(radius: phase.isIdentity ? 0 : 10)
+                            }
+                        }
+                    }
+                    
+                    Toggle(isOn: $allTasks) {
+                        Text("Show all tasks")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        
+                    }
+                    .frame(height: 60)
+                    .scrollTransition { content, phase in
+                        content
+                            .opacity(phase.isIdentity ? 1 : 0)
+                            .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                            .blur(radius: phase.isIdentity ? 0 : 10)
+                    }
                     
                 }
+                .padding(.horizontal)
                 .scrollClipDisabled()
                 .frame(height: UIScreen.screenHeight-150)
                 .offset(y: 50)
@@ -139,6 +214,8 @@ struct MainView: View {
         )
         
     }
+    
+    
     
     
 }

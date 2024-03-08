@@ -7,18 +7,24 @@
 
 import SwiftUI
 import SymbolPicker
+import SwiftData
 
 struct EditTask: View {
-
-    @Binding var color: Color
-    @Binding var name: String
-    @Binding var description: String
-    @Binding var symbol: String
-    @Binding var start: Int
-    @Binding var end: Int
-    @Binding var days: [Day]
-    @Binding var active: Bool
+    @Environment(\.colorScheme) var colorScheme
     
+    var item: taskItem
+    var context: ModelContext
+
+    @State var color: Color = .red
+    @State var name: String = ""
+    @State var description: String = ""
+    @State var symbol: String = ""
+    @State var start: Int = 0
+    @State var end: Int = 0
+    @State var days: String = ""
+    
+    @Binding var active: Bool
+
     @State private var dateS = Date()
     @State private var dateE = Date()
     @State private var dateSPicking = false
@@ -73,7 +79,7 @@ struct EditTask: View {
                         .labelsHidden()
                         .datePickerStyle(.wheel)
                         .presentationDetents([.fraction(0.3)])
-                        .onDisappear{withAnimation {if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)} ; active = checkCurrentTime(start: start, end: end)}}
+                        .onDisappear{withAnimation {if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)}}}
                         
                     
                 })
@@ -107,34 +113,68 @@ struct EditTask: View {
             .padding(.vertical)
             
             DaySelector(days: $days, color: $color)
+                .padding(.horizontal)
             
-            ZStack{
+           
                 
-                TextEditor(text: $description)
+            TextField("Description", text: $description, axis: .vertical)
                     .font(.title2)
-                    .scrollContentBackground(.hidden)
                     .padding(10)
+                    .frame(height: 150)
                     .background(
                         Color.gray.opacity(0.3)
                             .cornerRadius(10))
+                    .padding()
+               
+           
+            
+            Button(action: { active = false; withAnimation{context.delete(item)} }, label: {
                 
-                if description==""{
-                    Text("Task Description")
-                        .font(.title2)
-                        .foregroundStyle(.gray)
+                Text("DELETE")
+                    .font(.title2)
+                    .fontWeight(.heavy)
+                    .frame(width: 150, height: 60)
+                    .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                    .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(Color.red))
                     
-                }
-            }.padding()
+               
+            })
             
     
         }
         
         .scrollDisabled(true)
-        .onAppear(perform: {
+        .onAppear{
+            
+            color = Color(hex: item.color)!
+            name = item.name
+            description = item.desc
+            symbol = item.symbol
+            start = item.start
+            end = item.end
+            days = item.days
+            
+            
             formatter.dateFormat = "yyyy/MM/dd HH:mm"
             dateS = formatter.date(from: "2016/10/08 \(transforMinutes(minute: start))") ?? formatter.date(from: "2016/10/08 22:31")!
             dateE = formatter.date(from: "2016/10/08 \(transforMinutes(minute: end))") ?? formatter.date(from: "2016/10/08 22:31")!
-        })
+        }
+        
+        .onDisappear{
+            
+            withAnimation{
+                active = checkCurrentTime(start: start, end: end)
+                item.color = color.toHex()!
+                item.name = name
+                item.desc = description
+                item.symbol = symbol
+                item.start = start
+                item.end = end
+                item.days = days
+            }
+            
+            try? context.save()
+        }
         
     }
 }
