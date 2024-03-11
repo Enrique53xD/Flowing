@@ -6,43 +6,48 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ToDoObj: View {
     @Environment(\.colorScheme) var colorScheme
-    
-    @State var color = Color.purple
-    @State var name = "todo"
-    @State var symbol = "checkmark.circle"
-    @State var done = false
-    @State var description = ""
-    
+
+    var item: toDoItem
+    var context: ModelContext
+
     @State private var editing = false
     
     var body: some View {
         HStack{
-            Button(action: { withAnimation{ if !editing {done.toggle()}} }, label: {
-                Image(systemName: symbol)
+            Button(action: { withAnimation{ if !editing {item.done.toggle()}} }, label: {
+                Image(systemName: item.symbol)
                     
                     .font(.title)
                     .fontWeight(.heavy)
-                    .foregroundStyle(colorScheme == .dark ? done ? Color.black.opacity(0.5) : color : done ? Color.white.opacity(0.5) : color)
-                    .background(RoundedRectangle(cornerRadius: 45) .frame(width: 60, height: 60)
-                        .foregroundStyle(done ? color : color.opacity(0.5)))
+                    .foregroundStyle(
+                        (colorScheme == .dark ? (item.done ? Color.black.opacity(0.5) : Color(hex: item.color)) : (item.done ? Color.white.opacity(0.5) : Color(hex: item.color))) ?? Color.clear
+                    )
+                    .background(
+                        RoundedRectangle(cornerRadius: 45)
+                            .frame(width: 60, height: 60)
+                    )
+                    .foregroundStyle(
+                        (item.done ? Color(hex: item.color) : Color(hex: item.color)?.opacity(0.5)) ?? Color.clear
+                    )
                     .frame(width: 60, height: 60)
             })
             .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in editing.toggle()}))
             .sheet(isPresented: $editing, content: {
                 
-               EditToDo(color: $color, name: $name, description: $description, symbol: $symbol)
+                EditToDo(item: item, context: context)
                     .padding()
-                    .presentationDetents([.fraction(0.36)])
+                    .presentationDetents([.fraction(0.5)])
             
             })
             
-            Text(name)
+            Text(item.name)
                 .font(.title2)
-                .strikethrough(done, color: color)
-                .opacity(done ? 0.7 : 1)
+                .strikethrough(item.done, color: Color(hex: item.color))
+                .opacity(item.done ? 0.7 : 1)
                 .fontWeight(.bold)
                 .lineLimit(1)
                 

@@ -40,7 +40,7 @@ struct TaskObj: View {
                         .frame(width: 60, height: 60)
                         .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
                 
-                    Button(action: { if !editing {withAnimation{ item.done.toggle()}; try? context.save()} }, label: {
+                    Button(action: {},label: {
                         Image(systemName: item.symbol)
                         
                             .font(.title)
@@ -65,12 +65,11 @@ struct TaskObj: View {
                             return .none
                         }
                     }
-                    .sensoryFeedback(.selection, trigger: item.done)
                     .sheet(isPresented: $editing, content: {
                         
-                        EditTask(item: item, context: context, active: $active)
+                        EditTask(item: item, context: context)
                             .padding()
-                            .presentationDetents([.fraction(0.7)])
+                            .presentationDetents([.fraction(0.65)])
                         
                         
                         
@@ -110,11 +109,29 @@ struct TaskObj: View {
             
             withAnimation{
                 active = checkCurrentTime(start: item.start, end: item.end)
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "HH:mm"
+                let currentTime = dateFormatter.string(from: Date())
+                let actual = convertToMinutes(from: currentTime)
+                if item.end <= actual {
+                    item.done = true
+                } else {
+                    item.done = false
+                }
             }
             
             timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
                 withAnimation{
                     active = checkCurrentTime(start: item.start, end: item.end)
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "HH:mm"
+                    let currentTime = dateFormatter.string(from: Date())
+                    let actual = convertToMinutes(from: currentTime)
+                    if item.end <= actual {
+                        item.done = true
+                    } else {
+                        item.done = false
+                    }
                 }
             }
             

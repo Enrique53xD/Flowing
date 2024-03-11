@@ -16,8 +16,7 @@ struct FlowingApp: App {
         WindowGroup {
             MainView()
         }
-        
-        .modelContainer(for: taskItem.self)
+        .modelContainer(for: [taskItem.self, toDoItem.self, progressiveItem.self, settingsItem.self] )
     }
     
     

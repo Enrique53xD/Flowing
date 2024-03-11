@@ -7,14 +7,19 @@
 
 import SwiftUI
 import SymbolPicker
+import SwiftData
 
 struct EditToDo: View {
-    @Binding var color: Color
-    @Binding var name: String
-    @Binding var description: String
-    @Binding var symbol: String
-
+    @Environment(\.colorScheme) var colorScheme
     
+    var item: toDoItem
+    var context: ModelContext
+    
+    @State var color: Color = Color.blue
+    @State var name: String = ""
+    @State var description: String = ""
+    @State var symbol: String = ""
+
     @State private var symbolPicking = false
     
     var body: some View {
@@ -45,26 +50,46 @@ struct EditToDo: View {
             .padding(.vertical)
             
             
-            ZStack{
-                
-                TextEditor(text: $description)
+            TextField("Description", text: $description, axis: .vertical)
                     .font(.title2)
-                    .scrollContentBackground(.hidden)
                     .padding(10)
-                
+                    .frame(height: 150)
                     .background(
                         Color.gray.opacity(0.3)
                             .cornerRadius(10))
+                    .padding()
+            
+            Button(action: {withAnimation{context.delete(item)} }, label: {
                 
-                if description==""{
-                    Text("Task Description")
-                        .font(.title2)
-                        .foregroundStyle(.gray)
+                Text("DELETE")
+                    .font(.title2)
+                    .fontWeight(.heavy)
+                    .frame(width: 150, height: 60)
+                    .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                    .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(Color.red))
                     
-                }
-            }.padding()
+               
+            })
         }
         .scrollDisabled(true)
+        .onAppear{
+            color = Color(hex: item.color)!
+            name = item.name
+            description = item.desc
+            symbol = item.symbol
+            
+        }
+        
+        .onDisappear{
+            withAnimation{
+                item.color = color.toHex()!
+                item.name = name
+                item.desc = description
+                item.symbol = symbol
+            }
+            
+            try? context.save()
+        }
     }
 }
 

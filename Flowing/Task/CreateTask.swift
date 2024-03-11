@@ -1,30 +1,29 @@
 //
-//  EditTask.swift
+//  CreateTask.swift
 //  Flowing
 //
-//  Created by Saúl González on 11/01/24.
+//  Created by Saúl González on 10/03/24.
 //
+
 
 import SwiftUI
 import SymbolPicker
 import SwiftData
 
-struct EditTask: View {
+struct CreateTask: View {
     @Environment(\.colorScheme) var colorScheme
-    
-    var item: taskItem
     var context: ModelContext
 
     @State var color: Color = .red
-    @State var name: String = ""
+    @State var name: String = "Name"
     @State var description: String = ""
-    @State var symbol: String = ""
+    @State var symbol: String = "house"
     @State var start: Int = 0
     @State var end: Int = 0
-    @State var days: String = ""
+    @State var days: String = "0000000"
 
-    @State private var dateS = Date()
-    @State private var dateE = Date()
+    @State private var dateS = Date(timeIntervalSinceReferenceDate: -64800)
+    @State private var dateE = Date(timeIntervalSinceReferenceDate: -64800)
     @State private var dateSPicking = false
     @State private var dateEPicking = false
     private let formatter = DateFormatter()
@@ -143,54 +142,27 @@ struct EditTask: View {
                     .padding()
                
            
-            if !naming && !descripting {
-                Button(action: {withAnimation{context.delete(item)} }, label: {
-                    
-                    Text("DELETE")
-                        .font(.title2)
-                        .fontWeight(.heavy)
-                        .frame(width: 150, height: 60)
-                        .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                        .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(Color.red))
-                    
-                    
-                })
-            }
+            
+          
+            
     
         }
         
         .scrollDisabled(true)
-        .onAppear{
-            
-            color = Color(hex: item.color)!
-            name = item.name
-            description = item.desc
-            symbol = item.symbol
-            start = item.start
-            end = item.end
-            days = item.days
-            
-            
-            formatter.dateFormat = "yyyy/MM/dd HH:mm"
-            dateS = formatter.date(from: "2016/10/08 \(transforMinutes(minute: start))") ?? formatter.date(from: "2016/10/08 22:31")!
-            dateE = formatter.date(from: "2016/10/08 \(transforMinutes(minute: end))") ?? formatter.date(from: "2016/10/08 22:31")!
-        }
+        
         
         .onDisappear{
             
-            withAnimation{
-                item.color = color.toHex()!
-                item.name = name
-                item.desc = description
-                item.symbol = symbol
-                item.start = start
-                item.end = end
-                item.days = days
+            if name != "Name" || description != "" || color != .red || symbol != "house" || start != 0 || end != 0 || days != "0000000" {
+                
+                withAnimation{
+                    newTask(context, name: name, color: color.toHex()!, desc: description, symbol: symbol, start: start, end: end, days: days)
+                }
             }
-            
-            try? context.save()
+      
         }
         
     }
 }
+
 

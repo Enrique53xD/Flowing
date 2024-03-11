@@ -141,10 +141,28 @@ func formatProgressive(preffix: String = "", suffix: String = "", progress: Any,
 }
 
 
-func newTask(_ context: ModelContext) {
+func newTask(_ context: ModelContext, name: String, color: String, desc: String, symbol: String, start: Int, end: Int, days: String) {
     
-    let item = taskItem(name: "task", color: "#0000ff", desc: "", symbol: "pencil", start: 0, end: 0, done: false, days: "0000000")
+    let item = taskItem(name: name, color: color, desc: desc, symbol: symbol, start: start, end: end, done: checkCurrentTime(start: start, end: end), days: days)
     
+    context.insert(item)
+}
+
+func newToDo(_ context: ModelContext) {
+    
+    let item = toDoItem(name: "toDo", color: "#00FF00", desc: "", symbol: "checkmark.circle", done: false)
+    context.insert(item)
+}
+
+func newProgressive(_ context: ModelContext) {
+    
+    let item = progressiveItem(name: "toDo", color: "#0000ff", desc: "", symbol: "circle.dotted.circle", progress: 0, goal: 5, preffix: "", suffix: "")
+    context.insert(item)
+}
+
+func newSettings(_ context: ModelContext) {
+    
+    let item = settingsItem(customMainColor: false, mainColor: Color.red.toHex()!, showAll: false)
     context.insert(item)
 }
 
