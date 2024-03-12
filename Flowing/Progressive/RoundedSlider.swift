@@ -11,7 +11,7 @@ struct RoundedSlider: View {
     @State var weightFont: Font = .title3
     
     @Binding var progress: CGFloat
-    @Binding var goal: CGFloat
+    @State var goal: CGFloat
     @Binding var changing: Bool
     @Binding var done: Bool
     
@@ -114,7 +114,7 @@ struct RoundedSlider: View {
                     
                 )
                 
-                .simultaneousGesture(LongPressGesture(minimumDuration: 1).onEnded({_ in withAnimation{changing.toggle()}}))
+                .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in withAnimation{changing.toggle()}}))
                 
             }
             

@@ -1,24 +1,23 @@
 //
-//  EditToDo.swift
+//  CreateToDo.swift
 //  Flowing
 //
-//  Created by Saúl González on 24/01/24.
+//  Created by Saúl González on 11/03/24.
 //
 
 import SwiftUI
 import SymbolPicker
 import SwiftData
 
-struct EditToDo: View {
+struct CreateToDo: View {
     @Environment(\.colorScheme) var colorScheme
-    
-    var item: toDoItem
+
     var context: ModelContext
     
-    @State var color: Color = Color.blue
-    @State var name: String = ""
+    @State var color: Color = Color.green
+    @State var name: String = "Name"
     @State var description: String = ""
-    @State var symbol: String = ""
+    @State var symbol: String = "checkmark.circle"
 
     @State private var symbolPicking = false
     @FocusState private var descripting: Bool
@@ -77,41 +76,23 @@ struct EditToDo: View {
                     }
                     .padding()
             
-            if !naming && !descripting {
-                
-                Button(action: {withAnimation{context.delete(item)} }, label: {
-                    
-                    Text("DELETE")
-                        .font(.title2)
-                        .fontWeight(.heavy)
-                        .frame(width: 150, height: 60)
-                        .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                        .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(Color.red))
-                    
-                    
-                })
-            }
+            
         }
         .scrollDisabled(true)
-        .onAppear{
-            color = Color(hex: item.color)!
-            name = item.name
-            description = item.desc
-            symbol = item.symbol
-            
-        }
+        
         
         .onDisappear{
-            withAnimation{
-                item.color = color.toHex()!
-                item.name = name
-                item.desc = description
-                item.symbol = symbol
-            }
             
-            try? context.save()
+            if name != "Name" || description != "" || color != .green || symbol != "checkmark.circle"{
+                
+                withAnimation{
+                    newToDo(context, name: name, color: color.toHex()!, desc: description, symbol: symbol)
+                }
+                
+            }
         }
     }
 }
+
 
 

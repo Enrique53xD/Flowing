@@ -12,6 +12,7 @@ import SwiftData
 
 struct CreateTask: View {
     @Environment(\.colorScheme) var colorScheme
+    
     var context: ModelContext
 
     @State var color: Color = .red

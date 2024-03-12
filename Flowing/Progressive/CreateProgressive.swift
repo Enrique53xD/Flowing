@@ -1,19 +1,19 @@
 //
-//  EditProgressive.swift
+//  CreateProgressive.swift
 //  Flowing
 //
-//  Created by Saúl González on 29/01/24.
+//  Created by Saúl González on 11/03/24.
 //
+
 
 import SwiftUI
 import SymbolPicker
 import SwiftData
 
-struct EditProgressive: View {
+struct CreateProgressive: View {
     
     @Environment(\.colorScheme) var colorScheme
     
-    var item: progressiveItem
     var context: ModelContext
     
     @State var color: Color = .blue
@@ -149,50 +149,22 @@ struct EditProgressive: View {
                     }
                     .padding()
             
-            if !naming && !descripting && !suffixing && !preffixing && !goaling {
-                
-                Button(action: {withAnimation{context.delete(item)} }, label: {
-                    
-                    Text("DELETE")
-                        .font(.title2)
-                        .fontWeight(.heavy)
-                        .frame(width: 150, height: 60)
-                        .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                        .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(Color.red))
-                    
-                    
-                })
-            }
+           
         }
         .scrollDisabled(true)
-        .onAppear{
-            color = Color(hex: item.color)!
-            name = item.name
-            description = item.desc
-            symbol = item.symbol
-            progress = item.progress
-            goal = item.goal
-            preffix = item.preffix
-            suffix = item.suffix
-            
-        }
         
         .onDisappear{
-            withAnimation{
-                item.color = color.toHex()!
-                item.name = name
-                item.desc = description
-                item.symbol = symbol
-                item.progress = progress
-                item.goal = goal
-                item.preffix = preffix
-                item.suffix = suffix
+            if name != "Name" || description != "" || color != .blue || symbol != "circle.dotted" || goal != 10 || preffix != "" || suffix != ""{
+                
+                withAnimation{
+                    newProgressive(context, name: name, color: color.toHex()!, desc: description, symbol: symbol, goal: goal, preffix: preffix, suffix: suffix)
+                }
+                
             }
-            
-            try? context.save()
         }
     }
 
 }
+
 
 

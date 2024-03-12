@@ -6,18 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ProgressiveObj: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @State var color = Color.blue
-    @State var name = "progr"
-    @State var description = ""
-    @State var symbol = "drop"
-    @State var progress: CGFloat = 2
-    @State var goal: CGFloat = 15
-    @State var preffix = ""
-    @State var suffix = "ml"
+    var item: progressiveItem
+    var context: ModelContext
+    @State var progress: CGFloat = 0
     
     @State var changing = false
     @State var done = false
@@ -29,46 +25,64 @@ struct ProgressiveObj: View {
         if changing {
             
             
-            RoundedSlider(normalHeight: 40, maxHeight: 60, maxWidth: 200, color: color, progress: $progress, goal: $goal, changing: $changing, done: $done)
-            
+            RoundedSlider(normalHeight: 40, maxHeight: 60, maxWidth: 200, color: Color(hex: item.color)!, progress: $progress, goal: item.goal, changing: $changing, done: $done)
+                .padding(.bottom, 5)
+                .onAppear{
+                    withAnimation{
+                        progress = item.progress
+                    }
+                }
+                .onDisappear{
+                    withAnimation{
+                        item.progress = progress
+                        if item.progress >= item.goal {done=true} else {done=false} 
+                    }
+                }
             
             
         } else {
             HStack{
                 Button(action: { withAnimation{ if !editing {changing.toggle()}} }, label: {
-                    Image(systemName: symbol)
+                    Image(systemName: item.symbol)
                         
                         .font(.title)
                         .fontWeight(.heavy)
-                        .foregroundStyle(colorScheme == .dark ? done ? Color.black.opacity(0.5) : color : done ? Color.white.opacity(0.5) : color)
-                        .background(RoundedRectangle(cornerRadius: 45) .frame(width: 60, height: 60)
-                            .foregroundStyle(done ? color : color.opacity(0.5)))
+                        .foregroundStyle(
+                            (colorScheme == .dark ? (done ? Color.black.opacity(0.5) : Color(hex: item.color)) : (done ? Color.white.opacity(0.5) : Color(hex: item.color))) ?? Color.clear
+                        )
+                        .background(
+                            RoundedRectangle(cornerRadius: 45)
+                                .frame(width: 60, height: 60)
+                        )
+                        .foregroundStyle(
+                            (done ? Color(hex: item.color) : Color(hex: item.color)?.opacity(0.5)) ?? Color.clear
+                        )
                         .frame(width: 60, height: 60)
                     
-                        .onAppear{if progress >= goal {done=true} else {done=false} }
+                        .onAppear{if item.progress >= item.goal {done=true} else {done=false} }
                 })
                 .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in editing.toggle()}))
                 .sheet(isPresented: $editing, content: {
                     
-                    EditProgressive(color: $color, name: $name, description: $description, symbol: $symbol, progress: $progress, goal: $goal, preffix: $preffix, suffix: $suffix)
+                    EditProgressive(item: item, context: context)
                         .padding()
-                        .presentationDetents([.fraction(0.54)])
+                        .presentationDetents([.fraction(0.64)])
                     
                     
                 })
                 
                 
-                Text(name)
+                Text(item.name)
                     .font(.title2)
+                    .strikethrough(done, color: Color(hex: item.color))
+                    .opacity(done ? 0.7 : 1)
                     .fontWeight(.bold)
                     .lineLimit(1)
-                    .opacity(done ? 0.7 : 1)
-                    .strikethrough(done, color: color)
                 
                 
                 Spacer()
                 
-                Text(formatProgressive(preffix: preffix, suffix: suffix, progress: Int(progress), goal: Int(goal)))
+                Text(formatProgressive(preffix: item.preffix, suffix: item.suffix, progress: Int(item.progress), goal: Int(item.goal)))
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundStyle(.opacity(0.5))

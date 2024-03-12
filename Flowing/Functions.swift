@@ -148,15 +148,15 @@ func newTask(_ context: ModelContext, name: String, color: String, desc: String,
     context.insert(item)
 }
 
-func newToDo(_ context: ModelContext) {
+func newToDo(_ context: ModelContext, name: String, color: String, desc: String, symbol: String) {
     
-    let item = toDoItem(name: "toDo", color: "#00FF00", desc: "", symbol: "checkmark.circle", done: false)
+    let item = toDoItem(name: name, color: color, desc: desc, symbol: symbol, done: false)
     context.insert(item)
 }
 
-func newProgressive(_ context: ModelContext) {
+func newProgressive(_ context: ModelContext, name: String, color: String, desc: String, symbol: String, goal: CGFloat, preffix: String, suffix: String) {
     
-    let item = progressiveItem(name: "toDo", color: "#0000ff", desc: "", symbol: "circle.dotted.circle", progress: 0, goal: 5, preffix: "", suffix: "")
+    let item = progressiveItem(name: name, color: color, desc: desc, symbol: symbol, progress: 0, goal: goal, preffix: preffix, suffix: suffix)
     context.insert(item)
 }
 

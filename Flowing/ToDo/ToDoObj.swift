@@ -40,7 +40,7 @@ struct ToDoObj: View {
                 
                 EditToDo(item: item, context: context)
                     .padding()
-                    .presentationDetents([.fraction(0.5)])
+                    .presentationDetents([.fraction(0.45)])
             
             })
             

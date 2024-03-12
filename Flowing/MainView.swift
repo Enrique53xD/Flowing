@@ -25,7 +25,10 @@ struct MainView: View {
     @State var customColor = false
     @State var allTasks = false
     @State var settings: settingsItem?
-    @State var creating = false
+    @State var creatingTask = false
+    @State var creatingToDo = false
+    @State var creatingProgressive = false
+    @State var creatingSome = false
 
     
     var body: some View {
@@ -65,22 +68,22 @@ struct MainView: View {
                             }
                     }
                     
-                    Button(action: {  creating.toggle()  }, label: {
+                    Button(action: {  creatingTask.toggle()  }, label: {
                         
                         Text("+")
                             .font(.largeTitle)
                             .fontWeight(.heavy)
-                            .frame(width: 350, height: 60)
+                            .frame(width: 360, height: 60)
                             .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
                             .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor : defaultColor))
                             .padding()
                             .sensoryFeedback(.increase, trigger: taskItems)
                        
                     })
-                    .sheet(isPresented: $creating, content: {
+                    .sheet(isPresented: $creatingTask, content: {
                         CreateTask(context: context)
                             .padding()
-                            .presentationDetents([.fraction(0.56)])
+                            .presentationDetents([.fraction(0.52)])
                         
                     })
                     .scrollTransition { content, phase in
@@ -110,28 +113,82 @@ struct MainView: View {
                             }
                     }
                     
+                    ForEach(progressiveItems) { item in
+                        ProgressiveObj(item: item, context: context)
+                            .scrollTransition { content, phase in
+                                content
+                                    .opacity(phase.isIdentity ? 1 : 0)
+                                    .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                    .blur(radius: phase.isIdentity ? 0 : 10)
+                            }
+                    }
                     
-                    ProgressiveObj()
-                        .scrollTransition { content, phase in
-                            content
-                                .opacity(phase.isIdentity ? 1 : 0)
-                                .scaleEffect(phase.isIdentity ? 1 : 0.75)
-                                .blur(radius: phase.isIdentity ? 0 : 10)
-                        }
-                    
-                    Button(action: {  withAnimation{newToDo(context)} }, label: {
-                        
-                        Text("+")
-                            .font(.largeTitle)
-                            .fontWeight(.heavy)
-                            .frame(width: 350, height: 60)
-                            .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                            .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor : defaultColor))
-                            .padding()
-                            .sensoryFeedback(.increase, trigger: taskItems)
+                    HStack {
+                        if !creatingSome {
                             
-                       
-                    })
+                            Button(action: { withAnimation{creatingSome.toggle()} }, label: {
+                                
+                                Text("+")
+                                    .font(.largeTitle)
+                                    .fontWeight(.heavy)
+                                    .frame(width: 360, height: 60)
+                                    .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                                    .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor : defaultColor))
+                                    .padding()
+                                    .sensoryFeedback(.increase, trigger: taskItems)
+                                
+                                
+                            })
+                            .sheet(isPresented: $creatingToDo){
+                                CreateToDo(context: context)
+                                    .padding()
+                                    .presentationDetents([.fraction(0.36)])
+                            }
+                        } else {
+                            Button(action: { if creatingSome{ withAnimation{creatingToDo.toggle()}} }, label: {
+                                
+                                Image(systemName: "checkmark.circle")
+                                    .font(.largeTitle)
+                                    .fontWeight(.heavy)
+                                    .frame(width: 160, height: 60)
+                                    .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                                    .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor : defaultColor))
+                                    .padding()
+                                    .sensoryFeedback(.increase, trigger: taskItems)
+                                
+                                
+                            })
+                            .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in withAnimation{creatingSome.toggle()}}))
+                            .sheet(isPresented: $creatingToDo, onDismiss: {withAnimation{creatingSome.toggle()}}){
+                                CreateToDo(context: context)
+                                    .padding()
+                                    .presentationDetents([.fraction(0.36)])
+                            }
+                            
+                            Spacer()
+                            
+                            Button(action: { if creatingSome{ withAnimation{creatingProgressive.toggle()}} }, label: {
+                                
+                                Image(systemName: "circle.dotted")
+                                    .font(.largeTitle)
+                                    .fontWeight(.heavy)
+                                    .frame(width: 160, height: 60)
+                                    .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                                    .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor : defaultColor))
+                                    .padding()
+                                    .sensoryFeedback(.increase, trigger: taskItems)
+                                
+                                
+                            })
+                            .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in withAnimation{creatingSome.toggle()}}))
+                            .sheet(isPresented: $creatingProgressive, onDismiss: {withAnimation{creatingSome.toggle()}}){
+                                CreateProgressive(context: context)
+                                    .padding()
+                                    .presentationDetents([.fraction(0.58)])
+                            }
+
+                        }
+                    }
                     .scrollTransition { content, phase in
                         content
                             .opacity(phase.isIdentity ? 1 : 0)
