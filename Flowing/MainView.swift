@@ -30,6 +30,7 @@ struct MainView: View {
     @State var creatingProgressive = false
     @State var creatingSome = false
 
+    @State private var sheetContentHeight = CGFloat(0)
     
     var body: some View {
         ZStack{
@@ -57,15 +58,18 @@ struct MainView: View {
                     
                     ForEach(taskItems){ item in
                         
-                        TaskObj(item: item, context: context)
-                            .clipped(antialiased: true)
-                            .scrollTransition { content, phase in
-                                content
-                                    .opacity(phase.isIdentity ? 1 : 0)
-                                    .scaleEffect(phase.isIdentity ? 1 : 0.75)
-                                    .blur(radius: phase.isIdentity ? 0 : 10)
-                                
-                            }
+                        if isToday(item.days) || settings!.showAll{
+                            
+                            TaskObj(item: item, context: context)
+                                .clipped(antialiased: true)
+                                .scrollTransition { content, phase in
+                                    content
+                                        .opacity(phase.isIdentity ? 1 : 0)
+                                        .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                        .blur(radius: phase.isIdentity ? 0 : 10)
+                                    
+                                }
+                        }
                     }
                     
                     Button(action: {  creatingTask.toggle()  }, label: {
@@ -83,7 +87,17 @@ struct MainView: View {
                     .sheet(isPresented: $creatingTask, content: {
                         CreateTask(context: context)
                             .padding()
-                            .presentationDetents([.fraction(0.52)])
+                            .background {
+                                        //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                                        GeometryReader { proxy in
+                                            Color.clear
+                                                .task {
+                                                    print("size = \(proxy.size.height)")
+                                                    sheetContentHeight = proxy.size.height
+                                                }
+                                        }
+                                    }
+                                    .presentationDetents([.height(sheetContentHeight)])
                         
                     })
                     .scrollTransition { content, phase in
@@ -142,7 +156,17 @@ struct MainView: View {
                             .sheet(isPresented: $creatingToDo){
                                 CreateToDo(context: context)
                                     .padding()
-                                    .presentationDetents([.fraction(0.36)])
+                                    .background {
+                                                //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                                                GeometryReader { proxy in
+                                                    Color.clear
+                                                        .task {
+                                                            print("size = \(proxy.size.height)")
+                                                            sheetContentHeight = proxy.size.height
+                                                        }
+                                                }
+                                            }
+                                            .presentationDetents([.height(sheetContentHeight)])
                             }
                         } else {
                             Button(action: { if creatingSome{ withAnimation{creatingToDo.toggle()}} }, label: {
@@ -162,7 +186,17 @@ struct MainView: View {
                             .sheet(isPresented: $creatingToDo, onDismiss: {withAnimation{creatingSome.toggle()}}){
                                 CreateToDo(context: context)
                                     .padding()
-                                    .presentationDetents([.fraction(0.36)])
+                                    .background {
+                                                //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                                                GeometryReader { proxy in
+                                                    Color.clear
+                                                        .task {
+                                                            print("size = \(proxy.size.height)")
+                                                            sheetContentHeight = proxy.size.height
+                                                        }
+                                                }
+                                            }
+                                            .presentationDetents([.height(sheetContentHeight)])
                             }
                             
                             Spacer()
@@ -184,7 +218,17 @@ struct MainView: View {
                             .sheet(isPresented: $creatingProgressive, onDismiss: {withAnimation{creatingSome.toggle()}}){
                                 CreateProgressive(context: context)
                                     .padding()
-                                    .presentationDetents([.fraction(0.58)])
+                                    .background {
+                                                //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                                                GeometryReader { proxy in
+                                                    Color.clear
+                                                        .task {
+                                                            print("size = \(proxy.size.height)")
+                                                            sheetContentHeight = proxy.size.height
+                                                        }
+                                                }
+                                            }
+                                            .presentationDetents([.height(sheetContentHeight)])
                             }
 
                         }
@@ -270,60 +314,49 @@ struct MainView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: 800)
-        
-        
         .gesture(DragGesture(minimumDistance: 20, coordinateSpace: .global)
             .onEnded({ value in
                 if value.translation.width < -50 {
                     withAnimation{
-                        deg += 45
+                        deg += 30
                     }
                     
-                    if (deg == 90) {
-                        deg = -45
-                    } else if (deg == -90)
+                    if (deg == 60) {
+                        deg = -30
+                    } else if (deg == -60)
                     {
-                        deg = 45
+                        deg = 30
                     }
                     
-                    withAnimation{
-                        if (deg == 0){
-                            menu = 0
-                        } 
-                        else if (deg == 45){
-                            menu = 1
-                        }
-                        
-                        else if (deg == -45){
-                            menu = 2
-                        }
-                    }
+                   
                     
                 }
                 
                 if value.translation.width > 50 {
                     withAnimation{
-                        deg -= 45
+                        deg -= 30
                     }
                     
-                    if (deg == 90) {
-                        deg = -45
-                    } else if (deg == -90)
+                    if (deg == 60) {
+                        deg = -30
+                    } else if (deg == -60)
                     {
-                        deg = 45
+                        deg = 30
                     }
                     
-                    withAnimation{
-                        if (deg == 0){
-                            menu = 0
-                        }
-                        else if (deg == 45){
-                            menu = 1
-                        }
-                        
-                        else if (deg == -45){
-                            menu = 2
-                        }
+                }
+                
+                
+                withAnimation{
+                    if (deg == 0){
+                        menu = 0
+                    }
+                    else if (deg == 30){
+                        menu = 1
+                    }
+                    
+                    else if (deg == -30){
+                        menu = 2
                     }
                 }
                 

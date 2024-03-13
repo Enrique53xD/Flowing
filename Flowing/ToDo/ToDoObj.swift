@@ -16,6 +16,8 @@ struct ToDoObj: View {
 
     @State private var editing = false
     
+    @State private var sheetContentHeight = CGFloat(0)
+    
     var body: some View {
         HStack{
             Button(action: { withAnimation{ if !editing {item.done.toggle()}} }, label: {
@@ -40,7 +42,17 @@ struct ToDoObj: View {
                 
                 EditToDo(item: item, context: context)
                     .padding()
-                    .presentationDetents([.fraction(0.45)])
+                    .background {
+                                //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                                GeometryReader { proxy in
+                                    Color.clear
+                                        .task {
+                                            print("size = \(proxy.size.height)")
+                                            sheetContentHeight = proxy.size.height
+                                        }
+                                }
+                            }
+                            .presentationDetents([.height(sheetContentHeight)])
             
             })
             

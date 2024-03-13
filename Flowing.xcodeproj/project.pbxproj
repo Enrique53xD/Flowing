@@ -13,6 +13,7 @@
 		3E1CDA122B9EC87B00039E9A /* CreateTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1CDA112B9EC87B00039E9A /* CreateTask.swift */; };
 		3E1FD06B2B9FABB90035F06C /* CreateToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FD06A2B9FABB90035F06C /* CreateToDo.swift */; };
 		3E1FD06D2BA003270035F06C /* CreateProgressive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FD06C2BA003270035F06C /* CreateProgressive.swift */; };
+		3E1FD06F2BA21D0A0035F06C /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FD06E2BA21D0A0035F06C /* TestView.swift */; };
 		3E38C30E2B5AE487009E160D /* VariableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38C30D2B5AE487009E160D /* VariableManager.swift */; };
 		3E38C3102B608188009E160D /* DaySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38C30F2B608187009E160D /* DaySelector.swift */; };
 		3E4059532B50EB3D00BA643E /* EditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4059522B50EB3D00BA643E /* EditTask.swift */; };
@@ -25,6 +26,7 @@
 		3E9303D92B65A7370087660E /* RoundedSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9303D82B65A7370087660E /* RoundedSlider.swift */; };
 		3EC18BD82B4E4EB900C9FA4B /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD72B4E4EB900C9FA4B /* Functions.swift */; };
 		3EC18BDA2B4E504B00C9FA4B /* TaskObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */; };
+		3ECAD69C2BA24B3E00DC6A59 /* Others.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECAD69B2BA24B3E00DC6A59 /* Others.swift */; };
 		3ED8CB8D2B7B619300A50A22 /* MenuCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED8CB8C2B7B619300A50A22 /* MenuCircle.swift */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +37,7 @@
 		3E1CDA112B9EC87B00039E9A /* CreateTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTask.swift; sourceTree = "<group>"; };
 		3E1FD06A2B9FABB90035F06C /* CreateToDo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateToDo.swift; sourceTree = "<group>"; };
 		3E1FD06C2BA003270035F06C /* CreateProgressive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProgressive.swift; sourceTree = "<group>"; };
+		3E1FD06E2BA21D0A0035F06C /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		3E38C30D2B5AE487009E160D /* VariableManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableManager.swift; sourceTree = "<group>"; };
 		3E38C30F2B608187009E160D /* DaySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySelector.swift; sourceTree = "<group>"; };
 		3E4059522B50EB3D00BA643E /* EditTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTask.swift; sourceTree = "<group>"; };
@@ -49,6 +52,7 @@
 		3E9303D82B65A7370087660E /* RoundedSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedSlider.swift; sourceTree = "<group>"; };
 		3EC18BD72B4E4EB900C9FA4B /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskObj.swift; sourceTree = "<group>"; };
+		3ECAD69B2BA24B3E00DC6A59 /* Others.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Others.swift; sourceTree = "<group>"; };
 		3ED8CB8C2B7B619300A50A22 /* MenuCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCircle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -109,6 +113,7 @@
 				3EC18BD72B4E4EB900C9FA4B /* Functions.swift */,
 				3E4059572B51B63E00BA643E /* MainView.swift */,
 				3ED8CB8C2B7B619300A50A22 /* MenuCircle.swift */,
+				3ECAD69B2BA24B3E00DC6A59 /* Others.swift */,
 				3E0359F42B630C83003ABF17 /* Progressive */,
 				3E0359F12B6228A2003ABF17 /* ToDo */,
 				3ED60F472B62260E00C7BC5A /* Task */,
@@ -123,6 +128,7 @@
 		3E580D292B4E4CA9004534BF /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				3E1FD06E2BA21D0A0035F06C /* TestView.swift */,
 				3E580D2A2B4E4CA9004534BF /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -217,12 +223,14 @@
 			files = (
 				3E9303D92B65A7370087660E /* RoundedSlider.swift in Sources */,
 				3E0359EF2B62288D003ABF17 /* EditToDo.swift in Sources */,
+				3ECAD69C2BA24B3E00DC6A59 /* Others.swift in Sources */,
 				3ED8CB8D2B7B619300A50A22 /* MenuCircle.swift in Sources */,
 				3E71936D2B68597C00DE4C83 /* EditProgressive.swift in Sources */,
 				3E0359F62B630CAC003ABF17 /* ProgressiveObj.swift in Sources */,
 				3E38C30E2B5AE487009E160D /* VariableManager.swift in Sources */,
 				3E0359F02B62288D003ABF17 /* ToDoObj.swift in Sources */,
 				3E1FD06B2B9FABB90035F06C /* CreateToDo.swift in Sources */,
+				3E1FD06F2BA21D0A0035F06C /* TestView.swift in Sources */,
 				3E4059582B51B63E00BA643E /* MainView.swift in Sources */,
 				3E1CDA122B9EC87B00039E9A /* CreateTask.swift in Sources */,
 				3E38C3102B608188009E160D /* DaySelector.swift in Sources */,

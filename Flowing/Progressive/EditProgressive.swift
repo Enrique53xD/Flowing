@@ -156,9 +156,9 @@ struct EditProgressive: View {
                     Text("DELETE")
                         .font(.title2)
                         .fontWeight(.heavy)
-                        .frame(width: 150, height: 60)
+                        .frame(width: 325, height: 60)
                         .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                        .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(Color.red))
+                        .background(RoundedRectangle(cornerRadius: 10).foregroundStyle(Color.red))
                     
                     
                 })
@@ -187,6 +187,7 @@ struct EditProgressive: View {
                 item.goal = goal
                 item.preffix = preffix
                 item.suffix = suffix
+                
             }
             
             try? context.save()

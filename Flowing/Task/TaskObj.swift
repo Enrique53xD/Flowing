@@ -18,7 +18,8 @@ struct TaskObj: View {
     @State private var editing = false
     @State private var active = false
     @State private var timer: Timer?
-   
+    
+    @State private var sheetContentHeight = CGFloat(0)
     
     var body: some View {
 
@@ -69,7 +70,17 @@ struct TaskObj: View {
                         
                         EditTask(item: item, context: context)
                             .padding()
-                            .presentationDetents([.fraction(0.65)])
+                            .background {
+                                        //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                                        GeometryReader { proxy in
+                                            Color.clear
+                                                .task {
+                                                    print("size = \(proxy.size.height)")
+                                                    sheetContentHeight = proxy.size.height
+                                                }
+                                        }
+                                    }
+                                    .presentationDetents([.height(sheetContentHeight)])
                         
                         
                         

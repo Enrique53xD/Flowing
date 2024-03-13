@@ -167,7 +167,20 @@ func newSettings(_ context: ModelContext) {
 }
 
 
-
+func isToday(_ currentDayOfWeek: String) -> Bool {
+    let currentDate = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "e"
+    let dayOfWeekString = dateFormatter.string(from: currentDate)
+    
+    if let currentDay = Int(dayOfWeekString) {
+        // Adjust the index to start from 0 (Monday) to 6 (Sunday)
+        let adjustedIndex = (currentDay + 5) % 7
+        return currentDayOfWeek[currentDayOfWeek.index(currentDayOfWeek.startIndex, offsetBy: adjustedIndex)] == "1"
+    }
+    
+    return false
+}
 
 
 

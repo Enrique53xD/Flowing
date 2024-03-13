@@ -5,7 +5,6 @@
 //  Created by Saúl González on 11/03/24.
 //
 
-
 import SwiftUI
 import SymbolPicker
 import SwiftData
@@ -148,8 +147,7 @@ struct CreateProgressive: View {
                         }
                     }
                     .padding()
-            
-           
+
         }
         .scrollDisabled(true)
         
@@ -159,12 +157,7 @@ struct CreateProgressive: View {
                 withAnimation{
                     newProgressive(context, name: name, color: color.toHex()!, desc: description, symbol: symbol, goal: goal, preffix: preffix, suffix: suffix)
                 }
-                
             }
         }
     }
-
 }
-
-
-

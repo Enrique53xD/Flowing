@@ -1,6 +1,10 @@
 import SwiftUI
+import SwiftData
 
 struct RoundedSlider: View {
+    
+    var item: progressiveItem
+    var context: ModelContext
     
     @State var normalHeight: CGFloat = 30
     @State var maxHeight: CGFloat = 60
@@ -10,8 +14,6 @@ struct RoundedSlider: View {
     @State var color: Color = .blue
     @State var weightFont: Font = .title3
     
-    @Binding var progress: CGFloat
-    @State var goal: CGFloat
     @Binding var changing: Bool
     @Binding var done: Bool
     
@@ -20,7 +22,7 @@ struct RoundedSlider: View {
     @State var lastDragValue: CGFloat = 0
     
     public func update(){
-        sliderProgress = progress/goal
+        sliderProgress = item.progress/item.goal
         sliderWidth = sliderProgress * maxWidth
         lastDragValue = sliderWidth
     }
@@ -29,7 +31,7 @@ struct RoundedSlider: View {
         
         HStack {
             
-            Button(action: { withAnimation{ if progress > 0 {progress-=1; update()} } }, label: {
+            Button(action: { withAnimation{ if item.progress > 0 {item.progress-=1; update()} } }, label: {
                 Image(systemName: "minus")
                     .font(.title)
                     .fontWeight(.heavy)
@@ -38,7 +40,7 @@ struct RoundedSlider: View {
                         .foregroundStyle(color.opacity(0.5)))
                     .frame(width: 60, height: 60)
                 
-                    .onAppear{if progress >= goal {done=true} else {done=false} }
+                    .onAppear{if item.progress >= item.goal {done=true} else {done=false} }
             })
             
             Spacer()
@@ -63,7 +65,7 @@ struct RoundedSlider: View {
                 .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
                 .overlay(
                     
-                    Text("\(Int(progress))/\(Int(goal))")
+                    Text("\(Int(item.progress))/\(Int(item.goal))")
                         .fontWeight(.heavy)
                         .font(weightFont)
                         .foregroundStyle(color)
@@ -87,7 +89,7 @@ struct RoundedSlider: View {
                             
                             sliderProgress = current <= 1.0 ? current : 1
                             
-                            progress = goal * sliderProgress
+                            item.progress = item.goal * sliderProgress
                             
                             withAnimation{
                                 currentHeight = maxHeight
@@ -120,7 +122,7 @@ struct RoundedSlider: View {
             
             Spacer()
             
-            Button(action: { withAnimation{ if progress < goal {progress+=1; update()} } }, label: {
+            Button(action: { withAnimation{ if item.progress < item.goal {item.progress+=1; update()} } }, label: {
                 Image(systemName: "plus")
                     .font(.title)
                     .fontWeight(.heavy)
@@ -129,7 +131,7 @@ struct RoundedSlider: View {
                         .foregroundStyle(color.opacity(0.5)))
                     .frame(width: 60, height: 60)
                 
-                    .onAppear{if progress >= goal {done=true} else {done=false} }
+                    .onAppear{if item.progress >= item.goal {done=true} else {done=false} }
             })
             
             

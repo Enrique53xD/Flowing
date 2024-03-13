@@ -13,31 +13,22 @@ struct ProgressiveObj: View {
     
     var item: progressiveItem
     var context: ModelContext
-    @State var progress: CGFloat = 0
     
     @State var changing = false
     @State var done = false
     
     @State private var editing = false
     
+    @State private var sheetContentHeight = CGFloat(0)
+    
     var body: some View {
         
         if changing {
             
             
-            RoundedSlider(normalHeight: 40, maxHeight: 60, maxWidth: 200, color: Color(hex: item.color)!, progress: $progress, goal: item.goal, changing: $changing, done: $done)
+            RoundedSlider(item: item, context: context, normalHeight: 40, maxHeight: 60, maxWidth: 200, color: Color(hex: item.color)!, changing: $changing, done: $done)
                 .padding(.bottom, 5)
-                .onAppear{
-                    withAnimation{
-                        progress = item.progress
-                    }
-                }
-                .onDisappear{
-                    withAnimation{
-                        item.progress = progress
-                        if item.progress >= item.goal {done=true} else {done=false} 
-                    }
-                }
+                
             
             
         } else {
@@ -62,11 +53,29 @@ struct ProgressiveObj: View {
                         .onAppear{if item.progress >= item.goal {done=true} else {done=false} }
                 })
                 .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in editing.toggle()}))
-                .sheet(isPresented: $editing, content: {
+                .sheet( isPresented: $editing, content: {
                     
                     EditProgressive(item: item, context: context)
                         .padding()
-                        .presentationDetents([.fraction(0.64)])
+                        .background {
+                                    //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                                    GeometryReader { proxy in
+                                        Color.clear
+                                            .task {
+                                                print("size = \(proxy.size.height)")
+                                                sheetContentHeight = proxy.size.height
+                                            }
+                                    }
+                                }
+                                .presentationDetents([.height(sheetContentHeight)])
+                        .onDisappear{
+                            withAnimation{
+                                if item.progress >= item.goal {done=true} else {done=false}
+                                if item.progress > item.goal {
+                                    item.progress = item.goal
+                                }
+                            }
+                        }
                     
                     
                 })
@@ -88,7 +97,11 @@ struct ProgressiveObj: View {
                     .foregroundStyle(.opacity(0.5))
                 
             }
-            
+            .onAppear{
+                if item.progress > item.goal {
+                    item.progress = item.goal
+                }
+            }
             .padding(.horizontal)
             
         }
