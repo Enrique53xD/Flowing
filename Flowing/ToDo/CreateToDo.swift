@@ -38,15 +38,14 @@ struct CreateToDo: View {
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                     .padding(5)
-                    .background(
-                        Color.gray.opacity(0.3)
-                            .cornerRadius(10))
+                    .background(Color.gray.opacity(0.3))
                     .focused($naming)
                     .onTapGesture {
                         withAnimation{
                             naming = true
                         }
                     }
+                    .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 
                 Button(action: {symbolPicking = true}, label: {
                     Image(systemName: symbol)
@@ -65,15 +64,14 @@ struct CreateToDo: View {
                     .font(.title2)
                     .padding(10)
                     .frame(height: 150, alignment: .top)
-                    .background(
-                        Color.gray.opacity(0.3)
-                            .cornerRadius(10))
+                    .background(Color.gray.opacity(0.3))
                     .focused($descripting)
                     .onTapGesture {
                         withAnimation{
                             descripting = true
                         }
                     }
+                    .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                     .padding()
             
             

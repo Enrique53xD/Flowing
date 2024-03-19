@@ -44,6 +44,7 @@ struct ProgressiveObj: View {
                         .background(
                             RoundedRectangle(cornerRadius: 45)
                                 .frame(width: 60, height: 60)
+                                
                         )
                         .foregroundStyle(
                             (done ? Color(hex: item.color) : Color(hex: item.color)?.opacity(0.5)) ?? Color.clear
@@ -52,7 +53,8 @@ struct ProgressiveObj: View {
                     
                         .onAppear{if item.progress >= item.goal {done=true} else {done=false} }
                 })
-                .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in editing.toggle()}))
+                .onAppear{ if checkDate(item.date, dateStr(Date.now)) && item.daily { item.progress = 0; done = false; item.date = dateStr(Date.now) }}
+                .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in withAnimation{editing.toggle()}}))
                 .sheet( isPresented: $editing, content: {
                     
                     EditProgressive(item: item, context: context)

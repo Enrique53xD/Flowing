@@ -49,15 +49,14 @@ struct EditTask: View {
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                     .padding(5)
-                    .background(
-                        Color.gray.opacity(0.3)
-                            .cornerRadius(10))
+                    .background(Color.gray.opacity(0.3))
                     .focused($naming)
                     .onTapGesture {
                         withAnimation{
                             naming = true
                         }
                     }
+                    .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 
                 Button(action: {symbolPicking = true}, label: {
                     Image(systemName: symbol)
@@ -82,7 +81,7 @@ struct EditTask: View {
                         .frame(width: 90)
                         .foregroundStyle(color)
                 })
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 .buttonStyle(.bordered)
                 .sheet(isPresented: $dateSPicking, onDismiss: {start = convertToMinutes(from: transformDate(date: dateS))}, content: {
                     DatePicker(selection: $dateS, displayedComponents: .hourAndMinute, label: {Text("")})
@@ -108,7 +107,7 @@ struct EditTask: View {
                         .frame(width: 90)
                         .foregroundStyle(color)
                 })
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 .buttonStyle(.bordered)
                 .sheet(isPresented: $dateEPicking, onDismiss: {end = convertToMinutes(from: transformDate(date: dateE))}, content: {
                     DatePicker(selection: $dateE, displayedComponents: .hourAndMinute, label: {Text("")})
@@ -124,23 +123,21 @@ struct EditTask: View {
             
             DaySelector(days: $days, color: $color)
                 .padding(.horizontal)
-            
-           
                 
             TextField("Description...", text: $description, axis: .vertical)
                     .font(.title2)
                     .padding(10)
                     .frame(height: 150, alignment: .top)
-                    .background(
-                        Color.gray.opacity(0.3)
-                            .cornerRadius(10))
+                    .background(Color.gray.opacity(0.3))
                     .focused($descripting)
                     .onTapGesture {
                         withAnimation{
                             descripting = true
                         }
                     }
+                    .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                     .padding()
+            
                
            
             if !naming && !descripting {
@@ -151,8 +148,8 @@ struct EditTask: View {
                         .fontWeight(.heavy)
                         .frame(width: 330, height: 60)
                         .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                        .background(RoundedRectangle(cornerRadius: 10).foregroundStyle(Color.red))
-                    
+                        .background(RoundedRectangle(cornerRadius: 12.5).foregroundStyle(Color.red))
+                        .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                     
                 })
             }

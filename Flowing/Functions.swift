@@ -162,7 +162,7 @@ func newProgressive(_ context: ModelContext, name: String, color: String, desc: 
 
 func newSettings(_ context: ModelContext) {
     
-    let item = settingsItem(customMainColor: false, mainColor: Color.red.toHex()!, showAll: false)
+    let item = settingsItem(customMainColor: false, mainColor: Color.red.toHex()!)
     context.insert(item)
 }
 
@@ -180,6 +180,29 @@ func isToday(_ currentDayOfWeek: String) -> Bool {
     }
     
     return false
+}
+
+func isIncluded(_ string1: String, _ string2: String) -> Bool {
+    
+    for (char1, char2) in zip(string1, string2) {
+        if char1 == "1" && char2 == "1" {
+            return true
+        }
+    }
+    
+    // No matching "1"s found at the same position
+    return false
+}
+
+func dateStr(_ date: Date) -> String {
+    let formatter1 = DateFormatter()
+    formatter1.dateStyle = .short
+    
+    return formatter1.string(from: date)
+}
+
+func checkDate(_ first: String, _ second: String) -> Bool {
+    return first != second
 }
 
 

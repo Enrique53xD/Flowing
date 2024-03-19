@@ -33,21 +33,20 @@ struct EditToDo: View {
                     .labelsHidden()
                     .padding(.horizontal)
                     .frame(width: 60)
-                    
+                
                 TextField("Name", text: $name)
                     .font(.title)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                     .padding(5)
-                    .background(
-                        Color.gray.opacity(0.3)
-                            .cornerRadius(10))
+                    .background(Color.gray.opacity(0.3))
                     .focused($naming)
                     .onTapGesture {
                         withAnimation{
                             naming = true
                         }
                     }
+                    .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 
                 Button(action: {symbolPicking = true}, label: {
                     Image(systemName: symbol)
@@ -63,34 +62,60 @@ struct EditToDo: View {
             
             
             TextField("Description...", text: $description, axis: .vertical)
-                    .font(.title2)
-                    .padding(10)
-                    .frame(height: 150, alignment: .top)
-                    .background(
-                        Color.gray.opacity(0.3)
-                            .cornerRadius(10))
-                    .focused($descripting)
-                    .onTapGesture {
-                        withAnimation{
-                            descripting = true
-                        }
+                .font(.title2)
+                .padding(10)
+                .frame(height: 150, alignment: .top)
+                .background(Color.gray.opacity(0.3))
+                .focused($descripting)
+                .onTapGesture {
+                    withAnimation{
+                        descripting = true
                     }
-                    .padding()
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
+                .padding()
             
-            if !naming && !descripting {
-                
-                Button(action: {withAnimation{context.delete(item)} }, label: {
-                    
-                    Text("DELETE")
-                        .font(.title2)
-                        .fontWeight(.heavy)
-                        .frame(width: 325, height: 60)
-                        .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                        .background(RoundedRectangle(cornerRadius: 10).foregroundStyle(Color.red))
+            HStack{
+                if !naming && !descripting {
                     
                     
-                })
+                    Button(action: {withAnimation{context.delete(item)} }, label: {
+                        
+                        Text("DELETE")
+                            .font(.title2)
+                            .fontWeight(.heavy)
+                            .frame(width: 250, height: 60)
+                            .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                            .background(RoundedRectangle(cornerRadius: 12.5).foregroundStyle(Color.red))
+                            .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
+                        
+                    })
+
+                    Spacer()
+                    
+                    Button(action: {withAnimation{item.daily.toggle(); item.date = dateStr(Date.now)} }, label: {
+                        
+                        Image(systemName: "arrow.circlepath")
+                            .font(.title)
+                            .fontWeight(.heavy)
+                            .foregroundStyle(
+                                (colorScheme == .dark ? (item.daily ? Color.black.opacity(0.5) : Color(hex: item.color)) : (item.daily ? Color.white.opacity(0.5) : Color(hex: item.color))) ?? Color.clear
+                            )
+                            .background(
+                                RoundedRectangle(cornerRadius: 12.5)
+                                    .frame(width: 60, height: 60)
+                            )
+                            .foregroundStyle(
+                                (item.daily ? Color(hex: item.color) : Color(hex: item.color)?.opacity(0.5)) ?? Color.clear
+                            )
+                            .frame(width: 60, height: 60)
+                            .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
+                        
+                    })
+                }
             }
+            
+            .padding(.horizontal)
         }
         .scrollDisabled(true)
         .onAppear{

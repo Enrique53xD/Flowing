@@ -37,7 +37,8 @@ struct ToDoObj: View {
                     )
                     .frame(width: 60, height: 60)
             })
-            .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in editing.toggle()}))
+            .onAppear{ if checkDate(item.date, dateStr(Date.now)) && item.daily { item.done = false; item.date = dateStr(Date.now) }}
+            .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in withAnimation{editing.toggle()}}))
             .sheet(isPresented: $editing, content: {
                 
                 EditToDo(item: item, context: context)

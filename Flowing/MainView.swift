@@ -29,6 +29,7 @@ struct MainView: View {
     @State var creatingToDo = false
     @State var creatingProgressive = false
     @State var creatingSome = false
+    @State var days: String = "0000000"
 
     @State private var sheetContentHeight = CGFloat(0)
     
@@ -36,6 +37,27 @@ struct MainView: View {
         ZStack{
             MenuCircle(deg: $deg, color: customColor ? $mainColor : $defaultColor)
                 .offset(y:-500)
+                .onChange(of: deg) {
+                    if deg <= -60 { deg = 30}
+                    else if deg >= 60 { deg = -30}
+                    
+                    withAnimation{
+                        
+                        
+                        
+                        if (deg == 0){
+                            menu = 0
+                        }
+                        else if (deg == 30){
+                            menu = 1
+                        }
+                        
+                        else if (deg == -30){
+                            menu = 2
+                        }
+                    }
+
+                }
                 .onAppear {
                     if settingsItems.isEmpty {
                         newSettings(context)
@@ -58,21 +80,40 @@ struct MainView: View {
                     
                     ForEach(taskItems){ item in
                         
-                        if isToday(item.days) || settings!.showAll{
-                            
-                            TaskObj(item: item, context: context)
-                                .clipped(antialiased: true)
-                                .scrollTransition { content, phase in
-                                    content
-                                        .opacity(phase.isIdentity ? 1 : 0)
-                                        .scaleEffect(phase.isIdentity ? 1 : 0.75)
-                                        .blur(radius: phase.isIdentity ? 0 : 10)
-                                    
-                                }
+                        if !allTasks {
+                        
+                            if isToday(item.days) || item.days == "0000000"  {
+                                
+                                
+                                TaskObj(item: item, context: context)
+                                    .clipped(antialiased: true)
+                                    .scrollTransition { content, phase in
+                                        content
+                                            .opacity(phase.isIdentity ? 1 : 0)
+                                            .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                            .blur(radius: phase.isIdentity ? 0 : 10)
+                                        
+                                    }
+                            }
+                        }
+                        else {
+                            if isIncluded(item.days, days) || days == "0000000" {
+                                
+                                
+                                TaskObj(item: item, context: context)
+                                    .clipped(antialiased: true)
+                                    .scrollTransition { content, phase in
+                                        content
+                                            .opacity(phase.isIdentity ? 1 : 0)
+                                            .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                            .blur(radius: phase.isIdentity ? 0 : 10)
+                                        
+                                    }
+                            }
                         }
                     }
                     
-                    Button(action: {  creatingTask.toggle()  }, label: {
+                    Button(action: {  withAnimation{creatingTask.toggle()}  }, label: {
                         
                         Text("+")
                             .font(.largeTitle)
@@ -288,24 +329,32 @@ struct MainView: View {
                         }
                     }
                     
-                    Toggle(isOn: $allTasks) {
-                        Text("Show all tasks")
-                            .font(.title2)
-                            .fontWeight(.bold)
+                    Group{
+                        Toggle(isOn: $allTasks.animation()) {
+                            Text("Show sprecific tasks")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                            
+                        }
+                        .frame(height: 60)
+                        .scrollTransition { content, phase in
+                            content
+                                .opacity(phase.isIdentity ? 1 : 0)
+                                .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                .blur(radius: phase.isIdentity ? 0 : 10)
+                        }
                         
+                        if allTasks{
+                            DaySelector(days: $days, color: customColor ? $mainColor : $defaultColor, size: 39.5)
+                                .scrollTransition { content, phase in
+                                    content
+                                        .opacity(phase.isIdentity ? 1 : 0)
+                                        .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                        .blur(radius: phase.isIdentity ? 0 : 10)
+                                }
+
+                        }
                     }
-                    .onChange(of: allTasks){
-                        settingsItems.first?.showAll = allTasks
-                        try? context.save()
-                    }
-                    .frame(height: 60)
-                    .scrollTransition { content, phase in
-                        content
-                            .opacity(phase.isIdentity ? 1 : 0)
-                            .scaleEffect(phase.isIdentity ? 1 : 0.75)
-                            .blur(radius: phase.isIdentity ? 0 : 10)
-                    }
-                    
                 }
                 .padding(.horizontal)
                 .scrollClipDisabled()
@@ -346,29 +395,13 @@ struct MainView: View {
                     
                 }
                 
-                
-                withAnimation{
-                    if (deg == 0){
-                        menu = 0
-                    }
-                    else if (deg == 30){
-                        menu = 1
-                    }
-                    
-                    else if (deg == -30){
-                        menu = 2
-                    }
-                }
+               
                 
             })
                  
         )
         
     }
-        
-    
-    
-    
 }
 
 

@@ -114,6 +114,7 @@
 				3E4059572B51B63E00BA643E /* MainView.swift */,
 				3ED8CB8C2B7B619300A50A22 /* MenuCircle.swift */,
 				3ECAD69B2BA24B3E00DC6A59 /* Others.swift */,
+				3E38C30F2B608187009E160D /* DaySelector.swift */,
 				3E0359F42B630C83003ABF17 /* Progressive */,
 				3E0359F12B6228A2003ABF17 /* ToDo */,
 				3ED60F472B62260E00C7BC5A /* Task */,
@@ -138,7 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */,
-				3E38C30F2B608187009E160D /* DaySelector.swift */,
 				3E4059522B50EB3D00BA643E /* EditTask.swift */,
 				3E1CDA112B9EC87B00039E9A /* CreateTask.swift */,
 			);

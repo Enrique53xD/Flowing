@@ -4,6 +4,7 @@ struct DaySelector: View {
     
     @Binding var days: String
     @Binding var color: Color
+    @State var size: CGFloat = 36
     private let letters = "MTWTFSS"
     
     
@@ -13,9 +14,10 @@ struct DaySelector: View {
         }
         .padding()
         .background(
-            RoundedRectangle(cornerRadius: 10)
+            RoundedRectangle(cornerRadius: 12.5)
                 .foregroundStyle(Color.gray.opacity(0.3))
         )
+        .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
     }
     
     private var dayButtons: some View {
@@ -35,12 +37,13 @@ struct DaySelector: View {
                 .font(.title2)
                 .foregroundStyle(color)
         }
-        .frame(width: 36, height: 36)
+        .frame(width: size, height: size)
         .background(
-            Circle()
-                .frame(width: 42, height: 42)
+            RoundedRectangle( cornerRadius: 12.5)
+                .frame(width: size, height: size)
                 .foregroundStyle(String(day.element) == "0" ? Color.gray.opacity(0.0001) : Color.gray.opacity(0.5))
         )
+        .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
     }
     
     private func toggleBinaryAtIndex(_ index: Int) {

@@ -48,15 +48,14 @@ struct CreateProgressive: View {
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                     .padding(5)
-                    .background(
-                        Color.gray.opacity(0.3)
-                            .cornerRadius(10))
+                    .background(Color.gray.opacity(0.3))
                     .focused($naming)
                     .onTapGesture {
                         withAnimation{
                             naming = true
                         }
                     }
+                    .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 
                 Button(action: {symbolPicking = true}, label: {
                     Image(systemName: symbol)
@@ -77,15 +76,14 @@ struct CreateProgressive: View {
                     .padding(10)
                     .foregroundStyle(color)
                     .multilineTextAlignment(.center)
-                    .background(
-                        Color.gray.opacity(0.3)
-                            .cornerRadius(10))
+                    .background(Color.gray.opacity(0.3))
                     .focused($preffixing)
                     .onTapGesture {
                         withAnimation{
                             preffixing = true
                         }
                     }
+                    .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 
                 
                 Text("-")
@@ -98,15 +96,14 @@ struct CreateProgressive: View {
                     .padding(10)
                     .foregroundStyle(color)
                     .multilineTextAlignment(.center)
-                    .background(
-                        Color.gray.opacity(0.3)
-                            .cornerRadius(10))
+                    .background(Color.gray.opacity(0.3))
                     .focused($suffixing)
                     .onTapGesture {
                         withAnimation{
                             suffixing = true
                         }
                     }
+                    .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 
             }.padding(.horizontal)
             
@@ -122,30 +119,28 @@ struct CreateProgressive: View {
             .padding(10)
             .foregroundStyle(color)
             .multilineTextAlignment(.center)
-            .background(
-                Color.gray.opacity(0.3)
-                    .cornerRadius(10))
+            .background(Color.gray.opacity(0.3))
             .focused($goaling)
             .onTapGesture {
                 withAnimation{
                     goaling = true
                 }
             }
+            .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
             .padding([.horizontal, .top])
             
             TextField("Description...", text: $description, axis: .vertical)
                     .font(.title2)
                     .padding(10)
                     .frame(height: 150, alignment: .top)
-                    .background(
-                        Color.gray.opacity(0.3)
-                            .cornerRadius(10))
+                    .background(Color.gray.opacity(0.3))
                     .focused($descripting)
                     .onTapGesture {
                         withAnimation{
                             descripting = true
                         }
                     }
+                    .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                     .padding()
 
         }

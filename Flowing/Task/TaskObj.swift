@@ -30,6 +30,7 @@ struct TaskObj: View {
                 RoundedRectangle(cornerRadius: 45)
                     .padding(.horizontal)
                     .opacity(0.2)
+                    
             }
             
             
@@ -58,7 +59,7 @@ struct TaskObj: View {
                             )
                             .frame(width: 60, height: 60)
                     })
-                    .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in editing.toggle()}))
+                    .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in withAnimation{editing.toggle()}}))
                     .sensoryFeedback(trigger: editing) { _,_  in
                         if editing == true {
                             return .impact
@@ -81,7 +82,22 @@ struct TaskObj: View {
                                         }
                                     }
                                     .presentationDetents([.height(sheetContentHeight)])
-                        
+                                    .onDisappear{
+                                        withAnimation{
+                                            active = checkCurrentTime(start: item.start, end: item.end)
+                                            let dateFormatter = DateFormatter()
+                                            dateFormatter.dateFormat = "HH:mm"
+                                            let currentTime = dateFormatter.string(from: Date())
+                                            let actual = convertToMinutes(from: currentTime)
+                                            
+                                            
+                                            if item.end <= actual {
+                                                item.done = true
+                                            } else {
+                                                item.done = false
+                                            }
+                                        }
+                                    }
                         
                         
                         
