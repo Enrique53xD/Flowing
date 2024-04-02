@@ -43,7 +43,7 @@ struct MenuCircle: View {
                     .rotationEffect(.degrees(60))
                     .onTapGesture {
                         if deg != -60{
-                            withAnimation{
+                            withAnimation(.bouncy){
                                 deg -= 30
                             }
                         }
@@ -62,7 +62,7 @@ struct MenuCircle: View {
                     .rotationEffect(.degrees(30))
                     .onTapGesture {
                         if deg != -30{
-                            withAnimation{
+                            withAnimation(.bouncy){
                                 deg -= 30
                             }
                         }
@@ -78,7 +78,7 @@ struct MenuCircle: View {
                     .offset(y:150)
                     .rotationEffect(.degrees(0))
                     .onTapGesture {
-                        withAnimation{
+                        withAnimation(.bouncy){
                             deg = 0
                         }
                     }
@@ -95,7 +95,7 @@ struct MenuCircle: View {
                     .rotationEffect(.degrees(-30))
                     .onTapGesture{
                         if deg != 30{
-                            withAnimation{
+                            withAnimation(.bouncy){
                                 deg += 30
                             }
                         }
@@ -110,7 +110,7 @@ struct MenuCircle: View {
                     .rotationEffect(.degrees(-60))
                     .onTapGesture {
                         if deg != 60{
-                            withAnimation{
+                            withAnimation(.bouncy){
                                 deg += 30
                             }
                         }

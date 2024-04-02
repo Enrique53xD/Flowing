@@ -15,7 +15,7 @@ struct CreateToDo: View {
     var context: ModelContext
     
     @State var color: Color = Color.green
-    @State var name: String = "Name"
+    @State var name: String = ""
     @State var description: String = ""
     @State var symbol: String = "checkmark.circle"
 
@@ -32,7 +32,7 @@ struct CreateToDo: View {
                     .labelsHidden()
                     .padding(.horizontal)
                     .frame(width: 60)
-                    
+                
                 TextField("Name", text: $name)
                     .font(.title)
                     .fontWeight(.bold)
@@ -57,22 +57,23 @@ struct CreateToDo: View {
                 })
                 .sheet(isPresented: $symbolPicking, content: { SymbolPicker(symbol: $symbol) .presentationDetents([.fraction(0.7), .large])})
             }
-            .padding(.vertical)
+            .padding(.vertical, 7)
             
             
             TextField("Description...", text: $description, axis: .vertical)
-                    .font(.title2)
-                    .padding(10)
-                    .frame(height: 150, alignment: .top)
-                    .background(Color.gray.opacity(0.3))
-                    .focused($descripting)
-                    .onTapGesture {
-                        withAnimation{
-                            descripting = true
-                        }
+                .font(.title2)
+                .padding(10)
+                .frame(height: 150, alignment: .top)
+                .background(Color.gray.opacity(0.3))
+                .focused($descripting)
+                .onTapGesture {
+                    withAnimation{
+                        descripting = true
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                    .padding()
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
+                .padding(.horizontal)
+                .padding(.vertical, 7)
             
             
         }
@@ -81,10 +82,10 @@ struct CreateToDo: View {
         
         .onDisappear{
             
-            if name != "Name" || description != "" || color != .green || symbol != "checkmark.circle"{
+            if name != "" || description != "" || color != .green || symbol != "checkmark.circle"{
                 
-                withAnimation{
-                    newToDo(context, name: name, color: color.toHex()!, desc: description, symbol: symbol)
+                withAnimation(.bouncy){
+                    newToDo(context, name: name.isEmpty ? "Name" : name, color: color.toHex()!, desc: description, symbol: symbol)
                 }
                 
             }

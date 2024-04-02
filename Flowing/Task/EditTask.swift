@@ -68,7 +68,7 @@ struct EditTask: View {
                 })
                 .sheet(isPresented: $symbolPicking, content: { SymbolPicker(symbol: $symbol) .presentationDetents([.fraction(0.7), .large])})
             }
-            .padding(.top)
+            .padding(.vertical, 7)
             
             
             
@@ -80,15 +80,18 @@ struct EditTask: View {
                         .font(.title2)
                         .frame(width: 90)
                         .foregroundStyle(color)
+                        
                 })
+                .frame(width: 115, height: 45)
+                .background(Color.gray.opacity(0.3))
                 .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                .buttonStyle(.bordered)
+                .buttonStyle(.borderless)
                 .sheet(isPresented: $dateSPicking, onDismiss: {start = convertToMinutes(from: transformDate(date: dateS))}, content: {
                     DatePicker(selection: $dateS, displayedComponents: .hourAndMinute, label: {Text("")})
                         .labelsHidden()
                         .datePickerStyle(.wheel)
                         .presentationDetents([.fraction(0.3)])
-                        .onDisappear{withAnimation {if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)}}}
+                        
                         
                     
                 })
@@ -97,7 +100,7 @@ struct EditTask: View {
                 Text("-")
                     .font(.title)
                     .fontWeight(.semibold)
-                    .padding(10)
+                    .padding(.horizontal, 10)
                 
                 
                 Button(action: {dateEPicking=true}, label: {
@@ -107,22 +110,26 @@ struct EditTask: View {
                         .frame(width: 90)
                         .foregroundStyle(color)
                 })
+                .frame(width: 115, height: 45)
+                .background(Color.gray.opacity(0.3))
                 .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                .buttonStyle(.bordered)
+                .buttonStyle(.borderless)
                 .sheet(isPresented: $dateEPicking, onDismiss: {end = convertToMinutes(from: transformDate(date: dateE))}, content: {
                     DatePicker(selection: $dateE, displayedComponents: .hourAndMinute, label: {Text("")})
                         .labelsHidden()
                         .datePickerStyle(.wheel)
                         .presentationDetents([.fraction(0.3)])
-                        .onDisappear{withAnimation {if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)}}}
+                        
                     
                 })
                 
+                
             }
-            .padding(.vertical)
+            .padding(.vertical, 7)
             
             DaySelector(days: $days, color: $color)
                 .padding(.horizontal)
+                .padding(.vertical, 7)
                 
             TextField("Description...", text: $description, axis: .vertical)
                     .font(.title2)
@@ -136,12 +143,13 @@ struct EditTask: View {
                         }
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.vertical, 7)
             
                
            
             if !naming && !descripting {
-                Button(action: {withAnimation{context.delete(item)} }, label: {
+                Button(action: {withAnimation(.bouncy){context.delete(item)} }, label: {
                     
                     Text("DELETE")
                         .font(.title2)
@@ -152,6 +160,8 @@ struct EditTask: View {
                         .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                     
                 })
+                .padding(.horizontal)
+                .padding(.vertical, 7)
             }
     
         }
@@ -174,8 +184,8 @@ struct EditTask: View {
         }
         
         .onDisappear{
-            
-            withAnimation{
+            withAnimation(.bouncy){
+                if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)}
                 item.color = color.toHex()!
                 item.name = name
                 item.desc = description

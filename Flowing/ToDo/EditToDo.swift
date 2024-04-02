@@ -58,7 +58,7 @@ struct EditToDo: View {
                 })
                 .sheet(isPresented: $symbolPicking, content: { SymbolPicker(symbol: $symbol) .presentationDetents([.fraction(0.7), .large])})
             }
-            .padding(.vertical)
+            .padding(.vertical, 7)
             
             
             TextField("Description...", text: $description, axis: .vertical)
@@ -73,13 +73,14 @@ struct EditToDo: View {
                     }
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                .padding()
+                .padding(.horizontal)
+                .padding(.vertical, 7)
             
             HStack{
                 if !naming && !descripting {
                     
                     
-                    Button(action: {withAnimation{context.delete(item)} }, label: {
+                    Button(action: {withAnimation(.bouncy){context.delete(item)} }, label: {
                         
                         Text("DELETE")
                             .font(.title2)
@@ -116,6 +117,7 @@ struct EditToDo: View {
             }
             
             .padding(.horizontal)
+            .padding(.vertical, 7)
         }
         .scrollDisabled(true)
         .onAppear{

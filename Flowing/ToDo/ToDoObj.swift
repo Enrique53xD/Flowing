@@ -39,9 +39,18 @@ struct ToDoObj: View {
             })
             .onAppear{ if checkDate(item.date, dateStr(Date.now)) && item.daily { item.done = false; item.date = dateStr(Date.now) }}
             .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in withAnimation{editing.toggle()}}))
-            .sheet(isPresented: $editing, content: {
+            .sensoryFeedback(trigger: editing) { _,_  in
+                if editing == true {
+                    return .impact
+                } else {
+                    return .none
+                }
+            }
+            
+            .sheet( isPresented: $editing, content: {
                 
                 EditToDo(item: item, context: context)
+                    .presentationDragIndicator(.visible)
                     .padding()
                     .background {
                                 //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.

@@ -33,7 +33,7 @@ struct ProgressiveObj: View {
             
         } else {
             HStack{
-                Button(action: { withAnimation{ if !editing {changing.toggle()}} }, label: {
+                Button(action: { withAnimation{ if !editing {changing.toggle()} } }, label: {
                     Image(systemName: item.symbol)
                         
                         .font(.title)
@@ -53,11 +53,19 @@ struct ProgressiveObj: View {
                     
                         .onAppear{if item.progress >= item.goal {done=true} else {done=false} }
                 })
-                .onAppear{ if checkDate(item.date, dateStr(Date.now)) && item.daily { item.progress = 0; done = false; item.date = dateStr(Date.now) }}
+                .onAppear{ if checkDate(item.date, dateStr(Date.now)) && item.daily { item.progress = 0; done = false; item.date = dateStr(Date.now)}}
                 .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in withAnimation{editing.toggle()}}))
+                .sensoryFeedback(trigger: editing) { _,_  in
+                    if editing == true {
+                        return .impact
+                    } else {
+                        return .none
+                    }
+                }
                 .sheet( isPresented: $editing, content: {
                     
                     EditProgressive(item: item, context: context)
+                        .presentationDragIndicator(.visible)
                         .padding()
                         .background {
                                     //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.

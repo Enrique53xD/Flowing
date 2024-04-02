@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SwiftData
-
+import WidgetKit
 
 struct TaskObj: View {
     @Environment(\.colorScheme) var colorScheme
@@ -32,7 +32,6 @@ struct TaskObj: View {
                     .opacity(0.2)
                     
             }
-            
             
             HStack{
                 
@@ -59,6 +58,7 @@ struct TaskObj: View {
                             )
                             .frame(width: 60, height: 60)
                     })
+                    .onChange(of: active){WidgetCenter.shared.reloadAllTimelines() }
                     .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in withAnimation{editing.toggle()}}))
                     .sensoryFeedback(trigger: editing) { _,_  in
                         if editing == true {
@@ -70,6 +70,7 @@ struct TaskObj: View {
                     .sheet(isPresented: $editing, content: {
                         
                         EditTask(item: item, context: context)
+                            .presentationDragIndicator(.visible)
                             .padding()
                             .background {
                                         //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
@@ -83,8 +84,10 @@ struct TaskObj: View {
                                     }
                                     .presentationDetents([.height(sheetContentHeight)])
                                     .onDisappear{
-                                        withAnimation{
+                                        WidgetCenter.shared.reloadAllTimelines()
+                                        withAnimation(.bouncy){
                                             active = checkCurrentTime(start: item.start, end: item.end)
+                                  
                                             let dateFormatter = DateFormatter()
                                             dateFormatter.dateFormat = "HH:mm"
                                             let currentTime = dateFormatter.string(from: Date())
@@ -134,7 +137,7 @@ struct TaskObj: View {
             
             if item.start>item.end {(item.start, item.end)=(item.end, item.start)}
             
-            withAnimation{
+            withAnimation(.bouncy){
                 active = checkCurrentTime(start: item.start, end: item.end)
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "HH:mm"
@@ -147,9 +150,10 @@ struct TaskObj: View {
                 }
             }
             
-            timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
-                withAnimation{
+            timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { _ in
+                withAnimation(.bouncy){
                     active = checkCurrentTime(start: item.start, end: item.end)
+                    
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "HH:mm"
                     let currentTime = dateFormatter.string(from: Date())

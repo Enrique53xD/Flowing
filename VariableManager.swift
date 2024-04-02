@@ -101,14 +101,18 @@ class progressiveItem: Identifiable {
 
 
 @Model
-class settingsItem: Identifiable {
+class settingsItm: Identifiable {
     var id: String
     var customMainColor: Bool
     var mainColor: String
+    var widgetRange: Bool
+    var widgetName: Bool
     
-    init(customMainColor: Bool, mainColor: String) {
+    init(customMainColor: Bool, mainColor: String, widgetRange: Bool, widgetName: Bool) {
         self.id = UUID().uuidString
         self.customMainColor = customMainColor
         self.mainColor = mainColor
+        self.widgetRange = widgetRange
+        self.widgetName = widgetName
     }
 }

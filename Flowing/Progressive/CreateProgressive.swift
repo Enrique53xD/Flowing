@@ -16,7 +16,7 @@ struct CreateProgressive: View {
     var context: ModelContext
     
     @State var color: Color = .blue
-    @State var name: String = "Name"
+    @State var name: String = ""
     @State var description: String = ""
     @State var symbol: String = "circle.dotted"
     @State var progress: CGFloat = 0
@@ -67,7 +67,7 @@ struct CreateProgressive: View {
                 })
                 .sheet(isPresented: $symbolPicking, content: { SymbolPicker(symbol: $symbol) .presentationDetents([.fraction(0.7), .large])})
             }
-            .padding(.vertical)
+            .padding(.vertical, 7)
             
             HStack{
                 TextField("Preffix", text: $preffix)
@@ -87,8 +87,9 @@ struct CreateProgressive: View {
                 
                 
                 Text("-")
-                    .font(.title2)
-                    .fontWeight(.heavy)
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .padding(.horizontal, 10)
                     
                 TextField("Suffix", text: $suffix)
                     .font(.title2)
@@ -105,7 +106,9 @@ struct CreateProgressive: View {
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 
-            }.padding(.horizontal)
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 7)
             
             TextField("Goal", value: Binding(
                 get: { Int(goal) },
@@ -127,7 +130,8 @@ struct CreateProgressive: View {
                 }
             }
             .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-            .padding([.horizontal, .top])
+            .padding(.horizontal)
+            .padding(.vertical, 7)
             
             TextField("Description...", text: $description, axis: .vertical)
                     .font(.title2)
@@ -141,16 +145,17 @@ struct CreateProgressive: View {
                         }
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.vertical, 7)
 
         }
         .scrollDisabled(true)
         
         .onDisappear{
-            if name != "Name" || description != "" || color != .blue || symbol != "circle.dotted" || goal != 10 || preffix != "" || suffix != ""{
+            if name != "" || description != "" || color != .blue || symbol != "circle.dotted" || goal != 10 || preffix != "" || suffix != ""{
                 
-                withAnimation{
-                    newProgressive(context, name: name, color: color.toHex()!, desc: description, symbol: symbol, goal: goal, preffix: preffix, suffix: suffix)
+                withAnimation(.bouncy){
+                    newProgressive(context, name: name.isEmpty ? "Name" : name, color: color.toHex()!, desc: description, symbol: symbol, goal: goal, preffix: preffix, suffix: suffix)
                 }
             }
         }

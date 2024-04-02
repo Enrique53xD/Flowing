@@ -9,6 +9,7 @@
 import SwiftUI
 import SymbolPicker
 import SwiftData
+import WidgetKit
 
 struct CreateTask: View {
     @Environment(\.colorScheme) var colorScheme
@@ -16,7 +17,7 @@ struct CreateTask: View {
     var context: ModelContext
 
     @State var color: Color = .red
-    @State var name: String = "Name"
+    @State var name: String = ""
     @State var description: String = ""
     @State var symbol: String = "house"
     @State var start: Int = 0
@@ -68,7 +69,7 @@ struct CreateTask: View {
                 })
                 .sheet(isPresented: $symbolPicking, content: { SymbolPicker(symbol: $symbol) .presentationDetents([.fraction(0.7), .large])})
             }
-            .padding(.top)
+            .padding(.vertical, 7)
             
             
             
@@ -80,15 +81,18 @@ struct CreateTask: View {
                         .font(.title2)
                         .frame(width: 90)
                         .foregroundStyle(color)
+                        
                 })
+                .frame(width: 115, height: 45)
+                .background(Color.gray.opacity(0.3))
                 .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                .buttonStyle(.bordered)
+                .buttonStyle(.borderless)
                 .sheet(isPresented: $dateSPicking, onDismiss: {start = convertToMinutes(from: transformDate(date: dateS))}, content: {
                     DatePicker(selection: $dateS, displayedComponents: .hourAndMinute, label: {Text("")})
                         .labelsHidden()
                         .datePickerStyle(.wheel)
                         .presentationDetents([.fraction(0.3)])
-                        .onDisappear{withAnimation {if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)}}}
+                        
                         
                     
                 })
@@ -97,7 +101,7 @@ struct CreateTask: View {
                 Text("-")
                     .font(.title)
                     .fontWeight(.semibold)
-                    .padding(10)
+                    .padding(.horizontal, 10)
                 
                 
                 Button(action: {dateEPicking=true}, label: {
@@ -107,24 +111,26 @@ struct CreateTask: View {
                         .frame(width: 90)
                         .foregroundStyle(color)
                 })
+                .frame(width: 115, height: 45)
+                .background(Color.gray.opacity(0.3))
                 .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                .buttonStyle(.bordered)
+                .buttonStyle(.borderless)
                 .sheet(isPresented: $dateEPicking, onDismiss: {end = convertToMinutes(from: transformDate(date: dateE))}, content: {
                     DatePicker(selection: $dateE, displayedComponents: .hourAndMinute, label: {Text("")})
                         .labelsHidden()
                         .datePickerStyle(.wheel)
                         .presentationDetents([.fraction(0.3)])
-                        .onDisappear{withAnimation {if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)}}}
+                        
                     
                 })
                 
+                
             }
-            .padding(.vertical)
+            .padding(.vertical, 7)
             
             DaySelector(days: $days, color: $color)
                 .padding(.horizontal)
-            
-           
+                .padding(.vertical, 7)
                 
             TextField("Description...", text: $description, axis: .vertical)
                     .font(.title2)
@@ -138,7 +144,8 @@ struct CreateTask: View {
                         }
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.vertical, 7)
                
            
             
@@ -152,11 +159,15 @@ struct CreateTask: View {
         
         .onDisappear{
             
-            if name != "Name" || description != "" || color != .red || symbol != "house" || start != 0 || end != 0 || days != "0000000" {
+            if name != "" || description != "" || color != .red || symbol != "house" || start != 0 || end != 0 || days != "0000000" {
                 
-                withAnimation{
-                    newTask(context, name: name, color: color.toHex()!, desc: description, symbol: symbol, start: start, end: end, days: days)
+
+                withAnimation(.bouncy){
+                    if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)}
+                    newTask(context, name: name == "" ? "Name" : name, color: color.toHex()!, desc: description, symbol: symbol, start: start, end: end, days: days)
                 }
+                
+                WidgetCenter.shared.reloadAllTimelines()
             }
       
         }
