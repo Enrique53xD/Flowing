@@ -2,7 +2,7 @@
 //  FlowingWidgetLiveActivity.swift
 //  FlowingWidget
 //
-//  Created by Saúl González on 26/03/24.
+//  Created by Saúl González on 3/04/24.
 //
 
 import ActivityKit

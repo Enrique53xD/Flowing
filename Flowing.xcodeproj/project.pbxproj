@@ -22,18 +22,17 @@
 		3E580D222B4E4CA6004534BF /* FlowingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E580D212B4E4CA6004534BF /* FlowingApp.swift */; };
 		3E580D282B4E4CA9004534BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E580D272B4E4CA9004534BF /* Assets.xcassets */; };
 		3E580D2B2B4E4CA9004534BF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E580D2A2B4E4CA9004534BF /* Preview Assets.xcassets */; };
-		3E6992012BB33AAC001A4241 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E6992002BB33AAC001A4241 /* WidgetKit.framework */; };
-		3E6992032BB33AAC001A4241 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E6992022BB33AAC001A4241 /* SwiftUI.framework */; };
-		3E6992062BB33AAC001A4241 /* FlowingWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6992052BB33AAC001A4241 /* FlowingWidgetBundle.swift */; };
-		3E6992082BB33AAC001A4241 /* FlowingWidgetLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6992072BB33AAC001A4241 /* FlowingWidgetLiveActivity.swift */; };
-		3E69920A2BB33AAC001A4241 /* FlowingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6992092BB33AAC001A4241 /* FlowingWidget.swift */; };
-		3E69920C2BB33AAC001A4241 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E69920B2BB33AAC001A4241 /* AppIntent.swift */; };
-		3E69920E2BB33AB0001A4241 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E69920D2BB33AB0001A4241 /* Assets.xcassets */; };
-		3E6992122BB33AB0001A4241 /* FlowingWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3E6991FE2BB33AAC001A4241 /* FlowingWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		3E6992182BB33E89001A4241 /* VariableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38C30D2B5AE487009E160D /* VariableManager.swift */; };
-		3E6992192BB342F2001A4241 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD72B4E4EB900C9FA4B /* Functions.swift */; };
 		3E71936D2B68597C00DE4C83 /* EditProgressive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E71936C2B68597C00DE4C83 /* EditProgressive.swift */; };
 		3E9303D92B65A7370087660E /* RoundedSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9303D82B65A7370087660E /* RoundedSlider.swift */; };
+		3EB7A5382BBDCD0000093B1B /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB7A5372BBDCD0000093B1B /* WidgetKit.framework */; };
+		3EB7A5392BBDCD0000093B1B /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E6992022BB33AAC001A4241 /* SwiftUI.framework */; };
+		3EB7A53C2BBDCD0000093B1B /* FlowingWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB7A53B2BBDCD0000093B1B /* FlowingWidgetBundle.swift */; };
+		3EB7A53E2BBDCD0000093B1B /* FlowingWidgetLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB7A53D2BBDCD0000093B1B /* FlowingWidgetLiveActivity.swift */; };
+		3EB7A5402BBDCD0000093B1B /* FlowingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB7A53F2BBDCD0000093B1B /* FlowingWidget.swift */; };
+		3EB7A5422BBDCD0300093B1B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EB7A5412BBDCD0300093B1B /* Assets.xcassets */; };
+		3EB7A5462BBDCD0300093B1B /* FlowingWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3EB7A5362BBDCD0000093B1B /* FlowingWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3EB7A54A2BBDD9AD00093B1B /* VariableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38C30D2B5AE487009E160D /* VariableManager.swift */; };
+		3EB7A54B2BBDD9B000093B1B /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD72B4E4EB900C9FA4B /* Functions.swift */; };
 		3EC18BD82B4E4EB900C9FA4B /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD72B4E4EB900C9FA4B /* Functions.swift */; };
 		3EC18BDA2B4E504B00C9FA4B /* TaskObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */; };
 		3ECAD69C2BA24B3E00DC6A59 /* Others.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECAD69B2BA24B3E00DC6A59 /* Others.swift */; };
@@ -41,11 +40,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3E6992102BB33AB0001A4241 /* PBXContainerItemProxy */ = {
+		3EB7A5442BBDCD0300093B1B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3E580D162B4E4CA6004534BF /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3E6991FD2BB33AAC001A4241;
+			remoteGlobalIDString = 3EB7A5352BBDCD0000093B1B;
 			remoteInfo = FlowingWidgetExtension;
 		};
 /* End PBXContainerItemProxy section */
@@ -57,7 +56,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				3E6992122BB33AB0001A4241 /* FlowingWidgetExtension.appex in Embed Foundation Extensions */,
+				3EB7A5462BBDCD0300093B1B /* FlowingWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -82,18 +81,17 @@
 		3E580D2A2B4E4CA9004534BF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3E580D2C2B4E4CA9004534BF /* Flowing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Flowing.entitlements; sourceTree = "<group>"; };
 		3E580D2D2B4E4CA9004534BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3E6991FE2BB33AAC001A4241 /* FlowingWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FlowingWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		3E6992002BB33AAC001A4241 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3E6992022BB33AAC001A4241 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		3E6992052BB33AAC001A4241 /* FlowingWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowingWidgetBundle.swift; sourceTree = "<group>"; };
-		3E6992072BB33AAC001A4241 /* FlowingWidgetLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowingWidgetLiveActivity.swift; sourceTree = "<group>"; };
-		3E6992092BB33AAC001A4241 /* FlowingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowingWidget.swift; sourceTree = "<group>"; };
-		3E69920B2BB33AAC001A4241 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
-		3E69920D2BB33AB0001A4241 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		3E69920F2BB33AB0001A4241 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3E6992172BB33DD0001A4241 /* FlowingWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlowingWidgetExtension.entitlements; sourceTree = "<group>"; };
 		3E71936C2B68597C00DE4C83 /* EditProgressive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProgressive.swift; sourceTree = "<group>"; };
 		3E9303D82B65A7370087660E /* RoundedSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedSlider.swift; sourceTree = "<group>"; };
+		3EB7A5362BBDCD0000093B1B /* FlowingWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FlowingWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3EB7A5372BBDCD0000093B1B /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		3EB7A53B2BBDCD0000093B1B /* FlowingWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowingWidgetBundle.swift; sourceTree = "<group>"; };
+		3EB7A53D2BBDCD0000093B1B /* FlowingWidgetLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowingWidgetLiveActivity.swift; sourceTree = "<group>"; };
+		3EB7A53F2BBDCD0000093B1B /* FlowingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowingWidget.swift; sourceTree = "<group>"; };
+		3EB7A5412BBDCD0300093B1B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3EB7A5432BBDCD0300093B1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3EB7A54C2BBDE30100093B1B /* FlowingWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlowingWidgetExtension.entitlements; sourceTree = "<group>"; };
 		3EC18BD72B4E4EB900C9FA4B /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskObj.swift; sourceTree = "<group>"; };
 		3ECAD69B2BA24B3E00DC6A59 /* Others.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Others.swift; sourceTree = "<group>"; };
@@ -109,12 +107,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3E6991FB2BB33AAC001A4241 /* Frameworks */ = {
+		3EB7A5332BBDCD0000093B1B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E6992032BB33AAC001A4241 /* SwiftUI.framework in Frameworks */,
-				3E6992012BB33AAC001A4241 /* WidgetKit.framework in Frameworks */,
+				3EB7A5392BBDCD0000093B1B /* SwiftUI.framework in Frameworks */,
+				3EB7A5382BBDCD0000093B1B /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,11 +142,11 @@
 		3E580D152B4E4CA6004534BF = {
 			isa = PBXGroup;
 			children = (
-				3E6992172BB33DD0001A4241 /* FlowingWidgetExtension.entitlements */,
+				3EB7A54C2BBDE30100093B1B /* FlowingWidgetExtension.entitlements */,
 				3E38C30D2B5AE487009E160D /* VariableManager.swift */,
 				3EC18BD72B4E4EB900C9FA4B /* Functions.swift */,
 				3E580D202B4E4CA6004534BF /* Flowing */,
-				3E6992042BB33AAC001A4241 /* FlowingWidget */,
+				3EB7A53A2BBDCD0000093B1B /* FlowingWidget */,
 				3E6991FF2BB33AAC001A4241 /* Frameworks */,
 				3E580D1F2B4E4CA6004534BF /* Products */,
 			);
@@ -158,7 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				3E580D1E2B4E4CA6004534BF /* Flowing.app */,
-				3E6991FE2BB33AAC001A4241 /* FlowingWidgetExtension.appex */,
+				3EB7A5362BBDCD0000093B1B /* FlowingWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -194,21 +192,20 @@
 		3E6991FF2BB33AAC001A4241 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3E6992002BB33AAC001A4241 /* WidgetKit.framework */,
 				3E6992022BB33AAC001A4241 /* SwiftUI.framework */,
+				3EB7A5372BBDCD0000093B1B /* WidgetKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3E6992042BB33AAC001A4241 /* FlowingWidget */ = {
+		3EB7A53A2BBDCD0000093B1B /* FlowingWidget */ = {
 			isa = PBXGroup;
 			children = (
-				3E6992052BB33AAC001A4241 /* FlowingWidgetBundle.swift */,
-				3E6992072BB33AAC001A4241 /* FlowingWidgetLiveActivity.swift */,
-				3E6992092BB33AAC001A4241 /* FlowingWidget.swift */,
-				3E69920B2BB33AAC001A4241 /* AppIntent.swift */,
-				3E69920D2BB33AB0001A4241 /* Assets.xcassets */,
-				3E69920F2BB33AB0001A4241 /* Info.plist */,
+				3EB7A53B2BBDCD0000093B1B /* FlowingWidgetBundle.swift */,
+				3EB7A53D2BBDCD0000093B1B /* FlowingWidgetLiveActivity.swift */,
+				3EB7A53F2BBDCD0000093B1B /* FlowingWidget.swift */,
+				3EB7A5412BBDCD0300093B1B /* Assets.xcassets */,
+				3EB7A5432BBDCD0300093B1B /* Info.plist */,
 			);
 			path = FlowingWidget;
 			sourceTree = "<group>";
@@ -247,7 +244,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				3E6992112BB33AB0001A4241 /* PBXTargetDependency */,
+				3EB7A5452BBDCD0300093B1B /* PBXTargetDependency */,
 			);
 			name = Flowing;
 			packageProductDependencies = (
@@ -257,13 +254,13 @@
 			productReference = 3E580D1E2B4E4CA6004534BF /* Flowing.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3E6991FD2BB33AAC001A4241 /* FlowingWidgetExtension */ = {
+		3EB7A5352BBDCD0000093B1B /* FlowingWidgetExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3E6992162BB33AB0001A4241 /* Build configuration list for PBXNativeTarget "FlowingWidgetExtension" */;
+			buildConfigurationList = 3EB7A5472BBDCD0300093B1B /* Build configuration list for PBXNativeTarget "FlowingWidgetExtension" */;
 			buildPhases = (
-				3E6991FA2BB33AAC001A4241 /* Sources */,
-				3E6991FB2BB33AAC001A4241 /* Frameworks */,
-				3E6991FC2BB33AAC001A4241 /* Resources */,
+				3EB7A5322BBDCD0000093B1B /* Sources */,
+				3EB7A5332BBDCD0000093B1B /* Frameworks */,
+				3EB7A5342BBDCD0000093B1B /* Resources */,
 			);
 			buildRules = (
 			);
@@ -271,7 +268,7 @@
 			);
 			name = FlowingWidgetExtension;
 			productName = FlowingWidgetExtension;
-			productReference = 3E6991FE2BB33AAC001A4241 /* FlowingWidgetExtension.appex */;
+			productReference = 3EB7A5362BBDCD0000093B1B /* FlowingWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -287,7 +284,7 @@
 					3E580D1D2B4E4CA6004534BF = {
 						CreatedOnToolsVersion = 15.0.1;
 					};
-					3E6991FD2BB33AAC001A4241 = {
+					3EB7A5352BBDCD0000093B1B = {
 						CreatedOnToolsVersion = 15.3;
 					};
 				};
@@ -309,7 +306,7 @@
 			projectRoot = "";
 			targets = (
 				3E580D1D2B4E4CA6004534BF /* Flowing */,
-				3E6991FD2BB33AAC001A4241 /* FlowingWidgetExtension */,
+				3EB7A5352BBDCD0000093B1B /* FlowingWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -324,11 +321,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3E6991FC2BB33AAC001A4241 /* Resources */ = {
+		3EB7A5342BBDCD0000093B1B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E69920E2BB33AB0001A4241 /* Assets.xcassets in Resources */,
+				3EB7A5422BBDCD0300093B1B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,26 +357,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3E6991FA2BB33AAC001A4241 /* Sources */ = {
+		3EB7A5322BBDCD0000093B1B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E6992062BB33AAC001A4241 /* FlowingWidgetBundle.swift in Sources */,
-				3E69920C2BB33AAC001A4241 /* AppIntent.swift in Sources */,
-				3E69920A2BB33AAC001A4241 /* FlowingWidget.swift in Sources */,
-				3E6992182BB33E89001A4241 /* VariableManager.swift in Sources */,
-				3E6992082BB33AAC001A4241 /* FlowingWidgetLiveActivity.swift in Sources */,
-				3E6992192BB342F2001A4241 /* Functions.swift in Sources */,
+				3EB7A53C2BBDCD0000093B1B /* FlowingWidgetBundle.swift in Sources */,
+				3EB7A54A2BBDD9AD00093B1B /* VariableManager.swift in Sources */,
+				3EB7A5402BBDCD0000093B1B /* FlowingWidget.swift in Sources */,
+				3EB7A54B2BBDD9B000093B1B /* Functions.swift in Sources */,
+				3EB7A53E2BBDCD0000093B1B /* FlowingWidgetLiveActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		3E6992112BB33AB0001A4241 /* PBXTargetDependency */ = {
+		3EB7A5452BBDCD0300093B1B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3E6991FD2BB33AAC001A4241 /* FlowingWidgetExtension */;
-			targetProxy = 3E6992102BB33AB0001A4241 /* PBXContainerItemProxy */;
+			target = 3EB7A5352BBDCD0000093B1B /* FlowingWidgetExtension */;
+			targetProxy = 3EB7A5442BBDCD0300093B1B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -569,13 +565,12 @@
 			};
 			name = Release;
 		};
-		3E6992142BB33AB0001A4241 /* Debug */ = {
+		3EB7A5482BBDCD0300093B1B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = FlowingWidgetExtension.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T9Q68QP6GV;
@@ -592,7 +587,6 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "enrique53-xd.Flowing.FlowingWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -600,13 +594,12 @@
 			};
 			name = Debug;
 		};
-		3E6992152BB33AB0001A4241 /* Release */ = {
+		3EB7A5492BBDCD0300093B1B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = FlowingWidgetExtension.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T9Q68QP6GV;
@@ -623,7 +616,6 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "enrique53-xd.Flowing.FlowingWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -652,11 +644,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3E6992162BB33AB0001A4241 /* Build configuration list for PBXNativeTarget "FlowingWidgetExtension" */ = {
+		3EB7A5472BBDCD0300093B1B /* Build configuration list for PBXNativeTarget "FlowingWidgetExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3E6992142BB33AB0001A4241 /* Debug */,
-				3E6992152BB33AB0001A4241 /* Release */,
+				3EB7A5482BBDCD0300093B1B /* Debug */,
+				3EB7A5492BBDCD0300093B1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
