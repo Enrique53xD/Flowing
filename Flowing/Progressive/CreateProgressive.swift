@@ -154,9 +154,9 @@ struct CreateProgressive: View {
         .onDisappear{
             if name != "" || description != "" || color != .blue || symbol != "circle.dotted" || goal != 10 || preffix != "" || suffix != ""{
                 
-                withAnimation(.bouncy){
+               
                     newProgressive(context, name: name.isEmpty ? "Name" : name, color: color.toHex()!, desc: description, symbol: symbol, goal: goal, preffix: preffix, suffix: suffix)
-                }
+                
             }
         }
     }

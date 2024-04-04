@@ -149,7 +149,7 @@ struct EditTask: View {
                
            
             if !naming && !descripting {
-                Button(action: {withAnimation(.bouncy){context.delete(item)} }, label: {
+                Button(action: {context.delete(item) }, label: {
                     
                     Text("DELETE")
                         .font(.title2)

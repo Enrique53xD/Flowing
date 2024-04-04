@@ -13,10 +13,10 @@ struct MainView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.modelContext) private var context
     
-    @Query(sort: [SortDescriptor(\taskItem.start), SortDescriptor(\taskItem.end), SortDescriptor(\taskItem.name)], animation: .bouncy) private var taskItems: [taskItem]
-    @Query(animation: .bouncy) private var toDoItems: [toDoItem]
-    @Query(animation: .bouncy) private var progressiveItems: [progressiveItem]
-    @Query(animation: .bouncy) private var settingsItems: [settingsItm]
+    @Query(sort: [SortDescriptor(\taskItem.start), SortDescriptor(\taskItem.end), SortDescriptor(\taskItem.name)]) private var taskItems: [taskItem]
+    @Query(sort: \toDoItem.name) private var toDoItems: [toDoItem]
+    @Query(sort: \progressiveItem.name) private var progressiveItems: [progressiveItem]
+    @Query() private var settingsItems: [settingsItm]
     
     
     @State var deg: Double = 0
@@ -50,8 +50,6 @@ struct MainView: View {
                     }
                     
                     withAnimation(.bouncy){
-                        
-                        
                         
                         if (deg == 0){
                             menu = 0
@@ -123,6 +121,7 @@ struct MainView: View {
                         }
                     }
                     
+                    
                     Button(action: { withAnimation{creatingTask.toggle()} }, label: {
                         
                         Text("+")
@@ -144,7 +143,6 @@ struct MainView: View {
                                 GeometryReader { proxy in
                                     Color.clear
                                         .task {
-                                            print("size = \(proxy.size.height)")
                                             sheetContentHeight = proxy.size.height
                                         }
                                 }
@@ -162,6 +160,7 @@ struct MainView: View {
                     
                     
                 }
+                .animation(.bouncy, value: taskItems)
                 .scrollClipDisabled()
                 .scrollIndicators(.hidden)
                 .frame(height: UIScreen.screenHeight-150)
@@ -213,7 +212,6 @@ struct MainView: View {
                                         GeometryReader { proxy in
                                             Color.clear
                                                 .task {
-                                                    print("size = \(proxy.size.height)")
                                                     sheetContentHeight = proxy.size.height
                                                 }
                                         }
@@ -244,7 +242,6 @@ struct MainView: View {
                                         GeometryReader { proxy in
                                             Color.clear
                                                 .task {
-                                                    print("size = \(proxy.size.height)")
                                                     sheetContentHeight = proxy.size.height
                                                 }
                                         }
@@ -277,7 +274,6 @@ struct MainView: View {
                                         GeometryReader { proxy in
                                             Color.clear
                                                 .task {
-                                                    print("size = \(proxy.size.height)")
                                                     sheetContentHeight = proxy.size.height
                                                 }
                                         }
@@ -296,6 +292,8 @@ struct MainView: View {
                         
                     }
                 }
+                .animation(.bouncy, value: progressiveItems)
+                .animation(.bouncy, value: toDoItems)
                 .scrollClipDisabled()
                 .scrollIndicators(.hidden)
                 .frame(height: UIScreen.screenHeight-150)

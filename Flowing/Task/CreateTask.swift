@@ -162,10 +162,10 @@ struct CreateTask: View {
             if name != "" || description != "" || color != .red || symbol != "house" || start != 0 || end != 0 || days != "0000000" {
                 
 
-                withAnimation(.bouncy){
+              
                     if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)}
                     newTask(context, name: name == "" ? "Name" : name, color: color.toHex()!, desc: description, symbol: symbol, start: start, end: end, days: days)
-                }
+                
                 
                 WidgetCenter.shared.reloadAllTimelines()
             }

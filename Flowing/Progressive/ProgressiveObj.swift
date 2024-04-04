@@ -72,7 +72,6 @@ struct ProgressiveObj: View {
                                     GeometryReader { proxy in
                                         Color.clear
                                             .task {
-                                                print("size = \(proxy.size.height)")
                                                 sheetContentHeight = proxy.size.height
                                             }
                                     }

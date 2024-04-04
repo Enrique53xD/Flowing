@@ -205,7 +205,7 @@ struct FlowingWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             FlowingWidgetView(entry: entry)
-                .modelContainer(for: [taskItem.self, settingsItm.self] )
+                .modelContainer(for: [taskItem.self, toDoItem.self, progressiveItem.self, settingsItm.self] )
         }
         .configurationDisplayName("Flowing Widget")
         .description("Shows the current task.")

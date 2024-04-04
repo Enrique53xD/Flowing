@@ -153,7 +153,7 @@ struct EditProgressive: View {
                 if !naming && !descripting && !preffixing && !goaling && !suffixing {
                     
                     
-                    Button(action: {withAnimation(.bouncy){context.delete(item)} }, label: {
+                    Button(action: { context.delete(item) }, label: {
                         
                         Text("DELETE")
                             .font(.title2)

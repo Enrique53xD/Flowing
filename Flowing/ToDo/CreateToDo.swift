@@ -84,9 +84,9 @@ struct CreateToDo: View {
             
             if name != "" || description != "" || color != .green || symbol != "checkmark.circle"{
                 
-                withAnimation(.bouncy){
+    
                     newToDo(context, name: name.isEmpty ? "Name" : name, color: color.toHex()!, desc: description, symbol: symbol)
-                }
+                
                 
             }
         }

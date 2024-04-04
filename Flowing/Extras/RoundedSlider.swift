@@ -116,7 +116,17 @@ struct RoundedSlider: View {
                     
                 )
                 
-                .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in withAnimation{changing.toggle()}}))
+                .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in
+                    withAnimation(.bouncy){changing.toggle()}
+                    
+                }))
+                .sensoryFeedback(trigger: changing) { _,_  in
+                    if changing == false {
+                        return .impact
+                    } else {
+                        return .none
+                    }
+                }
                 
             }
             
