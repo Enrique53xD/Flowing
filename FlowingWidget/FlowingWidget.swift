@@ -103,23 +103,25 @@ struct CircularWidgetView: View {
     
     var body: some View {
         
-        ZStack {
-            if let firstMatchingItem = taskItems.first(where: { isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end) }) {
-                
-                
-                Image(systemName: firstMatchingItem.symbol)
-                    .font(.system(size: 50))
-                    .fontWeight(.heavy)
-                 
-                
-                
-            } else {
-                Image(systemName: "clock")
-                    .font(.system(size: 50))
-                    .fontWeight(.heavy)
-          
+            ZStack {
+                if let firstMatchingItem = taskItems.first(where: { isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end) }) {
+                    
+                    
+                    Image(systemName: firstMatchingItem.symbol)
+                        .font(.system(size: 35))
+                        .fontWeight(.heavy)
+                    
+                    
+                    
+                } else {
+                    Image(systemName: "clock")
+                        .font(.system(size: 35))
+                        .fontWeight(.heavy)
+                }
             }
-        }
+            
+           
+        
     }
 }
 
@@ -179,20 +181,24 @@ struct Provider: TimelineProvider {
     
     typealias Entry = SimpleEntry
     
+    
+    
+    
     func placeholder(in context: Context) -> Entry {
         SimpleEntry(date: Date(), providerInfo: "placeholder")
     }
-
+    
     func getSnapshot(in context: Context, completion: @escaping (Entry) -> ()) {
-            let entry = SimpleEntry(date: Date(), providerInfo: "snapshot")
-            completion(entry)
-        }
-
-   
+        let entry = SimpleEntry(date: Date(), providerInfo: "snapshot")
+        completion(entry)
+    }
+    
+    
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+        
         let entry = SimpleEntry(date: Date(), providerInfo: "timeline")
-        let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(60 * 1)))
+        let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(5)))
         completion(timeline)
     }
 }

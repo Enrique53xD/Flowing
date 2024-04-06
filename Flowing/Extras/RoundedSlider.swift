@@ -31,7 +31,7 @@ struct RoundedSlider: View {
         
         HStack {
             
-            Button(action: { withAnimation{ if item.progress > 0 {item.progress-=1; update()} } }, label: {
+            Button(action: { withAnimation{ if item.progress >= 1 {item.progress = (item.progress.rounded(.down)-1); update()} } }, label: {
                 Image(systemName: "minus")
                     .font(.title)
                     .fontWeight(.heavy)
@@ -40,7 +40,10 @@ struct RoundedSlider: View {
                         .foregroundStyle(color.opacity(0.5)))
                     .frame(width: 60, height: 60)
                 
-                    .onAppear{if item.progress >= item.goal {done=true} else {done=false} }
+                    .onAppear{
+                       
+                        if item.progress >= item.goal {done=true} else {done=false}
+                    }
             })
             
             Spacer()
@@ -91,7 +94,7 @@ struct RoundedSlider: View {
                             
                             item.progress = item.goal * sliderProgress
                             
-                            withAnimation{
+                            withAnimation(.bouncy){
                                 currentHeight = maxHeight
                                 weightFont = .title2
                             }
@@ -106,7 +109,7 @@ struct RoundedSlider: View {
                             
                             lastDragValue = sliderWidth
                             
-                            withAnimation{
+                            withAnimation(.bouncy){
                                 currentHeight = normalHeight
                                 weightFont = .title3
                             }
@@ -117,7 +120,10 @@ struct RoundedSlider: View {
                 )
                 
                 .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in
-                    withAnimation(.bouncy){changing.toggle()}
+                    withAnimation(.bouncy){
+                        changing.toggle()
+                        item.progress = item.progress.rounded(.down)
+                    }
                     
                 }))
                 .sensoryFeedback(trigger: changing) { _,_  in
@@ -132,7 +138,7 @@ struct RoundedSlider: View {
             
             Spacer()
             
-            Button(action: { withAnimation{ if item.progress < item.goal {item.progress+=1; update()} } }, label: {
+            Button(action: { withAnimation{ if item.progress <= item.goal-1 {item.progress = (item.progress.rounded(.down)+1); update()} } }, label: {
                 Image(systemName: "plus")
                     .font(.title)
                     .fontWeight(.heavy)
