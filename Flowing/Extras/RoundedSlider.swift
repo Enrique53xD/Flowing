@@ -138,7 +138,7 @@ struct RoundedSlider: View {
             
             Spacer()
             
-            Button(action: { withAnimation{ if item.progress <= item.goal-1 {item.progress = (item.progress.rounded(.down)+1); update()} } }, label: {
+            Button(action: { withAnimation{ if item.progress < item.goal {item.progress = (item.progress.rounded(.down)+1); update()} } }, label: {
                 Image(systemName: "plus")
                     .font(.title)
                     .fontWeight(.heavy)

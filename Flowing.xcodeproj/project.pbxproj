@@ -22,6 +22,8 @@
 		3E580D222B4E4CA6004534BF /* FlowingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E580D212B4E4CA6004534BF /* FlowingApp.swift */; };
 		3E580D282B4E4CA9004534BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E580D272B4E4CA9004534BF /* Assets.xcassets */; };
 		3E580D2B2B4E4CA9004534BF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E580D2A2B4E4CA9004534BF /* Preview Assets.xcassets */; };
+		3E58724A2BC5A71F00C44031 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5872492BC5A71F00C44031 /* AppIntent.swift */; };
+		3E58724C2BC5B4FD00C44031 /* LockFlowingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E58724B2BC5B4FD00C44031 /* LockFlowingWidget.swift */; };
 		3E71936D2B68597C00DE4C83 /* EditProgressive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E71936C2B68597C00DE4C83 /* EditProgressive.swift */; };
 		3E9303D92B65A7370087660E /* RoundedSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9303D82B65A7370087660E /* RoundedSlider.swift */; };
 		3EB7A5382BBDCD0000093B1B /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB7A5372BBDCD0000093B1B /* WidgetKit.framework */; };
@@ -81,6 +83,8 @@
 		3E580D2A2B4E4CA9004534BF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3E580D2C2B4E4CA9004534BF /* Flowing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Flowing.entitlements; sourceTree = "<group>"; };
 		3E580D2D2B4E4CA9004534BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3E5872492BC5A71F00C44031 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
+		3E58724B2BC5B4FD00C44031 /* LockFlowingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockFlowingWidget.swift; sourceTree = "<group>"; };
 		3E6992022BB33AAC001A4241 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		3E71936C2B68597C00DE4C83 /* EditProgressive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProgressive.swift; sourceTree = "<group>"; };
 		3E9303D82B65A7370087660E /* RoundedSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedSlider.swift; sourceTree = "<group>"; };
@@ -204,6 +208,8 @@
 				3EB7A53B2BBDCD0000093B1B /* FlowingWidgetBundle.swift */,
 				3EB7A53D2BBDCD0000093B1B /* FlowingWidgetLiveActivity.swift */,
 				3EB7A53F2BBDCD0000093B1B /* FlowingWidget.swift */,
+				3E58724B2BC5B4FD00C44031 /* LockFlowingWidget.swift */,
+				3E5872492BC5A71F00C44031 /* AppIntent.swift */,
 				3EB7A5412BBDCD0300093B1B /* Assets.xcassets */,
 				3EB7A5432BBDCD0300093B1B /* Info.plist */,
 			);
@@ -362,9 +368,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3EB7A53C2BBDCD0000093B1B /* FlowingWidgetBundle.swift in Sources */,
+				3E58724A2BC5A71F00C44031 /* AppIntent.swift in Sources */,
 				3EB7A54A2BBDD9AD00093B1B /* VariableManager.swift in Sources */,
 				3EB7A5402BBDCD0000093B1B /* FlowingWidget.swift in Sources */,
 				3EB7A54B2BBDD9B000093B1B /* Functions.swift in Sources */,
+				3E58724C2BC5B4FD00C44031 /* LockFlowingWidget.swift in Sources */,
 				3EB7A53E2BBDCD0000093B1B /* FlowingWidgetLiveActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

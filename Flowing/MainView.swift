@@ -16,7 +16,7 @@ struct MainView: View {
     @Query(sort: [SortDescriptor(\taskItem.start), SortDescriptor(\taskItem.end), SortDescriptor(\taskItem.name)]) private var taskItems: [taskItem]
     @Query(sort: \toDoItem.name) private var toDoItems: [toDoItem]
     @Query(sort: \progressiveItem.name) private var progressiveItems: [progressiveItem]
-    @Query() private var settingsItems: [settingsItm]
+    @Query() private var settingsItems: [settingsItem]
     
     
     @State var deg: Double = 0
@@ -27,7 +27,7 @@ struct MainView: View {
     @State var defaultColor = Color.primary
     @State var customColor = false
     @State var allTasks = false
-    @State var settings: settingsItm?
+    @State var settings: settingsItem?
     @State var creatingTask = false
     @State var creatingToDo = false
     @State var creatingProgressive = false
@@ -72,8 +72,6 @@ struct MainView: View {
                     if let firstSettings = settingsItems.first {
                         settings = firstSettings
                         customColor = settings!.customMainColor
-                        widgetRange = settings!.widgetRange
-                        widgetName = settings!.widgetName
                         mainColor = Color(hex: settings!.mainColor)!
                      
                     } else {
@@ -369,45 +367,6 @@ struct MainView: View {
                         }
                     }
                     
-                    Toggle(isOn: $widgetRange.animation(.bouncy)) {
-                        Text("Widget show time range")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                        
-                    }
-                    .frame(height: 60)
-                    .scrollTransition { content, phase in
-                        content
-                            .opacity(phase.isIdentity ? 1 : 0)
-                            .scaleEffect(phase.isIdentity ? 1 : 0.75)
-                            .blur(radius: phase.isIdentity ? 0 : 10)
-                    }
-                    .onChange(of: widgetRange){
-                        settingsItems.first?.widgetRange = widgetRange
-                        try? context.save()
-                        
-                        WidgetCenter.shared.reloadAllTimelines()
-                    }
-                    
-                    Toggle(isOn: $widgetName.animation(.bouncy)) {
-                        Text("Widget show name")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                        
-                    }
-                    .frame(height: 60)
-                    .scrollTransition { content, phase in
-                        content
-                            .opacity(phase.isIdentity ? 1 : 0)
-                            .scaleEffect(phase.isIdentity ? 1 : 0.75)
-                            .blur(radius: phase.isIdentity ? 0 : 10)
-                    }
-                    .onChange(of: widgetName){
-                        settingsItems.first?.widgetName = widgetName
-                        try? context.save()
-                        
-                        WidgetCenter.shared.reloadAllTimelines()
-                    }
                     
                 }
                 .padding(.horizontal)

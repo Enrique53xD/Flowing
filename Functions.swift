@@ -162,7 +162,7 @@ func newProgressive(_ context: ModelContext, name: String, color: String, desc: 
 
 func newSettings(_ context: ModelContext) {
     
-    let item = settingsItm(customMainColor: false, mainColor: Color.red.toHex()!, widgetRange: false, widgetName: false)
+    let item = settingsItem(customMainColor: false, mainColor: Color.red.toHex()!)
     context.insert(item)
 }
 

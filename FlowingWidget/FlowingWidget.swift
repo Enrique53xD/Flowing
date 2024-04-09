@@ -11,136 +11,43 @@ import SwiftData
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let providerInfo: String
+    let configuration: ConfigurationAppIntent
 }
 
 struct FlowingWidgetView: View {
-
+    
     let entry: SimpleEntry
-
-    // Obtain the widget family value
-    @Environment(\.widgetFamily)
-    var family
-
-    var body: some View {
-
-        switch family {
-        case .accessoryRectangular:
-            RectangularWidgetView(entry: entry)
-                .containerBackground(for: .widget){}
-        case .accessoryCircular:
-            CircularWidgetView(entry: entry)
-                .containerBackground(for: .widget){}
-        case .accessoryInline:
-            InlineWidgetView(entry: entry)
-        default:
-            // UI for Home Screen widget
-            HomeScreenWidgetView(entry: entry)
-                .containerBackground(.fill.quinary, for: .widget)
-        }
-    }
-}
-
-struct InlineWidgetView: View {
     
-    @Query(animation: .bouncy) private var taskItems: [taskItem]
-    
-    var entry: Provider.Entry
     
     var body: some View {
-        if let firstMatchingItem = taskItems.first(where: { isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end) }) {
-            
-                Text(firstMatchingItem.name)
-                
-            }
-        else {
-            Text("Free Time")
-        }
-            
-    }
-}
-
-struct RectangularWidgetView: View {
-    
-    @Query(animation: .bouncy) private var taskItems: [taskItem]
-    
-    var entry: Provider.Entry
-    
-    var body: some View {
-        HStack {
-            if let firstMatchingItem = taskItems.first(where: { isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end) }) {
-                
-                
-                Image(systemName: firstMatchingItem.symbol)
-                    .font(.title2)
-                    .fontWeight(.heavy)
         
-                
-                Text(firstMatchingItem.name)
-                    .fontWeight(.bold)
-                
-                
-            } else {
-                Image(systemName: "clock")
-                    .font(.title2)
-                    .fontWeight(.heavy)
-            
-                
-                Text("Free Time")
-                    .fontWeight(.bold)
-
-            }
-        }
+        HomeScreenWidgetView(entry: entry)
+            .containerBackground(.fill.quinary, for: .widget)
         
     }
 }
 
-struct CircularWidgetView: View {
-    
-    @Query(animation: .bouncy) private var taskItems: [taskItem]
-    
-    var entry: Provider.Entry
-    
-    var body: some View {
-        
-            ZStack {
-                if let firstMatchingItem = taskItems.first(where: { isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end) }) {
-                    
-                    
-                    Image(systemName: firstMatchingItem.symbol)
-                        .font(.system(size: 35))
-                        .fontWeight(.heavy)
-                    
-                    
-                    
-                } else {
-                    Image(systemName: "clock")
-                        .font(.system(size: 35))
-                        .fontWeight(.heavy)
-                }
-            }
-            
-           
-        
-    }
-}
 
 struct HomeScreenWidgetView : View {
     
     @Environment(\.modelContext) private var context
     @Query(animation: .bouncy) private var taskItems: [taskItem]
-    @Query(animation: .bouncy) private var settingsItems: [settingsItm]
     
     var entry: Provider.Entry
     
     var body: some View {
         
         VStack {
-            
             if let firstMatchingItem = taskItems.first(where: { isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end) }) {
                 
-                if (settingsItems.first?.widgetName)! {
+                if entry.configuration.topText.use == "Name" {
                     Text(firstMatchingItem.name)
+                        .font(.callout)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.opacity(0.5))
+                    
+                } else if entry.configuration.topText.use == "Time Range" {
+                    Text(formatTaskTime(start: firstMatchingItem.start, end: firstMatchingItem.end))
                         .font(.callout)
                         .fontWeight(.bold)
                         .foregroundStyle(.opacity(0.5))
@@ -154,13 +61,20 @@ struct HomeScreenWidgetView : View {
                     .frame(width: 60, height: 60)
                 
                 Spacer()
-                if (settingsItems.first?.widgetRange)! {
+                if entry.configuration.bottomText.use == "Name" {
+                    Text(firstMatchingItem.name)
+                        .font(.callout)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.opacity(0.5))
+                    
+                } else if entry.configuration.bottomText.use == "Time Range" {
                     Text(formatTaskTime(start: firstMatchingItem.start, end: firstMatchingItem.end))
                         .font(.callout)
                         .fontWeight(.bold)
                         .foregroundStyle(.opacity(0.5))
                     
                 }
+                
             } else {
                 Image(systemName: "clock")
                     .font(.system(size: 65))
@@ -168,38 +82,25 @@ struct HomeScreenWidgetView : View {
                     .frame(width: 60, height: 60)
             }
         }
-        .onAppear{
-            if settingsItems.isEmpty {
-                newSettings(context)
-            }
-            
-        }
     }
 }
 
-struct Provider: TimelineProvider {
-    
-    typealias Entry = SimpleEntry
-    
-    
-    
-    
-    func placeholder(in context: Context) -> Entry {
-        SimpleEntry(date: Date(), providerInfo: "placeholder")
+
+struct Provider: AppIntentTimelineProvider {
+    func placeholder(in context: Context) -> SimpleEntry {
+        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent())
+    }
+
+    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
+        SimpleEntry(date: Date(), configuration: configuration)
     }
     
-    func getSnapshot(in context: Context, completion: @escaping (Entry) -> ()) {
-        let entry = SimpleEntry(date: Date(), providerInfo: "snapshot")
-        completion(entry)
-    }
-    
-    
-    
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         
-        let entry = SimpleEntry(date: Date(), providerInfo: "timeline")
+        let entry = SimpleEntry(date: Date(), configuration: configuration)
         let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(5)))
-        completion(timeline)
+
+        return timeline
     }
 }
 
@@ -209,21 +110,17 @@ struct FlowingWidget: Widget {
     let kind: String = "FlowingWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             FlowingWidgetView(entry: entry)
-                .modelContainer(for: [taskItem.self, toDoItem.self, progressiveItem.self, settingsItm.self] )
+                .modelContainer(for: [taskItem.self, toDoItem.self, progressiveItem.self, settingsItem.self] )
         }
         .configurationDisplayName("Flowing Widget")
         .description("Shows the current task.")
         .supportedFamilies([
-            .systemSmall,
-            //.systemMedium,
-            //.systemLarge,
-            
-            .accessoryCircular,
-            .accessoryInline,
-            .accessoryRectangular
+            .systemSmall
         ])
     }
 }
+
+
 
