@@ -122,9 +122,9 @@ struct MainView: View {
                     
                     Button(action: { withAnimation{creatingTask.toggle()} }, label: {
                         
-                        Text("+")
-                            .font(.largeTitle)
-                            .fontWeight(.heavy)
+                        Image(systemName: "plus")
+                            .font(.title)
+                            .fontWeight(.black)
                             .frame(width: 358, height: 60)
                             .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
                             .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor : defaultColor))
@@ -188,100 +188,98 @@ struct MainView: View {
                     }
                     
                     HStack {
-                        if !creatingSome {
+ 
+                        Button(action: { if creatingSome{ withAnimation(.bouncy){creatingSome.toggle(); creatingToDo.toggle()}} }, label: {
                             
-                            Button(action: { withAnimation(.bouncy){creatingSome.toggle()} }, label: {
-                                
-                                Text("+")
-                                    .font(.largeTitle)
-                                    .fontWeight(.heavy)
-                                    .frame(width: 358, height: 60)
-                                    .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                                    .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor : defaultColor))
-                                   
-                                    .sensoryFeedback(.impact(intensity: creatingSome ? 1 : 0), trigger: creatingSome)
-                                
-                            })
-                            .sheet(isPresented: $creatingToDo){
-                                CreateToDo(context: context)
-                                    .padding()
-                                    .background {
-                                        //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
-                                        GeometryReader { proxy in
-                                            Color.clear
-                                                .task {
-                                                    sheetContentHeight = proxy.size.height
-                                                }
-                                        }
-                                    }
-                                    .presentationDetents([.height(sheetContentHeight)])
-                            }
-                        } else {
-                            Button(action: { if creatingSome{ withAnimation{creatingToDo.toggle()}} }, label: {
-                                
-                                Image(systemName: "checkmark.circle")
-                                    .font(.largeTitle)
-                                    .fontWeight(.heavy)
-                                    .frame(width: 165, height: 60)
-                                    .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                                    .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor : defaultColor))
-                                    
-                                    .sensoryFeedback(.impact(intensity: creatingToDo ? 0 : 1), trigger: creatingToDo)
-                                
-                                
-                            })
-                            .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in withAnimation(.bouncy){creatingSome.toggle()}}))
-                            .sheet(isPresented: $creatingToDo, onDismiss: {withAnimation(.bouncy){creatingSome.toggle()}}){
-                                CreateToDo(context: context)
-                                    .presentationDragIndicator(.visible)
-                                    .padding()
-                                    .background {
-                                        //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
-                                        GeometryReader { proxy in
-                                            Color.clear
-                                                .task {
-                                                    sheetContentHeight = proxy.size.height
-                                                }
-                                        }
-                                    }
-                                    .presentationDetents([.height(sheetContentHeight)])
-                            }
+                            Image(systemName: "checkmark.circle")
+                                .font(.largeTitle)
+                                .fontWeight(.heavy)
+                                .frame(width: creatingSome ? 170 : 0, height: 60)
+                                .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                                .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor : defaultColor))
+                                .opacity(creatingSome ? 1 : 0)
                             
-                            Spacer()
                             
-                            Button(action: { if creatingSome{ withAnimation{creatingProgressive.toggle()}} }, label: {
-                                
-                                Image(systemName: "circle.dotted")
-                                    .font(.largeTitle)
-                                    .fontWeight(.heavy)
-                                    .frame(width: 165, height: 60)
-                                    .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                                    .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor : defaultColor))
-                                   
-                                    .sensoryFeedback(.impact(intensity: creatingProgressive ? 0 : 1), trigger: creatingProgressive)
-                                
-                                
-                            })
-                            .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in withAnimation(.bouncy){creatingSome.toggle()}}))
-                            .sheet(isPresented: $creatingProgressive, onDismiss: {withAnimation(.bouncy){creatingSome.toggle()}}){
-                                CreateProgressive(context: context)
-                                    .presentationDragIndicator(.visible)
-                                    .padding()
-                                    .background {
-                                        //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
-                                        GeometryReader { proxy in
-                                            Color.clear
-                                                .task {
-                                                    sheetContentHeight = proxy.size.height
-                                                }
-                                        }
+                            
+                        })
+                        .padding(0)
+                        .frame(width: creatingSome ? 170 : 0)
+                        .opacity(creatingSome ? 1 : 0)
+                        .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in withAnimation(.bouncy){creatingSome.toggle()}}))
+                        .sheet(isPresented: $creatingToDo){
+                            CreateToDo(context: context)
+                                .presentationDragIndicator(.visible)
+                                .padding()
+                                .background {
+                                    //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                                    GeometryReader { proxy in
+                                        Color.clear
+                                            .task {
+                                                sheetContentHeight = proxy.size.height
+                                            }
                                     }
-                                    .presentationDetents([.height(sheetContentHeight)])
-                            }
+                                }
+                                .presentationDetents([.height(sheetContentHeight)])
+                        }
+                        
+                        if creatingSome { Spacer() }
+                        
+                        Button(action: { withAnimation(.bouncy){creatingSome.toggle()} }, label: {
+                            
+                            Image(systemName: "plus")
+                                .font(.title)
+                                .fontWeight(.black)
+                                .frame(width: creatingSome ? 0 : 358, height: 60)
+                                .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                                .opacity(creatingSome ? 0 : 1)
+                                .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor : defaultColor))
+                            
+                                .sensoryFeedback(.impact(), trigger: creatingSome)
+                                .opacity(creatingSome ? 0 : 1)
+                            
+                        })
+                        .opacity(creatingSome ? 0 : 1)
+                        .padding(0)
+                        
+                        if creatingSome { Spacer() }
+                        
+                        Button(action: { if creatingSome{ withAnimation(.bouncy){creatingSome.toggle(); creatingProgressive.toggle()}} }, label: {
+                            
+                            Image(systemName: "circle.dotted")
+                                .font(.largeTitle)
+                                .fontWeight(.heavy)
+                                .frame(width: creatingSome ? 170 : 0, height: 60)
+                                .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                                .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor : defaultColor))
+                                .opacity(creatingSome ? 1 : 0)
+                 
+                            
+                            
+                        })
+                        .padding(0)
+                        .frame(width: creatingSome ? 170 : 0)
+                        .opacity(creatingSome ? 1 : 0)
+                        .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in withAnimation(.bouncy){creatingSome.toggle()}}))
+                        .sheet(isPresented: $creatingProgressive){
+                            CreateProgressive(context: context)
+                                .presentationDragIndicator(.visible)
+                                .padding()
+                                .background {
+                                    //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                                    GeometryReader { proxy in
+                                        Color.clear
+                                            .task {
+                                                sheetContentHeight = proxy.size.height
+                                            }
+                                    }
+                                }
+                                .presentationDetents([.height(sheetContentHeight)])
+                            
                             
                         }
                     }
-                    .padding()
+                    
+                    .padding(creatingSome ? [.horizontal, .vertical] : [.vertical])
                     .scrollTransition { content, phase in
                         content
                             .opacity(phase.isIdentity ? 1 : 0)

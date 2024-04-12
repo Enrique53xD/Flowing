@@ -13,6 +13,5 @@ struct FlowingWidgetBundle: WidgetBundle {
     var body: some Widget {
         FlowingWidget()
         LockFlowingWidget()
-        FlowingWidgetLiveActivity()
     }
 }

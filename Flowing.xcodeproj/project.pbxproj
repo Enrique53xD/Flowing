@@ -29,7 +29,6 @@
 		3EB7A5382BBDCD0000093B1B /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB7A5372BBDCD0000093B1B /* WidgetKit.framework */; };
 		3EB7A5392BBDCD0000093B1B /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E6992022BB33AAC001A4241 /* SwiftUI.framework */; };
 		3EB7A53C2BBDCD0000093B1B /* FlowingWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB7A53B2BBDCD0000093B1B /* FlowingWidgetBundle.swift */; };
-		3EB7A53E2BBDCD0000093B1B /* FlowingWidgetLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB7A53D2BBDCD0000093B1B /* FlowingWidgetLiveActivity.swift */; };
 		3EB7A5402BBDCD0000093B1B /* FlowingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB7A53F2BBDCD0000093B1B /* FlowingWidget.swift */; };
 		3EB7A5422BBDCD0300093B1B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EB7A5412BBDCD0300093B1B /* Assets.xcassets */; };
 		3EB7A5462BBDCD0300093B1B /* FlowingWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3EB7A5362BBDCD0000093B1B /* FlowingWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -91,7 +90,6 @@
 		3EB7A5362BBDCD0000093B1B /* FlowingWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FlowingWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EB7A5372BBDCD0000093B1B /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3EB7A53B2BBDCD0000093B1B /* FlowingWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowingWidgetBundle.swift; sourceTree = "<group>"; };
-		3EB7A53D2BBDCD0000093B1B /* FlowingWidgetLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowingWidgetLiveActivity.swift; sourceTree = "<group>"; };
 		3EB7A53F2BBDCD0000093B1B /* FlowingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowingWidget.swift; sourceTree = "<group>"; };
 		3EB7A5412BBDCD0300093B1B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3EB7A5432BBDCD0300093B1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -206,7 +204,6 @@
 			isa = PBXGroup;
 			children = (
 				3EB7A53B2BBDCD0000093B1B /* FlowingWidgetBundle.swift */,
-				3EB7A53D2BBDCD0000093B1B /* FlowingWidgetLiveActivity.swift */,
 				3EB7A53F2BBDCD0000093B1B /* FlowingWidget.swift */,
 				3E58724B2BC5B4FD00C44031 /* LockFlowingWidget.swift */,
 				3E5872492BC5A71F00C44031 /* AppIntent.swift */,
@@ -373,7 +370,6 @@
 				3EB7A5402BBDCD0000093B1B /* FlowingWidget.swift in Sources */,
 				3EB7A54B2BBDD9B000093B1B /* Functions.swift in Sources */,
 				3E58724C2BC5B4FD00C44031 /* LockFlowingWidget.swift in Sources */,
-				3EB7A53E2BBDCD0000093B1B /* FlowingWidgetLiveActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
