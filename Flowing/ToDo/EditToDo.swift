@@ -24,6 +24,10 @@ struct EditToDo: View {
     @FocusState private var descripting: Bool
     @FocusState private var naming: Bool
     
+    @State var buttonOpacity = 1.0
+    @State var buttonProgress = 0.0
+    @State var hasPressed = false
+    
     var body: some View {
         VStack{
             
@@ -80,21 +84,55 @@ struct EditToDo: View {
                 if !naming && !descripting {
                     
                     
-                    Button(action: {context.delete(item) }, label: {
+                    ZStack {
+                        
+                        ZStack(alignment: .leading){
+                            
+                            Rectangle().foregroundStyle(Color.red)
+                                .frame(width: buttonProgress, height: 60)
+
+                            Rectangle().foregroundStyle(Color.red)
+                                .frame(width: 250, height: 60)
+                                .opacity(buttonOpacity)
+                            
+                        }
+                        .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                         
                         Text("DELETE")
                             .font(.title2)
                             .fontWeight(.heavy)
                             .frame(width: 250, height: 60)
+                            .background(RoundedRectangle(cornerRadius: 12.5).foregroundStyle(Color.red.opacity(0.01)))
                             .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                            .background(RoundedRectangle(cornerRadius: 12.5).foregroundStyle(Color.red))
-                            .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                        
-                    })
+                            .onLongPressGesture(minimumDuration: 2, maximumDistance: 100, pressing: {
+                                pressing in
+                                self.hasPressed = pressing
+                                if pressing {
+                                    
+                                    withAnimation{
+                                        buttonOpacity = 0.5
+                                    }
+                                    withAnimation(.easeOut(duration: 2)){
+                                        buttonProgress = 250
+                                    }
+                                }
+                                if !pressing {
+                                    withAnimation(.easeInOut){
+                                        buttonOpacity = 1
+                                        buttonProgress = 0
+                                        
+                                    }
+                                   
+                                    
+                                    
+                                }
+                            }, perform: {context.delete(item)})
+                            
+                    }
 
                     Spacer()
                     
-                    Button(action: {withAnimation{item.daily.toggle(); item.date = dateStr(Date.now)} }, label: {
+                    Button(action: {item.daily.toggle() }, label: {
                         
                         Image(systemName: "arrow.circlepath")
                             .font(.title)

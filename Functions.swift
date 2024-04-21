@@ -166,6 +166,67 @@ func newSettings(_ context: ModelContext) {
     context.insert(item)
 }
 
+func getFreeTimes(_ vars: [taskItem], days: String, allTasks: Bool) -> [(Int, Int)]{
+    
+    var spaces = [Int]()
+    var tasks = [taskItem]()
+    
+    if vars.count == 0 {
+        
+        var pairs: [(Int, Int)] = [(0,1439)]
+
+        return pairs
+        
+    } else {
+        
+        
+        for i in 0..<vars.count{
+            
+            if !allTasks{
+                if isToday(vars[i].days) || vars[i].days == "0000000"{
+                    tasks.append(vars[i])
+                }
+            }
+            else{
+                if isIncluded(vars[i].days, days) || days == "0000000" {
+                    tasks.append(vars[i])
+                }
+            }
+        }
+        
+        if tasks.first?.start != nil && tasks.first!.start > 0{
+            spaces.append(0)
+            spaces.append(tasks[0].start - 1)
+        }
+        
+        if tasks.count > 1 {
+            
+            for i in 0..<tasks.count - 1 {
+                
+                
+                if tasks[i+1].start > tasks[i].end + 1 {
+                    spaces.append(tasks[i].end + 1)
+                    spaces.append(tasks[i+1].start - 1)
+                }
+            }
+        }
+        
+        if tasks.last?.end != nil && tasks.last!.end < 1439 {
+            spaces.append(tasks.last!.end + 1)
+            spaces.append(1439)
+        }
+        
+        var pairs: [(Int, Int)] = []
+        
+        for i in stride(from: 0, to: spaces.count - 1, by: 2) {
+            let pair = (spaces[i], spaces[i + 1])
+            pairs.append(pair)
+        }
+        return pairs
+    }
+    
+    
+}
 
 func isToday(_ currentDayOfWeek: String) -> Bool {
     let currentDate = Date()
@@ -204,9 +265,3 @@ func dateStr(_ date: Date) -> String {
 func checkDate(_ first: String, _ second: String) -> Bool {
     return first != second
 }
-
-
-
-
-
-

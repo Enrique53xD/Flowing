@@ -17,7 +17,6 @@
 		3E38C30E2B5AE487009E160D /* VariableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38C30D2B5AE487009E160D /* VariableManager.swift */; };
 		3E38C3102B608188009E160D /* DaySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38C30F2B608187009E160D /* DaySelector.swift */; };
 		3E4059532B50EB3D00BA643E /* EditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4059522B50EB3D00BA643E /* EditTask.swift */; };
-		3E4059562B50F19400BA643E /* SymbolPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 3E4059552B50F19400BA643E /* SymbolPicker */; };
 		3E4059582B51B63E00BA643E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4059572B51B63E00BA643E /* MainView.swift */; };
 		3E580D222B4E4CA6004534BF /* FlowingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E580D212B4E4CA6004534BF /* FlowingApp.swift */; };
 		3E580D282B4E4CA9004534BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E580D272B4E4CA9004534BF /* Assets.xcassets */; };
@@ -34,6 +33,7 @@
 		3EB7A5462BBDCD0300093B1B /* FlowingWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3EB7A5362BBDCD0000093B1B /* FlowingWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3EB7A54A2BBDD9AD00093B1B /* VariableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38C30D2B5AE487009E160D /* VariableManager.swift */; };
 		3EB7A54B2BBDD9B000093B1B /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD72B4E4EB900C9FA4B /* Functions.swift */; };
+		3EB9B8AF2BD1DEBA0098C00F /* SymbolPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 3EB9B8AE2BD1DEBA0098C00F /* SymbolPicker */; };
 		3EC18BD82B4E4EB900C9FA4B /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD72B4E4EB900C9FA4B /* Functions.swift */; };
 		3EC18BDA2B4E504B00C9FA4B /* TaskObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */; };
 		3ECAD69C2BA24B3E00DC6A59 /* Others.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECAD69B2BA24B3E00DC6A59 /* Others.swift */; };
@@ -105,7 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E4059562B50F19400BA643E /* SymbolPicker in Frameworks */,
+				3EB9B8AF2BD1DEBA0098C00F /* SymbolPicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,7 +251,7 @@
 			);
 			name = Flowing;
 			packageProductDependencies = (
-				3E4059552B50F19400BA643E /* SymbolPicker */,
+				3EB9B8AE2BD1DEBA0098C00F /* SymbolPicker */,
 			);
 			productName = Flowing;
 			productReference = 3E580D1E2B4E4CA6004534BF /* Flowing.app */;
@@ -671,9 +671,8 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3E4059552B50F19400BA643E /* SymbolPicker */ = {
+		3EB9B8AE2BD1DEBA0098C00F /* SymbolPicker */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3E4059542B50F19400BA643E /* XCRemoteSwiftPackageReference "SymbolPicker" */;
 			productName = SymbolPicker;
 		};
 /* End XCSwiftPackageProductDependency section */

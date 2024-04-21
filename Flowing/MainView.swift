@@ -9,6 +9,13 @@ import SwiftUI
 import SwiftData
 import WidgetKit
 
+class freeTimesVariables : ObservableObject {
+    @Published var tasks = [taskItem]()
+    @Published var freeTimes = [(Int,Int)]()
+    @Published var update = false
+}
+
+
 struct MainView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.modelContext) private var context
@@ -35,10 +42,33 @@ struct MainView: View {
     @State var days: String = "0000000"
     @State private var sheetContentHeight = CGFloat(0)
     
+    @StateObject var timeVariables = freeTimesVariables()
+    
+   
+    func updateAllTasks(){
+        withAnimation(.bouncy){
+            timeVariables.tasks = taskItems
+            timeVariables.freeTimes = getFreeTimes(taskItems, days: days, allTasks: allTasks)
+            
+            
+            for free in timeVariables.freeTimes{
+                timeVariables.tasks.append(taskItem(name: "fR33t1M3", color: "FFFFFF", desc: "u93fgbreiuwrg3", symbol: "clock", start: free.0, end: free.1, done: false, days: "1111111"))
+            }
+            
+            timeVariables.tasks = timeVariables.tasks.sorted { $0.end < $1.end }
+            timeVariables.tasks = timeVariables.tasks.sorted { $0.start < $1.start }
+        }
+    }
+    
     var body: some View {
         ZStack{
             MenuCircle(deg: $deg, color: customColor ? $mainColor : $defaultColor)
-                .onAppear(){ withAnimation{ WidgetCenter.shared.reloadAllTimelines() }}
+                .onAppear{ 
+                    withAnimation{ WidgetCenter.shared.reloadAllTimelines() }
+                    
+                    updateAllTasks()
+                }
+                
                 .offset(y:-500)
                 .onChange(of: deg) {
                 
@@ -85,36 +115,81 @@ struct MainView: View {
                     
                     
                     
-                    ForEach(taskItems){ item in
+                    ForEach(timeVariables.tasks){ item in
                         
                         if !allTasks {
                             
                             if isToday(item.days) || item.days == "0000000"  {
                                 
                                 
-                                TaskObj(item: item, context: context)
-                                    .clipped(antialiased: true)
-                                    .scrollTransition { content, phase in
-                                        content
-                                            .opacity(phase.isIdentity ? 1 : 0)
-                                            .scaleEffect(phase.isIdentity ? 1 : 0.75)
-                                            .blur(radius: phase.isIdentity ? 0 : 10)
-                                        
+                                
+                                if item.name == "fR33t1M3" && item.desc == "u93fgbreiuwrg3"{
+                                    if checkCurrentTime(start: item.start, end: item.end){
+                                        Image(systemName: "clock")
+                                            .font(.title)
+                                            .fontWeight(.heavy)
+                                            .frame(width: 358, height: 60)
+                                            .foregroundStyle(customColor ? mainColor : defaultColor)
+                                            .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor.opacity(0.3) : defaultColor.opacity(0.3)))
+                                            .padding(.horizontal)
+                                            .padding(.bottom, 5)
+                                            .scrollTransition { content, phase in
+                                                content
+                                                    .opacity(phase.isIdentity ? 1 : 0)
+                                                    .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                                    .blur(radius: phase.isIdentity ? 0 : 10)
+                                                
+                                            }
                                     }
+                                    
+                                } else {
+                                    TaskObj(item: item, context: context)
+                                        .clipped(antialiased: true)
+                                    
+                                        .scrollTransition { content, phase in
+                                            content
+                                                .opacity(phase.isIdentity ? 1 : 0)
+                                                .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                                .blur(radius: phase.isIdentity ? 0 : 10)
+                                            
+                                        }
+                                }
                             }
                         }
                         else {
                             if isIncluded(item.days, days) || days == "0000000" {
 
-                                TaskObj(item: item, context: context)
-                                    .clipped(antialiased: true)
-                                    .scrollTransition { content, phase in
-                                        content
-                                            .opacity(phase.isIdentity ? 1 : 0)
-                                            .scaleEffect(phase.isIdentity ? 1 : 0.75)
-                                            .blur(radius: phase.isIdentity ? 0 : 10)
-                                        
+                                if item.name == "fR33t1M3" && item.desc == "u93fgbreiuwrg3"{
+                                    if checkCurrentTime(start: item.start, end: item.end){
+                                        Image(systemName: "clock")
+                                            .font(.title)
+                                            .fontWeight(.heavy)
+                                            .frame(width: 358, height: 60)
+                                            .foregroundStyle(customColor ? mainColor : defaultColor)
+                                            .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(customColor ? mainColor.opacity(0.3) : defaultColor.opacity(0.3)))
+                                            .padding(.horizontal)
+                                            .padding(.bottom, 5)
+                                            .scrollTransition { content, phase in
+                                                content
+                                                    .opacity(phase.isIdentity ? 1 : 0)
+                                                    .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                                    .blur(radius: phase.isIdentity ? 0 : 10)
+                                                
+                                            }
                                     }
+                                    
+                                } else {
+                                    TaskObj(item: item, context: context)
+                                        .clipped(antialiased: true)
+                                        .scrollTransition { content, phase in
+                                            content
+                                                .opacity(phase.isIdentity ? 1 : 0)
+                                                .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                                .blur(radius: phase.isIdentity ? 0 : 10)
+                                            
+                                        }
+                                }
+                                
                             }
                         }
                     }
@@ -155,9 +230,16 @@ struct MainView: View {
                             .blur(radius: phase.isIdentity ? 0 : 10)
                         
                     }
+                    .onChange(of: timeVariables.update){
+                        if timeVariables.update{
+                            updateAllTasks()
+                            timeVariables.update = false
+                        }
+                    }
                     
                     
                 }
+                .environmentObject(timeVariables)
                 .animation(.bouncy, value: taskItems)
                 .scrollClipDisabled()
                 .scrollIndicators(.hidden)
@@ -345,6 +427,8 @@ struct MainView: View {
                                 .fontWeight(.bold)
                             
                         }
+                        .onChange(of: allTasks) {updateAllTasks()}
+                        .onChange(of: days) {updateAllTasks()}
                         .frame(height: 60)
                         .scrollTransition { content, phase in
                             content

@@ -44,7 +44,7 @@ struct InlineWidgetView: View {
     var entry: LockProvider.Entry
     
     var body: some View {
-        if let firstMatchingItem = taskItems.first(where: { isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end) }) {
+        if let firstMatchingItem = taskItems.first(where: { (isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end)) || ($0.days == "0000000" && checkCurrentTime(start: $0.start, end: $0.end))}) {
             
                 Text(firstMatchingItem.name)
                 
@@ -64,7 +64,7 @@ struct RectangularWidgetView: View {
     
     var body: some View {
         HStack {
-            if let firstMatchingItem = taskItems.first(where: { isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end) }) {
+            if let firstMatchingItem = taskItems.first(where: { (isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end)) || ($0.days == "0000000" && checkCurrentTime(start: $0.start, end: $0.end))}) {
                 
                 
                 Image(systemName: firstMatchingItem.symbol)
@@ -100,7 +100,7 @@ struct CircularWidgetView: View {
     var body: some View {
         
             ZStack {
-                if let firstMatchingItem = taskItems.first(where: { isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end) }) {
+                if let firstMatchingItem = taskItems.first(where: { (isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end)) || ($0.days == "0000000" && checkCurrentTime(start: $0.start, end: $0.end))}) {
                     
                     
                     Image(systemName: firstMatchingItem.symbol)

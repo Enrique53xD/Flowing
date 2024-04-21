@@ -34,6 +34,8 @@ struct CreateTask: View {
     @FocusState private var descripting: Bool
     @FocusState private var naming: Bool
     
+    @EnvironmentObject var timeVariables: freeTimesVariables
+    
     var body: some View {
         VStack{
             
@@ -166,6 +168,7 @@ struct CreateTask: View {
                     if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)}
                     newTask(context, name: name == "" ? "Name" : name, color: color.toHex()!, desc: description, symbol: symbol, start: start, end: end, days: days)
                 
+                timeVariables.update = true
                 
                 WidgetCenter.shared.reloadAllTimelines()
             }

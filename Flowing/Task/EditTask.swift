@@ -33,6 +33,12 @@ struct EditTask: View {
     @FocusState private var descripting: Bool
     @FocusState private var naming: Bool
     
+    @EnvironmentObject var timeVariables: freeTimesVariables
+
+    @State var buttonOpacity = 1.0
+    @State var buttonProgress = 0.0
+    @State var hasPressed = false
+    
     var body: some View {
         VStack{
             
@@ -42,7 +48,7 @@ struct EditTask: View {
                     .labelsHidden()
                     .padding(.horizontal)
                     .frame(width: 60)
-                    
+                
                 
                 TextField("Name", text: $name)
                     .font(.title)
@@ -80,7 +86,7 @@ struct EditTask: View {
                         .font(.title2)
                         .frame(width: 90)
                         .foregroundStyle(color)
-                        
+                    
                 })
                 .frame(width: 115, height: 45)
                 .background(Color.gray.opacity(0.3))
@@ -91,8 +97,8 @@ struct EditTask: View {
                         .labelsHidden()
                         .datePickerStyle(.wheel)
                         .presentationDetents([.fraction(0.3)])
-                        
-                        
+                    
+                    
                     
                 })
                 
@@ -119,7 +125,7 @@ struct EditTask: View {
                         .labelsHidden()
                         .datePickerStyle(.wheel)
                         .presentationDetents([.fraction(0.3)])
-                        
+                    
                     
                 })
                 
@@ -130,42 +136,77 @@ struct EditTask: View {
             DaySelector(days: $days, color: $color)
                 .padding(.horizontal)
                 .padding(.vertical, 7)
-                
+            
+            
+            
             TextField("Description...", text: $description, axis: .vertical)
-                    .font(.title2)
-                    .padding(10)
-                    .frame(height: 150, alignment: .top)
-                    .background(Color.gray.opacity(0.3))
-                    .focused($descripting)
-                    .onTapGesture {
-                        withAnimation{
-                            descripting = true
-                        }
+                .font(.title2)
+                .padding(10)
+                .frame(height: 150, alignment: .top)
+                .background(Color.gray.opacity(0.3))
+                .focused($descripting)
+                .onTapGesture {
+                    withAnimation{
+                        descripting = true
+                    }
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
+                .padding(.horizontal)
+                .padding(.vertical, 7)
+            
+            
+            if !naming && !descripting {
+                
+                
+                ZStack {
+                    
+                    ZStack(alignment: .leading){
+                        
+                        Rectangle().foregroundStyle(Color.red)
+                            .frame(width: buttonProgress, height: 60)
+
+                        Rectangle().foregroundStyle(Color.red)
+                            .frame(width: 330, height: 60)
+                            .opacity(buttonOpacity)
+                        
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                    .padding(.horizontal)
-                    .padding(.vertical, 7)
-            
-               
-           
-            if !naming && !descripting {
-                Button(action: {context.delete(item) }, label: {
                     
                     Text("DELETE")
                         .font(.title2)
                         .fontWeight(.heavy)
                         .frame(width: 330, height: 60)
+                        .background(RoundedRectangle(cornerRadius: 12.5).foregroundStyle(Color.red.opacity(0.01)))
                         .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                        .background(RoundedRectangle(cornerRadius: 12.5).foregroundStyle(Color.red))
-                        .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                    
-                })
-                .padding(.horizontal)
-                .padding(.vertical, 7)
+                        .onLongPressGesture(minimumDuration: 2, maximumDistance: 100, pressing: {
+                            pressing in
+                            self.hasPressed = pressing
+                            if pressing {
+                                
+                                withAnimation{
+                                    buttonOpacity = 0.5
+                                }
+                                withAnimation(.easeOut(duration: 2)){
+                                    buttonProgress = 330
+                                }
+                            }
+                            if !pressing {
+                                withAnimation(.easeInOut){
+                                    buttonOpacity = 1
+                                    buttonProgress = 0
+                                    
+                                }
+                               
+                                
+                                
+                            }
+                        }, perform: {context.delete(item); timeVariables.update = true})
+                        .padding(.horizontal)
+                        .padding(.vertical, 7)
+                }
             }
-    
+            
         }
-        
         .scrollDisabled(true)
         .onAppear{
             
@@ -176,6 +217,7 @@ struct EditTask: View {
             start = item.start
             end = item.end
             days = item.days
+            
             
             
             formatter.dateFormat = "yyyy/MM/dd HH:mm"
@@ -193,11 +235,17 @@ struct EditTask: View {
                 item.start = start
                 item.end = end
                 item.days = days
+                
+                timeVariables.update = true
             }
             
             try? context.save()
+            
+            
         }
+
         
     }
+        
 }
 

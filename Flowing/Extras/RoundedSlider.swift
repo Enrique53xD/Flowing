@@ -45,6 +45,7 @@ struct RoundedSlider: View {
                         if item.progress >= item.goal {done=true} else {done=false}
                     }
             })
+            .buttonRepeatBehavior(.enabled)
             
             Spacer()
             
@@ -149,6 +150,7 @@ struct RoundedSlider: View {
                 
                     .onAppear{if item.progress >= item.goal {done=true} else {done=false} }
             })
+            .buttonRepeatBehavior(.enabled)
             
             
         }

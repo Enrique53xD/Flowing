@@ -38,15 +38,15 @@ struct HomeScreenWidgetView : View {
     var body: some View {
         
         VStack {
-            if let firstMatchingItem = taskItems.first(where: { isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end) }) {
+            if let firstMatchingItem = taskItems.first(where: { (isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end)) || ($0.days == "0000000" && checkCurrentTime(start: $0.start, end: $0.end))}) {
                 
-                if entry.configuration.topText.use == "Name" {
+                if entry.configuration.topText?.use == "Name" {
                     Text(firstMatchingItem.name)
                         .font(.callout)
                         .fontWeight(.bold)
                         .foregroundStyle(.opacity(0.5))
                     
-                } else if entry.configuration.topText.use == "Time Range" {
+                } else if entry.configuration.topText?.use == "Time Range" {
                     Text(formatTaskTime(start: firstMatchingItem.start, end: firstMatchingItem.end))
                         .font(.callout)
                         .fontWeight(.bold)
@@ -61,13 +61,13 @@ struct HomeScreenWidgetView : View {
                     .frame(width: 60, height: 60)
                 
                 Spacer()
-                if entry.configuration.bottomText.use == "Name" {
+                if entry.configuration.bottomText?.use == "Name" {
                     Text(firstMatchingItem.name)
                         .font(.callout)
                         .fontWeight(.bold)
                         .foregroundStyle(.opacity(0.5))
                     
-                } else if entry.configuration.bottomText.use == "Time Range" {
+                } else if entry.configuration.bottomText?.use == "Time Range" {
                     Text(formatTaskTime(start: firstMatchingItem.start, end: firstMatchingItem.end))
                         .font(.callout)
                         .fontWeight(.bold)

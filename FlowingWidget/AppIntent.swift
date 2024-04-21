@@ -13,7 +13,7 @@ struct WidgetOptions: AppEntity {
     var use: String
     
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "Widget Options"
-    static var defaultQuery = WidgetColorQuery()
+    static var defaultQuery = WidgetQuery()
     
     var displayRepresentation: DisplayRepresentation {
         DisplayRepresentation(title: "\(id)")
@@ -26,7 +26,7 @@ struct WidgetOptions: AppEntity {
     ]
 }
 
-struct WidgetColorQuery: EntityQuery {
+struct WidgetQuery: EntityQuery {
     func entities(for identifiers: [WidgetOptions.ID]) async throws -> [WidgetOptions] {
         WidgetOptions.options.filter {
             identifiers.contains($0.id)
@@ -47,8 +47,8 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
 
     // An example configurable parameter.
     @Parameter(title: "Top Text")
-    var topText: WidgetOptions
+    var topText: WidgetOptions?
     
     @Parameter(title: "Bottom Text")
-    var bottomText: WidgetOptions
+    var bottomText: WidgetOptions?
 }
