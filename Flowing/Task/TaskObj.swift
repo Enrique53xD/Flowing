@@ -20,6 +20,7 @@ struct TaskObj: View {
     @State private var timer: Timer?
     
     @State private var sheetContentHeight = CGFloat(0)
+    @EnvironmentObject var timeVariables: freeTimesVariables
     
     var body: some View {
 
@@ -93,7 +94,7 @@ struct TaskObj: View {
                                             let actual = convertToMinutes(from: currentTime)
                                             
                                             
-                                            if item.end <= actual {
+                                            if item.end < actual {
                                                 item.done = true
                                             } else {
                                                 item.done = false
@@ -123,7 +124,7 @@ struct TaskObj: View {
                     .fontWeight(.bold)
                     .foregroundStyle(.opacity(0.5))
                     .frame(width: 150, alignment: .trailing)
-                    .padding(.trailing, active ? 10 : 0 )
+                    .padding(.trailing, active ? 20 : 0 )
             }
             .padding(.horizontal)
             
@@ -142,7 +143,7 @@ struct TaskObj: View {
                 dateFormatter.dateFormat = "HH:mm"
                 let currentTime = dateFormatter.string(from: Date())
                 let actual = convertToMinutes(from: currentTime)
-                if item.end <= actual {
+                if item.end < actual {
                     item.done = true
                 } else {
                     item.done = false
@@ -153,16 +154,21 @@ struct TaskObj: View {
                 withAnimation(.bouncy){
                     active = checkCurrentTime(start: item.start, end: item.end)
                     
+                    
+                    
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "HH:mm"
                     let currentTime = dateFormatter.string(from: Date())
                     let actual = convertToMinutes(from: currentTime)
-                    if item.end <= actual {
+                    if item.end < actual {
                         item.done = true
                     } else {
                         item.done = false
                     }
+                    
+                    timeVariables.update = true
                 }
+                
             }
             
             
