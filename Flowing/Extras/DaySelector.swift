@@ -34,6 +34,7 @@ struct DaySelector: View {
         }) {
             Text(String(letters[letters.index(letters.startIndex, offsetBy: day.offset)]))
                 .fontWeight(.heavy)
+                .fontDesign(.rounded)
                 .font(.title2)
                 .foregroundStyle(color)
         }

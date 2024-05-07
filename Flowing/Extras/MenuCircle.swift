@@ -12,6 +12,8 @@ struct MenuCircle: View {
     @Binding var deg: Double
     @State var mainColor = Color(UIColor.systemBackground)
     @Binding var color: Color
+    @Binding var customHome: Bool
+    @Binding var customIcon: String
     
     
     var body: some View {
@@ -22,7 +24,7 @@ struct MenuCircle: View {
                 
                 
                 
-                Image(systemName: "house")
+                Image(systemName: customHome ? customIcon : "house")
                     .fontWeight(.heavy)
                     .foregroundStyle(color.opacity(deg == -90 ? 1 : 0.5))
                     .font(deg == -90 ? .largeTitle : .title2)
@@ -71,7 +73,7 @@ struct MenuCircle: View {
                 
                 
                 
-                Image(systemName: "house")
+                Image(systemName: customHome ? customIcon : "house")
                     .fontWeight(.heavy)
                     .foregroundStyle(color.opacity(deg == 0 ? 1 : 0.5))
                     .font(deg == 0 ? .largeTitle : .title2)
@@ -121,7 +123,7 @@ struct MenuCircle: View {
                 
                 
                 
-                Image(systemName: "house")
+                Image(systemName: customHome ? customIcon : "house")
                     .fontWeight(.heavy)
                     .foregroundStyle(color.opacity(deg == 90 ? 1 : 0.5))
                     .font(deg == 90 ? .largeTitle : .title2)

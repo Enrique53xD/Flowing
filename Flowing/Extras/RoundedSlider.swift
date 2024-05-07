@@ -14,6 +14,8 @@ struct RoundedSlider: View {
     @State var color: Color = .blue
     @State var weightFont: Font = .title3
     
+    @State var progressing: Bool = false
+    
     @Binding var changing: Bool
     @Binding var done: Bool
     
@@ -71,6 +73,7 @@ struct RoundedSlider: View {
                     
                     Text("\(Int(item.progress))/\(Int(item.goal))")
                         .fontWeight(.heavy)
+                        .fontDesign(.rounded)
                         .font(weightFont)
                         .foregroundStyle(color)
                         .multilineTextAlignment(.center)
@@ -78,22 +81,26 @@ struct RoundedSlider: View {
                 )
                 
                 .gesture(
-                    DragGesture(minimumDistance: 0)
+                    DragGesture(minimumDistance: 1)
                         .onChanged{ value in
                             
-                            let translation = value.translation
+                            progressing = true
                             
-                            sliderWidth = translation.width + lastDragValue
-                            
-                            sliderWidth = sliderWidth > maxWidth ? maxWidth : sliderWidth
-                            
-                            sliderWidth = sliderWidth >= 0 ? sliderWidth : 0
-                            
-                            let current = sliderWidth / maxWidth
-                            
-                            sliderProgress = current <= 1.0 ? current : 1
-                            
-                            item.progress = item.goal * sliderProgress
+                            withAnimation(.easeIn(duration: 0.1)){
+                                let translation = value.translation
+                                
+                                sliderWidth = translation.width + lastDragValue
+                                
+                                sliderWidth = sliderWidth > maxWidth ? maxWidth : sliderWidth
+                                
+                                sliderWidth = sliderWidth >= 0 ? sliderWidth : 0
+                                
+                                let current = sliderWidth / maxWidth
+                                
+                                sliderProgress = current <= 1.0 ? current : 1
+                                
+                                item.progress = item.goal * sliderProgress
+                            }
                             
                             withAnimation(.bouncy){
                                 currentHeight = maxHeight
@@ -103,6 +110,8 @@ struct RoundedSlider: View {
                             
                         }
                         .onEnded{ value in
+                            
+                            progressing = false
                             
                             sliderWidth = sliderWidth > maxWidth ? maxWidth : sliderWidth
                             
@@ -120,20 +129,27 @@ struct RoundedSlider: View {
                     
                 )
                 
-                .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in
+                .simultaneousGesture(LongPressGesture(minimumDuration: 0.8)
+                    .onChanged({_ in
                     withAnimation(.bouncy){
-                        changing.toggle()
-                        item.progress = item.progress.rounded(.down)
+                        
+                        currentHeight = maxHeight
+                        weightFont = .title2
+                        
+                        
                     }
                     
-                }))
-                .sensoryFeedback(trigger: changing) { _,_  in
-                    if changing == false {
-                        return .impact
-                    } else {
-                        return .none
-                    }
-                }
+                })
+                    .onEnded(){_ in
+                        if !progressing {
+                            withAnimation(.bouncy){
+                                changing.toggle()
+                                item.progress = item.progress.rounded(.down)
+                            }
+                        }
+                    })
+                
+                .sensoryFeedback(.impact, trigger: changing)
                 
             }
             

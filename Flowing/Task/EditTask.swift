@@ -18,7 +18,7 @@ struct EditTask: View {
     @State var color: Color = .red
     @State var name: String = ""
     @State var description: String = ""
-    @State var symbol: String = ""
+    @State var symbol: String = "house"
     @State var start: Int = 0
     @State var end: Int = 0
     @State var days: String = ""
@@ -28,6 +28,8 @@ struct EditTask: View {
     @State private var dateSPicking = false
     @State private var dateEPicking = false
     private let formatter = DateFormatter()
+    
+    @State var deleted = false
     
     @State private var symbolPicking = false
     @FocusState private var descripting: Bool
@@ -53,6 +55,7 @@ struct EditTask: View {
                 TextField("Name", text: $name)
                     .font(.title)
                     .fontWeight(.bold)
+                    .fontDesign(.rounded)
                     .multilineTextAlignment(.center)
                     .padding(5)
                     .background(Color.gray.opacity(0.3))
@@ -81,9 +84,10 @@ struct EditTask: View {
             HStack{
                 
                 Button(action: {dateSPicking=true}, label: {
-                    Text("\(transformDate(date:dateS))")
+                    Text("\(dateS.toHoursAndMinutes())")
                         .fontWeight(.heavy)
                         .font(.title2)
+                        .fontDesign(.rounded)
                         .frame(width: 90)
                         .foregroundStyle(color)
                     
@@ -92,7 +96,7 @@ struct EditTask: View {
                 .background(Color.gray.opacity(0.3))
                 .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 .buttonStyle(.borderless)
-                .sheet(isPresented: $dateSPicking, onDismiss: {start = convertToMinutes(from: transformDate(date: dateS))}, content: {
+                .sheet(isPresented: $dateSPicking, onDismiss: {start = convertToMinutes(from: dateS.toHoursAndMinutes())}, content: {
                     DatePicker(selection: $dateS, displayedComponents: .hourAndMinute, label: {Text("")})
                         .labelsHidden()
                         .datePickerStyle(.wheel)
@@ -106,21 +110,23 @@ struct EditTask: View {
                 Text("-")
                     .font(.title)
                     .fontWeight(.semibold)
+                    .fontDesign(.rounded)
                     .padding(.horizontal, 10)
                 
                 
                 Button(action: {dateEPicking=true}, label: {
-                    Text("\(transformDate(date:dateE))")
+                    Text("\(dateE.toHoursAndMinutes())")
                         .fontWeight(.heavy)
                         .font(.title2)
                         .frame(width: 90)
+                        .fontDesign(.rounded)
                         .foregroundStyle(color)
                 })
                 .frame(width: 115, height: 45)
                 .background(Color.gray.opacity(0.3))
                 .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 .buttonStyle(.borderless)
-                .sheet(isPresented: $dateEPicking, onDismiss: {end = convertToMinutes(from: transformDate(date: dateE))}, content: {
+                .sheet(isPresented: $dateEPicking, onDismiss: {end = convertToMinutes(from: dateE.toHoursAndMinutes())}, content: {
                     DatePicker(selection: $dateE, displayedComponents: .hourAndMinute, label: {Text("")})
                         .labelsHidden()
                         .datePickerStyle(.wheel)
@@ -141,6 +147,7 @@ struct EditTask: View {
             
             TextField("Description...", text: $description, axis: .vertical)
                 .font(.title2)
+                .fontDesign(.rounded)
                 .padding(10)
                 .frame(height: 150, alignment: .top)
                 .background(Color.gray.opacity(0.3))
@@ -174,11 +181,13 @@ struct EditTask: View {
                     
                     Text("DELETE")
                         .font(.title2)
+                        .fontDesign(.rounded)
                         .fontWeight(.heavy)
                         .frame(width: 330, height: 60)
                         .background(RoundedRectangle(cornerRadius: 12.5).foregroundStyle(Color.red.opacity(0.01)))
                         .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                        .onLongPressGesture(minimumDuration: 2, maximumDistance: 100, pressing: {
+                        .sensoryFeedback(.impact, trigger: deleted)
+                        .onLongPressGesture(minimumDuration: 2, maximumDistance: 20, pressing: {
                             pressing in
                             self.hasPressed = pressing
                             if pressing {
@@ -200,13 +209,14 @@ struct EditTask: View {
                                 
                                 
                             }
-                        }, perform: {context.delete(item); timeVariables.update = true})
+                        }, perform: {deleted = true; context.delete(item); timeVariables.update.toggle()})
                         .padding(.horizontal)
                         .padding(.vertical, 7)
                 }
             }
             
         }
+        
         .scrollDisabled(true)
         .onAppear{
             
@@ -226,6 +236,7 @@ struct EditTask: View {
         }
         
         .onDisappear{
+            
             withAnimation(.bouncy){
                 if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)}
                 item.color = color.toHex()!
@@ -236,15 +247,13 @@ struct EditTask: View {
                 item.end = end
                 item.days = days
                 
-                timeVariables.update = true
+                timeVariables.update.toggle()
             }
             
             try? context.save()
-            
-            
-        }
 
-        
+        }
+ 
     }
         
 }

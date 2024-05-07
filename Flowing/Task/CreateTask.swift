@@ -78,7 +78,7 @@ struct CreateTask: View {
             HStack{
                 
                 Button(action: {dateSPicking=true}, label: {
-                    Text("\(transformDate(date:dateS))")
+                    Text("\(dateS.toHoursAndMinutes())")
                         .fontWeight(.heavy)
                         .font(.title2)
                         .frame(width: 90)
@@ -89,7 +89,7 @@ struct CreateTask: View {
                 .background(Color.gray.opacity(0.3))
                 .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 .buttonStyle(.borderless)
-                .sheet(isPresented: $dateSPicking, onDismiss: {start = convertToMinutes(from: transformDate(date: dateS))}, content: {
+                .sheet(isPresented: $dateSPicking, onDismiss: {start = convertToMinutes(from: dateS.toHoursAndMinutes())}, content: {
                     DatePicker(selection: $dateS, displayedComponents: .hourAndMinute, label: {Text("")})
                         .labelsHidden()
                         .datePickerStyle(.wheel)
@@ -107,7 +107,7 @@ struct CreateTask: View {
                 
                 
                 Button(action: {dateEPicking=true}, label: {
-                    Text("\(transformDate(date:dateE))")
+                    Text("\(dateE.toHoursAndMinutes())")
                         .fontWeight(.heavy)
                         .font(.title2)
                         .frame(width: 90)
@@ -117,7 +117,7 @@ struct CreateTask: View {
                 .background(Color.gray.opacity(0.3))
                 .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 .buttonStyle(.borderless)
-                .sheet(isPresented: $dateEPicking, onDismiss: {end = convertToMinutes(from: transformDate(date: dateE))}, content: {
+                .sheet(isPresented: $dateEPicking, onDismiss: {end = convertToMinutes(from: dateE.toHoursAndMinutes())}, content: {
                     DatePicker(selection: $dateE, displayedComponents: .hourAndMinute, label: {Text("")})
                         .labelsHidden()
                         .datePickerStyle(.wheel)
@@ -168,7 +168,7 @@ struct CreateTask: View {
                     if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)}
                     newTask(context, name: name == "" ? "Name" : name, color: color.toHex()!, desc: description, symbol: symbol, start: start, end: end, days: days)
                 
-                timeVariables.update = true
+                timeVariables.update.toggle()
                 
                 WidgetCenter.shared.reloadAllTimelines()
             }

@@ -18,6 +18,9 @@ struct TaskObj: View {
     @State private var editing = false
     @State private var active = false
     @State private var timer: Timer?
+    @State private var buttonOpacity = 1.0
+    
+    @State var textColor: Color
     
     @State private var sheetContentHeight = CGFloat(0)
     @EnvironmentObject var timeVariables: freeTimesVariables
@@ -41,74 +44,92 @@ struct TaskObj: View {
                     RoundedRectangle(cornerRadius: 45)
                         .frame(width: 60, height: 60)
                         .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                
-                    Button(action: {},label: {
-                        Image(systemName: item.symbol)
+                    
+                    
+                    Image(systemName: item.symbol)
+                        .font(.title)
+                        .fontWeight(.heavy)
+                        .foregroundStyle(
+                            (colorScheme == .dark ? (item.done ? Color.black.opacity(0.5) : Color(hex: item.color)) : (item.done ? Color.white.opacity(0.5) : Color(hex: item.color))) ?? Color.clear
+                        )
+                        .background(
+                            RoundedRectangle(cornerRadius: 45)
+                                .frame(width: 60, height: 60)
+                        )
+                        .foregroundStyle(
                         
-                            .font(.title)
-                            .fontWeight(.heavy)
-                            .foregroundStyle(
-                                (colorScheme == .dark ? (item.done ? Color.black.opacity(0.5) : Color(hex: item.color)) : (item.done ? Color.white.opacity(0.5) : Color(hex: item.color))) ?? Color.clear
-                            )
-                            .background(
-                                RoundedRectangle(cornerRadius: 45)
-                                    .frame(width: 60, height: 60)
-                            )
-                            .foregroundStyle(
-                                (item.done ? Color(hex: item.color) : Color(hex: item.color)?.opacity(0.5)) ?? Color.clear
-                            )
-                            .frame(width: 60, height: 60)
-                    })
-                    .onChange(of: active){WidgetCenter.shared.reloadAllTimelines() }
-                    .simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({_ in withAnimation{editing.toggle()}}))
-                    .sensoryFeedback(trigger: editing) { _,_  in
-                        if editing == true {
-                            return .impact
-                        } else {
-                            return .none
+                            (item.done ? Color(hex: item.color) : Color(hex: item.color)?.opacity(0.5)) ?? Color.clear
+                        )
+                        .frame(width: 60, height: 60)
+                        .delaysTouches(for: 0.05) {}
+                        .gesture(LongPressGesture(minimumDuration: 0.2)
+                            .onChanged({_ in
+                                withAnimation(.linear(duration: 0.1)){
+                                    buttonOpacity = 0.1
+                                }
+                                withAnimation(.linear(duration: 0.4)){
+                                    buttonOpacity = 1
+                                }
+                            
+                        })
+                            .onEnded(){_ in
+                                withAnimation{
+                                    editing.toggle()
+                           
+                                }
+                            })
+                        .opacity(buttonOpacity)
+                        .onChange(of: active){ WidgetCenter.shared.reloadAllTimelines() }
+                        .sensoryFeedback(trigger: editing) { _,_  in
+                            if editing == true {
+                                return .impact
+                            } else {
+                                return .none
+                            }
                         }
-                    }
-                    .sheet(isPresented: $editing, content: {
-                        
-                        EditTask(item: item, context: context)
-                            .presentationDragIndicator(.visible)
-                            .padding()
-                            .background {
-                                        //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
-                                        GeometryReader { proxy in
-                                            Color.clear
-                                                .task {
-                                                    sheetContentHeight = proxy.size.height
-                                                }
-                                        }
-                                    }
-                                    .presentationDetents([.height(sheetContentHeight)])
-                                    .onDisappear{
-                                        WidgetCenter.shared.reloadAllTimelines()
-                                        withAnimation(.bouncy){
-                                            active = checkCurrentTime(start: item.start, end: item.end)
-                                  
-                                            let dateFormatter = DateFormatter()
-                                            dateFormatter.dateFormat = "HH:mm"
-                                            let currentTime = dateFormatter.string(from: Date())
-                                            let actual = convertToMinutes(from: currentTime)
-                                            
-                                            
-                                            if item.end < actual {
-                                                item.done = true
-                                            } else {
-                                                item.done = false
+                        .sheet(isPresented: $editing, content: {
+                            
+                            EditTask(item: item, context: context)
+                                .presentationDragIndicator(.visible)
+                                .padding()
+                                .background {
+                                    //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                                    GeometryReader { proxy in
+                                        Color.clear
+                                            .task {
+                                                sheetContentHeight = proxy.size.height
                                             }
+                                    }
+                                }
+                                .presentationDetents([.height(sheetContentHeight)])
+                                .onDisappear{
+                                    WidgetCenter.shared.reloadAllTimelines()
+                                    withAnimation(.bouncy){
+                                        active = checkCurrentTime(start: item.start, end: item.end)
+                                        
+                                        let dateFormatter = DateFormatter()
+                                        dateFormatter.dateFormat = "HH:mm"
+                                        let currentTime = dateFormatter.string(from: Date())
+                                        let actual = convertToMinutes(from: currentTime)
+                                        
+                                        
+                                        if item.end < actual {
+                                            item.done = true
+                                        } else {
+                                            item.done = false
                                         }
                                     }
-                        
-                        
-                        
-                    })
+                                }
+                            
+                            
+                            
+                        })
                     
                 }
                 
                 Text(item.name)
+                    .foregroundStyle(textColor)
+                    .fontDesign(.rounded)
                     .font(.title2)
                     .fontWeight(.bold)
                     .lineLimit(1)
@@ -120,9 +141,10 @@ struct TaskObj: View {
                 Spacer()
                 
                 Text(formatTaskTime(start: item.start, end: item.end))
+                    .foregroundStyle(textColor.opacity(0.5))
+                    .fontDesign(.rounded)
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundStyle(.opacity(0.5))
                     .frame(width: 150, alignment: .trailing)
                     .padding(.trailing, active ? 20 : 0 )
             }
@@ -166,7 +188,7 @@ struct TaskObj: View {
                         item.done = false
                     }
                     
-                    timeVariables.update = true
+                    timeVariables.update.toggle()
                 }
                 
             }

@@ -9,9 +9,13 @@ import Foundation
 import SwiftUI
 import SwiftData
 
+// MARK: Objects
+
+// Task Object
 @Model
 class taskItem: Identifiable {
     
+    // Declaration of variables
     var id: String
     var name: String
     var color: String
@@ -21,9 +25,10 @@ class taskItem: Identifiable {
     var end: Int
     var done: Bool
     var days: String
-   
     
+    // Initialization of variables
     init(name: String, color: String, desc: String, symbol: String, start: Int, end: Int, done: Bool, days: String) {
+        
         self.id = UUID().uuidString
         self.name = name
         self.color = color
@@ -33,14 +38,16 @@ class taskItem: Identifiable {
         self.end = end
         self.done = done
         self.days = days
+        
     }
-    
     
 }
 
+// ToDo Object
 @Model
 class toDoItem: Identifiable {
     
+    // Declaration of variables
     var id: String
     var name: String
     var color: String
@@ -49,9 +56,10 @@ class toDoItem: Identifiable {
     var done: Bool
     var daily: Bool
     var date: String
-   
     
+    // Initialization of variables
     init(name: String, color: String, desc: String, symbol: String, done: Bool, daily: Bool = false, date: String = dateStr(Date.now)) {
+        
         self.id = UUID().uuidString
         self.name = name
         self.color = color
@@ -60,14 +68,16 @@ class toDoItem: Identifiable {
         self.done = done
         self.daily = daily
         self.date = date
+        
     }
-    
     
 }
 
+// Progressive Object
 @Model
 class progressiveItem: Identifiable {
     
+    // Declaration of variables
     var id: String
     var name: String
     var color: String
@@ -79,8 +89,8 @@ class progressiveItem: Identifiable {
     var suffix: String
     var daily: Bool
     var date: String
-   
     
+    // Initialization of variables
     init(name: String, color: String, desc: String, symbol: String, progress: CGFloat, goal: CGFloat, preffix: String, suffix: String, daily: Bool = false, date: String = dateStr(Date.now)) {
         self.id = UUID().uuidString
         self.name = name
@@ -93,27 +103,45 @@ class progressiveItem: Identifiable {
         self.suffix = suffix
         self.daily = daily
         self.date = date
+        
     }
-    
     
 }
 
+// Settings Object
 
 
 @Model
 class settingsItem: Identifiable {
+    
+    // Declaration of variables
     var id: String
     var customMainColor: Bool
     var mainColor: String
-
+    var customTextColor: Bool
+    var textColor: String
+    var showFreeTimes: Bool
+    var customHome: Bool
     
-    init(customMainColor: Bool, mainColor: String) {
+    // TODO: add show free times variable
+    
+    // Initialization of variables
+    init(customMainColor: Bool, mainColor: String, textColor: String, customTextColor: Bool, showFreeTimes: Bool, customHome: Bool) {
+        
         self.id = UUID().uuidString
         self.customMainColor = customMainColor
         self.mainColor = mainColor
+        self.customTextColor = customTextColor
+        self.textColor = textColor
+        self.showFreeTimes = showFreeTimes
+        self.customHome = customHome
     }
+    
 }
 
 
+ 
 
 
+ 
+ 

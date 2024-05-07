@@ -18,7 +18,7 @@ struct WidgetOptions: AppEntity {
     var displayRepresentation: DisplayRepresentation {
         DisplayRepresentation(title: "\(id)")
     }
-    // Mocked Data
+    
     static let options: [WidgetOptions] = [
         WidgetOptions(id: "Nothing", use: "Nothing"),
         WidgetOptions(id: "Name", use: "Name"),

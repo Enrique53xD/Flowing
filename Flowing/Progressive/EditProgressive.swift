@@ -21,9 +21,11 @@ struct EditProgressive: View {
     @State var description: String = ""
     @State var symbol: String = "circle.dotted"
     @State var progress: CGFloat = 0
-    @State var goal: CGFloat = 10
+    @State var goal: String = "10"
     @State var preffix: String = ""
     @State var suffix: String = ""
+    
+    @State var deleted = false
     
     @State private var symbolPicking = false
     @FocusState private var descripting: Bool
@@ -51,6 +53,7 @@ struct EditProgressive: View {
                 TextField("Name", text: $name)
                     .font(.title)
                     .fontWeight(.bold)
+                    .fontDesign(.rounded)
                     .multilineTextAlignment(.center)
                     .padding(5)
                     .background(Color.gray.opacity(0.3))
@@ -80,6 +83,7 @@ struct EditProgressive: View {
                     .fontWeight(.heavy)
                     .padding(10)
                     .foregroundStyle(color)
+                    .fontDesign(.rounded)
                     .multilineTextAlignment(.center)
                     .background(Color.gray.opacity(0.3))
                     .focused($preffixing)
@@ -94,12 +98,14 @@ struct EditProgressive: View {
                 Text("-")
                     .font(.title)
                     .fontWeight(.semibold)
+                    .fontDesign(.rounded)
                     .padding(.horizontal, 10)
                     
                 TextField("Suffix", text: $suffix)
                     .font(.title2)
                     .fontWeight(.heavy)
                     .padding(10)
+                    .fontDesign(.rounded)
                     .foregroundStyle(color)
                     .multilineTextAlignment(.center)
                     .background(Color.gray.opacity(0.3))
@@ -115,14 +121,11 @@ struct EditProgressive: View {
             .padding(.horizontal)
             .padding(.vertical, 7)
             
-            TextField("Goal", value: Binding(
-                get: { Int(goal) },
-                set: { newValue in
-                    goal = CGFloat(newValue)
-                }
-            ), formatter: NumberFormatter())
+            TextField("Goal", text: $goal)
             .keyboardType(.numberPad)
+            .limitInputLength(value: $goal, length: 5)
             .font(.title2)
+            .fontDesign(.rounded)
             .fontWeight(.heavy)
             .padding(10)
             .foregroundStyle(color)
@@ -137,10 +140,12 @@ struct EditProgressive: View {
             .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
             .padding(.horizontal)
             .padding(.vertical, 7)
+          
             
             TextField("Description...", text: $description, axis: .vertical)
                     .font(.title2)
                     .padding(10)
+                    .fontDesign(.rounded)
                     .frame(height: 150, alignment: .top)
                     .background(Color.gray.opacity(0.3))
                     .focused($descripting)
@@ -174,10 +179,12 @@ struct EditProgressive: View {
                         Text("DELETE")
                             .font(.title2)
                             .fontWeight(.heavy)
+                            .fontDesign(.rounded)
                             .frame(width: 250, height: 60)
                             .background(RoundedRectangle(cornerRadius: 12.5).foregroundStyle(Color.red.opacity(0.01)))
                             .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                            .onLongPressGesture(minimumDuration: 2, maximumDistance: 100, pressing: {
+                            .sensoryFeedback(.impact, trigger: deleted)
+                            .onLongPressGesture(minimumDuration: 2, maximumDistance: 20, pressing: {
                                 pressing in
                                 self.hasPressed = pressing
                                 if pressing {
@@ -199,7 +206,7 @@ struct EditProgressive: View {
                                     
                                     
                                 }
-                            }, perform: {context.delete(item)})
+                            }, perform: {deleted = true; context.delete(item)})
                             
                     }
 
@@ -237,7 +244,7 @@ struct EditProgressive: View {
             description = item.desc
             symbol = item.symbol
             progress = item.progress
-            goal = item.goal
+            goal = String(Int(item.goal))
             preffix = item.preffix
             suffix = item.suffix
             
@@ -250,7 +257,7 @@ struct EditProgressive: View {
                 item.desc = description
                 item.symbol = symbol
                 item.progress = progress
-                item.goal = goal
+                item.goal = CGFloat(Int(goal)!)
                 item.preffix = preffix
                 item.suffix = suffix
                 

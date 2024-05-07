@@ -18,7 +18,9 @@ struct EditToDo: View {
     @State var color: Color = Color.blue
     @State var name: String = ""
     @State var description: String = ""
-    @State var symbol: String = ""
+    @State var symbol: String = "house"
+    
+    @State var deleted = false
 
     @State private var symbolPicking = false
     @FocusState private var descripting: Bool
@@ -40,6 +42,7 @@ struct EditToDo: View {
                 
                 TextField("Name", text: $name)
                     .font(.title)
+                    .fontDesign(.rounded)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                     .padding(5)
@@ -67,6 +70,7 @@ struct EditToDo: View {
             
             TextField("Description...", text: $description, axis: .vertical)
                 .font(.title2)
+                .fontDesign(.rounded)
                 .padding(10)
                 .frame(height: 150, alignment: .top)
                 .background(Color.gray.opacity(0.3))
@@ -98,13 +102,17 @@ struct EditToDo: View {
                         }
                         .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                         
+                        
+                        
                         Text("DELETE")
+                            .fontDesign(.rounded)
                             .font(.title2)
                             .fontWeight(.heavy)
                             .frame(width: 250, height: 60)
                             .background(RoundedRectangle(cornerRadius: 12.5).foregroundStyle(Color.red.opacity(0.01)))
                             .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                            .onLongPressGesture(minimumDuration: 2, maximumDistance: 100, pressing: {
+                            .sensoryFeedback(.impact, trigger: deleted)
+                            .onLongPressGesture(minimumDuration: 2, maximumDistance: 20, pressing: {
                                 pressing in
                                 self.hasPressed = pressing
                                 if pressing {
@@ -126,7 +134,7 @@ struct EditToDo: View {
                                     
                                     
                                 }
-                            }, perform: {context.delete(item)})
+                            }, perform: {deleted = true; context.delete(item)})
                             
                     }
 

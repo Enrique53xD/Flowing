@@ -40,17 +40,21 @@ struct HomeScreenWidgetView : View {
         VStack {
             if let firstMatchingItem = taskItems.first(where: { (isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end)) || ($0.days == "0000000" && checkCurrentTime(start: $0.start, end: $0.end))}) {
                 
+                let color: Color = Color(hex: firstMatchingItem.color)!
+                
                 if entry.configuration.topText?.use == "Name" {
                     Text(firstMatchingItem.name)
                         .font(.callout)
                         .fontWeight(.bold)
-                        .foregroundStyle(.opacity(0.5))
+                        .fontDesign(.rounded)
+                        .foregroundStyle(color.opacity(0.75))
                     
                 } else if entry.configuration.topText?.use == "Time Range" {
                     Text(formatTaskTime(start: firstMatchingItem.start, end: firstMatchingItem.end))
                         .font(.callout)
                         .fontWeight(.bold)
-                        .foregroundStyle(.opacity(0.5))
+                        .fontDesign(.rounded)
+                        .foregroundStyle(color.opacity(0.75))
                     
                 }
                 Spacer()
@@ -65,13 +69,16 @@ struct HomeScreenWidgetView : View {
                     Text(firstMatchingItem.name)
                         .font(.callout)
                         .fontWeight(.bold)
-                        .foregroundStyle(.opacity(0.5))
+                        .fontDesign(.rounded)
+                        .foregroundStyle(color.opacity(0.75))
+
                     
                 } else if entry.configuration.bottomText?.use == "Time Range" {
                     Text(formatTaskTime(start: firstMatchingItem.start, end: firstMatchingItem.end))
                         .font(.callout)
                         .fontWeight(.bold)
-                        .foregroundStyle(.opacity(0.5))
+                        .fontDesign(.rounded)
+                        .foregroundStyle(color.opacity(0.75))
                     
                 }
                 

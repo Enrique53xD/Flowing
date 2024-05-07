@@ -168,8 +168,6 @@
 			children = (
 				3E580D212B4E4CA6004534BF /* FlowingApp.swift */,
 				3E4059572B51B63E00BA643E /* MainView.swift */,
-				3ED8CB8C2B7B619300A50A22 /* MenuCircle.swift */,
-				3ECAD69B2BA24B3E00DC6A59 /* Others.swift */,
 				3E0359F42B630C83003ABF17 /* Progressive */,
 				3E0359F12B6228A2003ABF17 /* ToDo */,
 				3ED60F472B62260E00C7BC5A /* Task */,
@@ -216,8 +214,10 @@
 		3EBE5F2E2BAA52D100A711E9 /* Extras */ = {
 			isa = PBXGroup;
 			children = (
+				3ED8CB8C2B7B619300A50A22 /* MenuCircle.swift */,
 				3E38C30F2B608187009E160D /* DaySelector.swift */,
 				3E9303D82B65A7370087660E /* RoundedSlider.swift */,
+				3ECAD69B2BA24B3E00DC6A59 /* Others.swift */,
 			);
 			path = Extras;
 			sourceTree = "<group>";
