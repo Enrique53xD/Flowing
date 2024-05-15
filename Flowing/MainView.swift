@@ -30,7 +30,7 @@ struct MainView: View {
     @Query(sort: \progressiveItem.name) private var progressiveItems: [progressiveItem]
     @Query() private var settingsItems: [settingsItem]
     
-    let config = TokenConfiguration("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")
+    let config = TokenConfiguration("")
     @State private var login: String?
     @State private var repos = [reposWithIssues]()
     
