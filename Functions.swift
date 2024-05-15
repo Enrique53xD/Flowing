@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import SwiftData
 import UIKit
+import OctoKit
 
 // MARK: Extensions
 
@@ -422,3 +423,77 @@ extension View {
         self.modifier(TextFieldLimitModifer(value: value, length: length))
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+func getLogin(_ config: TokenConfiguration) async -> String {
+    var login = "..."
+    
+    do {
+        let user = try await Octokit(config).me()
+        login = user.login ?? "Not Found"
+        print(login)
+
+    } catch {
+        print(error)
+        login = "Error"
+    }
+    
+    return login
+}
+
+func getRepos(_ config: TokenConfiguration, _ login: String) async -> [reposWithIssues] {
+    var repos: [reposWithIssues] = []
+    
+    do {
+        let repo = try await Octokit(config).repositories()
+        repos = []
+        
+        for i in repo {
+            
+            let temp = reposWithIssues(name: i.name ?? "No name", issues: await getIssues(repoName: i.name ?? "No name", login: login, config: config))
+            repos.append(temp)
+        }
+        print("a")
+        
+    } catch {
+        
+    }
+    
+    
+    print(repos)
+    return repos
+}
+
+func getIssues(repoName: String, login: String, config: TokenConfiguration) async -> [Issue] {
+    var issuesArr: [Issue]?
+    issuesArr = []
+    
+    do {
+        let issues = try await Octokit(config).issues(owner: login, repository: repoName, state: .all)
+
+        issuesArr = []
+        for issue in issues {
+            issuesArr?.append(issue)
+        }
+        print("b")
+    } catch {
+        
+    }
+    
+    
+    return issuesArr!
+}
+

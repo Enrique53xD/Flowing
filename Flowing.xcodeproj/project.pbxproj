@@ -10,12 +10,17 @@
 		3E0359EF2B62288D003ABF17 /* EditToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0359ED2B62288D003ABF17 /* EditToDo.swift */; };
 		3E0359F02B62288D003ABF17 /* ToDoObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0359EE2B62288D003ABF17 /* ToDoObj.swift */; };
 		3E0359F62B630CAC003ABF17 /* ProgressiveObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0359F52B630CAC003ABF17 /* ProgressiveObj.swift */; };
+		3E14F6F02BEACE6E00C28F7E /* OctoKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3E14F6EF2BEACE6E00C28F7E /* OctoKit */; };
+		3E14F6F22BEACF4D00C28F7E /* Github Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E14F6F12BEACF4D00C28F7E /* Github Tests.swift */; };
 		3E1CDA122B9EC87B00039E9A /* CreateTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1CDA112B9EC87B00039E9A /* CreateTask.swift */; };
 		3E1FD06B2B9FABB90035F06C /* CreateToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FD06A2B9FABB90035F06C /* CreateToDo.swift */; };
 		3E1FD06D2BA003270035F06C /* CreateProgressive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FD06C2BA003270035F06C /* CreateProgressive.swift */; };
 		3E1FD06F2BA21D0A0035F06C /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FD06E2BA21D0A0035F06C /* TestView.swift */; };
+		3E2EBD862BF2A1B8001DCD37 /* EditIssue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2EBD852BF2A1B8001DCD37 /* EditIssue.swift */; };
+		3E2EBD882BF41835001DCD37 /* OctoKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3E2EBD872BF41835001DCD37 /* OctoKit */; };
 		3E38C30E2B5AE487009E160D /* VariableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38C30D2B5AE487009E160D /* VariableManager.swift */; };
 		3E38C3102B608188009E160D /* DaySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E38C30F2B608187009E160D /* DaySelector.swift */; };
+		3E3B7E802BF296CD0051EB94 /* IssueObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3B7E7F2BF296CD0051EB94 /* IssueObj.swift */; };
 		3E4059532B50EB3D00BA643E /* EditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4059522B50EB3D00BA643E /* EditTask.swift */; };
 		3E4059582B51B63E00BA643E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4059572B51B63E00BA643E /* MainView.swift */; };
 		3E580D222B4E4CA6004534BF /* FlowingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E580D212B4E4CA6004534BF /* FlowingApp.swift */; };
@@ -36,6 +41,7 @@
 		3EB9B8AF2BD1DEBA0098C00F /* SymbolPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 3EB9B8AE2BD1DEBA0098C00F /* SymbolPicker */; };
 		3EC18BD82B4E4EB900C9FA4B /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD72B4E4EB900C9FA4B /* Functions.swift */; };
 		3EC18BDA2B4E504B00C9FA4B /* TaskObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */; };
+		3ECA8C642BEAF7FB009EA4E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECA8C632BEAF7FB009EA4E2 /* AppDelegate.swift */; };
 		3ECAD69C2BA24B3E00DC6A59 /* Others.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECAD69B2BA24B3E00DC6A59 /* Others.swift */; };
 		3ED8CB8D2B7B619300A50A22 /* MenuCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED8CB8C2B7B619300A50A22 /* MenuCircle.swift */; };
 /* End PBXBuildFile section */
@@ -68,12 +74,15 @@
 		3E0359ED2B62288D003ABF17 /* EditToDo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditToDo.swift; sourceTree = "<group>"; };
 		3E0359EE2B62288D003ABF17 /* ToDoObj.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoObj.swift; sourceTree = "<group>"; };
 		3E0359F52B630CAC003ABF17 /* ProgressiveObj.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressiveObj.swift; sourceTree = "<group>"; };
+		3E14F6F12BEACF4D00C28F7E /* Github Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Github Tests.swift"; sourceTree = "<group>"; };
 		3E1CDA112B9EC87B00039E9A /* CreateTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTask.swift; sourceTree = "<group>"; };
 		3E1FD06A2B9FABB90035F06C /* CreateToDo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateToDo.swift; sourceTree = "<group>"; };
 		3E1FD06C2BA003270035F06C /* CreateProgressive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProgressive.swift; sourceTree = "<group>"; };
 		3E1FD06E2BA21D0A0035F06C /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		3E2EBD852BF2A1B8001DCD37 /* EditIssue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditIssue.swift; sourceTree = "<group>"; };
 		3E38C30D2B5AE487009E160D /* VariableManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableManager.swift; sourceTree = "<group>"; };
 		3E38C30F2B608187009E160D /* DaySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySelector.swift; sourceTree = "<group>"; };
+		3E3B7E7F2BF296CD0051EB94 /* IssueObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueObj.swift; sourceTree = "<group>"; };
 		3E4059522B50EB3D00BA643E /* EditTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTask.swift; sourceTree = "<group>"; };
 		3E4059572B51B63E00BA643E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		3E580D1E2B4E4CA6004534BF /* Flowing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flowing.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,6 +105,7 @@
 		3EB7A54C2BBDE30100093B1B /* FlowingWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlowingWidgetExtension.entitlements; sourceTree = "<group>"; };
 		3EC18BD72B4E4EB900C9FA4B /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskObj.swift; sourceTree = "<group>"; };
+		3ECA8C632BEAF7FB009EA4E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3ECAD69B2BA24B3E00DC6A59 /* Others.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Others.swift; sourceTree = "<group>"; };
 		3ED8CB8C2B7B619300A50A22 /* MenuCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCircle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -105,6 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E14F6F02BEACE6E00C28F7E /* OctoKit in Frameworks */,
 				3EB9B8AF2BD1DEBA0098C00F /* SymbolPicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,6 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E2EBD882BF41835001DCD37 /* OctoKit in Frameworks */,
 				3EB7A5392BBDCD0000093B1B /* SwiftUI.framework in Frameworks */,
 				3EB7A5382BBDCD0000093B1B /* WidgetKit.framework in Frameworks */,
 			);
@@ -168,6 +180,9 @@
 			children = (
 				3E580D212B4E4CA6004534BF /* FlowingApp.swift */,
 				3E4059572B51B63E00BA643E /* MainView.swift */,
+				3E14F6F12BEACF4D00C28F7E /* Github Tests.swift */,
+				3E3B7E7F2BF296CD0051EB94 /* IssueObj.swift */,
+				3E2EBD852BF2A1B8001DCD37 /* EditIssue.swift */,
 				3E0359F42B630C83003ABF17 /* Progressive */,
 				3E0359F12B6228A2003ABF17 /* ToDo */,
 				3ED60F472B62260E00C7BC5A /* Task */,
@@ -218,6 +233,7 @@
 				3E38C30F2B608187009E160D /* DaySelector.swift */,
 				3E9303D82B65A7370087660E /* RoundedSlider.swift */,
 				3ECAD69B2BA24B3E00DC6A59 /* Others.swift */,
+				3ECA8C632BEAF7FB009EA4E2 /* AppDelegate.swift */,
 			);
 			path = Extras;
 			sourceTree = "<group>";
@@ -252,6 +268,7 @@
 			name = Flowing;
 			packageProductDependencies = (
 				3EB9B8AE2BD1DEBA0098C00F /* SymbolPicker */,
+				3E14F6EF2BEACE6E00C28F7E /* OctoKit */,
 			);
 			productName = Flowing;
 			productReference = 3E580D1E2B4E4CA6004534BF /* Flowing.app */;
@@ -270,6 +287,9 @@
 			dependencies = (
 			);
 			name = FlowingWidgetExtension;
+			packageProductDependencies = (
+				3E2EBD872BF41835001DCD37 /* OctoKit */,
+			);
 			productName = FlowingWidgetExtension;
 			productReference = 3EB7A5362BBDCD0000093B1B /* FlowingWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -303,6 +323,7 @@
 			mainGroup = 3E580D152B4E4CA6004534BF;
 			packageReferences = (
 				3E4059542B50F19400BA643E /* XCRemoteSwiftPackageReference "SymbolPicker" */,
+				3E14F6EE2BEACE6E00C28F7E /* XCRemoteSwiftPackageReference "octokit" */,
 			);
 			productRefGroup = 3E580D1F2B4E4CA6004534BF /* Products */;
 			projectDirPath = "";
@@ -340,6 +361,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E9303D92B65A7370087660E /* RoundedSlider.swift in Sources */,
+				3E2EBD862BF2A1B8001DCD37 /* EditIssue.swift in Sources */,
 				3E0359EF2B62288D003ABF17 /* EditToDo.swift in Sources */,
 				3ECAD69C2BA24B3E00DC6A59 /* Others.swift in Sources */,
 				3ED8CB8D2B7B619300A50A22 /* MenuCircle.swift in Sources */,
@@ -347,8 +369,11 @@
 				3E0359F62B630CAC003ABF17 /* ProgressiveObj.swift in Sources */,
 				3E38C30E2B5AE487009E160D /* VariableManager.swift in Sources */,
 				3E0359F02B62288D003ABF17 /* ToDoObj.swift in Sources */,
+				3ECA8C642BEAF7FB009EA4E2 /* AppDelegate.swift in Sources */,
 				3E1FD06B2B9FABB90035F06C /* CreateToDo.swift in Sources */,
 				3E1FD06F2BA21D0A0035F06C /* TestView.swift in Sources */,
+				3E3B7E802BF296CD0051EB94 /* IssueObj.swift in Sources */,
+				3E14F6F22BEACF4D00C28F7E /* Github Tests.swift in Sources */,
 				3E4059582B51B63E00BA643E /* MainView.swift in Sources */,
 				3E1CDA122B9EC87B00039E9A /* CreateTask.swift in Sources */,
 				3E38C3102B608188009E160D /* DaySelector.swift in Sources */,
@@ -660,6 +685,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3E14F6EE2BEACE6E00C28F7E /* XCRemoteSwiftPackageReference "octokit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nerdishbynature/octokit.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.12.0;
+			};
+		};
 		3E4059542B50F19400BA643E /* XCRemoteSwiftPackageReference "SymbolPicker" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/xnth97/SymbolPicker.git";
@@ -671,6 +704,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3E14F6EF2BEACE6E00C28F7E /* OctoKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3E14F6EE2BEACE6E00C28F7E /* XCRemoteSwiftPackageReference "octokit" */;
+			productName = OctoKit;
+		};
+		3E2EBD872BF41835001DCD37 /* OctoKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3E14F6EE2BEACE6E00C28F7E /* XCRemoteSwiftPackageReference "octokit" */;
+			productName = OctoKit;
+		};
 		3EB9B8AE2BD1DEBA0098C00F /* SymbolPicker */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SymbolPicker;

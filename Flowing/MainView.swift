@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import WidgetKit
+import OctoKit
 
 // Variables that i use so i can change them in another view
 class freeTimesVariables : ObservableObject {
@@ -28,6 +29,10 @@ struct MainView: View {
     @Query(sort: \toDoItem.name) private var toDoItems: [toDoItem]
     @Query(sort: \progressiveItem.name) private var progressiveItems: [progressiveItem]
     @Query() private var settingsItems: [settingsItem]
+    
+    let config = TokenConfiguration("")
+    @State private var login: String?
+    @State private var repos = [reposWithIssues]()
     
     // MenuCircle variables
     @State var deg: Double = 0
@@ -98,6 +103,7 @@ struct MainView: View {
                 .onAppear {
                     
                     
+
                     
                     withAnimation { WidgetCenter.shared.reloadAllTimelines() }
                     updateAllTasks()
@@ -120,6 +126,8 @@ struct MainView: View {
                         print("Error: settingsItems is still empty after calling newSettings")
                         
                     }
+                    
+                    refreshData()
                     
                     
                 }
@@ -358,7 +366,11 @@ struct MainView: View {
                         
                     }
                     
+                    Github_Tests(customTextColor: $customTextColor, textColor: $textColor, config: config, login: $login, repos: $repos)
+                        
+                    
                 }
+                .refreshable(action: {refreshData()})
                 .animation(.bouncy, value: progressiveItems)
                 .animation(.bouncy, value: toDoItems)
                 .scrollClipDisabled()
@@ -615,7 +627,43 @@ struct MainView: View {
         
     }
         
+    func refreshData() {
+        clearCache()
+        withAnimation(.smooth){
+            repos = []
+        }
+        Task {
+            
+            
+            login = await getLogin(config)
+            let temp = await getRepos(config, login ?? "")
+            
+            withAnimation(.smooth){
+               
+                repos = temp
+            }
+        }
+        
+    }
     
+    func clearCache() {
+      let cacheURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+      let fileManager = FileManager.default
+      
+      do {
+        let directoryContents = try fileManager.contentsOfDirectory(at: cacheURL, includingPropertiesForKeys: nil, options: [])
+        for file in directoryContents {
+          do {
+            try fileManager.removeItem(at: file)
+          } catch let error {
+            debugPrint("Error removing cache file: \(error)")
+          }
+        }
+      } catch let error {
+        debugPrint("Error fetching cache directory contents: \(error)")
+      }
+    }
+
 }
 
 

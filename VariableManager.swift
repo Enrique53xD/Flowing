@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 import SwiftData
+import OctoKit
+
 
 // MARK: Objects
 
@@ -140,8 +142,23 @@ class settingsItem: Identifiable {
 }
 
 
+
+struct reposWithIssues: Hashable {
+  var name: String
+  var issues: [Issue]
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(name)
+  }
+
+  static func == (lhs: reposWithIssues, rhs: reposWithIssues) -> Bool {
+    return lhs.name == rhs.name
+  }
+}
  
 
 
  
  
+
+
