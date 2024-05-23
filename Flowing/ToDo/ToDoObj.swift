@@ -9,21 +9,26 @@ import SwiftUI
 import SwiftData
 
 struct ToDoObj: View {
+    // MARK: - Properties
+    
+    // Environment variable to access the color scheme
     @Environment(\.colorScheme) var colorScheme
-
+    
+    // ToDo item and model context
     var item: toDoItem
     var context: ModelContext
-
+    
+    // State variables
     @State private var editing = false
     @State private var buttonOpacity = 1.0
-    
     @State var textColor: Color
-    
     @State private var sheetContentHeight = CGFloat(0)
     
+    // MARK: - View Body
+    
     var body: some View {
-        HStack{
-            
+        HStack {
+            // Symbol image
             Image(systemName: item.symbol)
                 .font(.title)
                 .fontWeight(.heavy)
@@ -38,39 +43,47 @@ struct ToDoObj: View {
                     (item.done ? Color(hex: item.color) : Color(hex: item.color)?.opacity(0.5)) ?? Color.clear
                 )
                 .frame(width: 60, height: 60)
-                .onAppear{ if checkDate(item.date, dateStr(Date.now)) && item.daily { item.done = false; item.date = dateStr(Date.now) }}
-                .delaysTouches(for: 0.05) {withAnimation{ if !editing {item.done.toggle()}}}
+                .onAppear {
+                    // Reset item's done status and date if it's a daily task and the date has changed
+                    if checkDate(item.date, dateStr(Date.now)) && item.daily {
+                        item.done = false
+                        item.date = dateStr(Date.now)
+                    }
+                }
+                .delaysTouches(for: 0.05) { withAnimation {
+                    if !editing {
+                        item.done.toggle()
+                    }
+                }}
                 .gesture(LongPressGesture(minimumDuration: 0.2)
-                    .onChanged({_ in
-                        withAnimation(.linear(duration: 0.1)){
+                    .onChanged { _ in
+                        withAnimation(.linear(duration: 0.1)) {
                             buttonOpacity = 0.1
                         }
-                        withAnimation(.linear(duration: 0.4)){
+                        withAnimation(.linear(duration: 0.4)) {
                             buttonOpacity = 1
                         }
-                        
+                    }
+                    .onEnded { _ in
+                        withAnimation {
+                            editing.toggle()
+                        }
                     })
-                        .onEnded(){_ in
-                            withAnimation{
-                                editing.toggle()
-                                
-                            }
-                        })
                 .opacity(buttonOpacity)
-                .sensoryFeedback(trigger: editing) { _,_  in
-                    if editing == true {
+                .sensoryFeedback(trigger: editing) { _, _ in
+                    if editing {
                         return .impact
                     } else {
                         return .none
                     }
                 }
-                .sheet( isPresented: $editing, content: {
-                    
+                .sheet(isPresented: $editing) {
+                    // EditToDo sheet
                     EditToDo(item: item, context: context)
                         .presentationDragIndicator(.visible)
                         .padding()
                         .background {
-                            //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                            // This is done in the background to prevent GeometryReader from expanding to all available space
                             GeometryReader { proxy in
                                 Color.clear
                                     .task {
@@ -79,9 +92,9 @@ struct ToDoObj: View {
                             }
                         }
                         .presentationDetents([.height(sheetContentHeight)])
-                    
-                })
+                }
             
+            // ToDo item name
             Text(item.name)
                 .foregroundStyle(textColor)
                 .fontDesign(.rounded)
@@ -91,16 +104,8 @@ struct ToDoObj: View {
                 .fontWeight(.bold)
                 .lineLimit(1)
             
-            
-            
             Spacer()
-            
-            
         }
         .padding(.horizontal)
-        
     }
-    
 }
-
-

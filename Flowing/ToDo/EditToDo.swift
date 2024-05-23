@@ -10,36 +10,37 @@ import SymbolPicker
 import SwiftData
 
 struct EditToDo: View {
+    // Environment variable to access the color scheme
     @Environment(\.colorScheme) var colorScheme
     
+    // Properties
     var item: toDoItem
     var context: ModelContext
     
+    // State variables
     @State var color: Color = Color.blue
     @State var name: String = ""
     @State var description: String = ""
     @State var symbol: String = "house"
-    
     @State var deleted = false
-
     @State private var symbolPicking = false
     @FocusState private var descripting: Bool
     @FocusState private var naming: Bool
-    
     @State var buttonOpacity = 1.0
     @State var buttonProgress = 0.0
     @State var hasPressed = false
     
     var body: some View {
         VStack{
-            
+            // Name and color picker
             HStack{
-                
+                // Color picker
                 ColorPicker(selection: $color, supportsOpacity: false, label: {Text("")})
                     .labelsHidden()
                     .padding(.horizontal)
                     .frame(width: 60)
                 
+                // Name text field
                 TextField("Name", text: $name)
                     .font(.title)
                     .fontDesign(.rounded)
@@ -55,6 +56,7 @@ struct EditToDo: View {
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 
+                // Symbol picker button
                 Button(action: {symbolPicking = true}, label: {
                     Image(systemName: symbol)
                         .font(.title)
@@ -67,7 +69,7 @@ struct EditToDo: View {
             }
             .padding(.vertical, 7)
             
-            
+            // Description text field
             TextField("Description...", text: $description, axis: .vertical)
                 .font(.title2)
                 .fontDesign(.rounded)
@@ -86,23 +88,16 @@ struct EditToDo: View {
             
             HStack{
                 if !naming && !descripting {
-                    
-                    
+                    // Delete button
                     ZStack {
-                        
                         ZStack(alignment: .leading){
-                            
                             Rectangle().foregroundStyle(Color.red)
                                 .frame(width: buttonProgress, height: 60)
-
                             Rectangle().foregroundStyle(Color.red)
                                 .frame(width: 250, height: 60)
                                 .opacity(buttonOpacity)
-                            
                         }
                         .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                        
-                        
                         
                         Text("DELETE")
                             .fontDesign(.rounded)
@@ -116,7 +111,6 @@ struct EditToDo: View {
                                 pressing in
                                 self.hasPressed = pressing
                                 if pressing {
-                                    
                                     withAnimation{
                                         buttonOpacity = 0.5
                                     }
@@ -128,20 +122,15 @@ struct EditToDo: View {
                                     withAnimation(.easeInOut){
                                         buttonOpacity = 1
                                         buttonProgress = 0
-                                        
                                     }
-                                   
-                                    
-                                    
                                 }
                             }, perform: {deleted = true; context.delete(item)})
-                            
                     }
-
+                    
                     Spacer()
                     
+                    // Daily toggle button
                     Button(action: {item.daily.toggle() }, label: {
-                        
                         Image(systemName: "arrow.circlepath")
                             .font(.title)
                             .fontWeight(.heavy)
@@ -157,24 +146,22 @@ struct EditToDo: View {
                             )
                             .frame(width: 60, height: 60)
                             .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                        
                     })
                 }
             }
-            
             .padding(.horizontal)
             .padding(.vertical, 7)
         }
         .scrollDisabled(true)
         .onAppear{
+            // Set initial values when the view appears
             color = Color(hex: item.color)!
             name = item.name
             description = item.desc
             symbol = item.symbol
-            
         }
-        
         .onDisappear{
+            // Save changes when the view disappears
             withAnimation{
                 item.color = color.toHex()!
                 item.name = name
@@ -186,5 +173,3 @@ struct EditToDo: View {
         }
     }
 }
-
-

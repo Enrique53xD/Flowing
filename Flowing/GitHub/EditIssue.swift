@@ -11,9 +11,11 @@ import SwiftData
 import OctoKit
 
 struct EditIssue: View {
+    // Environment variables
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) private var openURL
     
+    // State variables
     @State var config: TokenConfiguration
     @State var login: String
     @State var repo: String
@@ -35,13 +37,10 @@ struct EditIssue: View {
     @State var buttonProgress = 0.0
     @State var hasPressed = false
     
-    
-    
     var body: some View {
         VStack{
-            
+            // Name TextField
             HStack{
-                
                 TextField("Name", text: $name)
                     .font(.title)
                     .fontDesign(.rounded)
@@ -56,13 +55,11 @@ struct EditIssue: View {
                         }
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                
-                
             }
             .padding(.horizontal)
             .padding(.vertical, 7)
             
-            
+            // Description TextField
             TextField("Description...", text: $description, axis: .vertical)
                 .font(.title2)
                 .fontDesign(.rounded)
@@ -81,23 +78,17 @@ struct EditIssue: View {
             
             HStack{
                 if !naming && !descripting {
-                    
-                    
+                    // Button
                     ZStack {
-                        
                         ZStack(alignment: .leading){
-                            
                             Rectangle().foregroundStyle(color)
                                 .frame(width: buttonProgress, height: 60)
                             
                             Rectangle().foregroundStyle(color)
                                 .frame(width: 330, height: 60)
                                 .opacity(buttonOpacity)
-                            
                         }
                         .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                        
-                        
                         
                         Text("Open on GitHub")
                             .fontDesign(.rounded)
@@ -111,7 +102,6 @@ struct EditIssue: View {
                                 pressing in
                                 self.hasPressed = pressing
                                 if pressing {
-                                    
                                     withAnimation{
                                         buttonOpacity = 0.5
                                     }
@@ -123,33 +113,22 @@ struct EditIssue: View {
                                     withAnimation(.easeInOut){
                                         buttonOpacity = 1
                                         buttonProgress = 0
-                                        
                                     }
-                                    
-                                    
-                                    
                                 }
                             }, perform: {deleted = true; openURL(url)})
-                        
                     }
-                    
-                    
-                    
                 }
             }
-            
             .padding(.horizontal)
             .padding(.vertical, 7)
         }
         .scrollDisabled(true)
-        
-        
         .onDisappear{
             updateIssue()
-            
         }
     }
     
+    // Function to update the issue
     func updateIssue() {
         Octokit(config).patchIssue(owner: login, repository: repo, number: num, title: name, body: description) { response in
             switch response {
@@ -161,5 +140,3 @@ struct EditIssue: View {
         }
     }
 }
-
-

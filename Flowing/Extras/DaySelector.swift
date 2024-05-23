@@ -2,11 +2,15 @@ import SwiftUI
 
 struct DaySelector: View {
     
+    // MARK: - Properties
+    
     @Binding var days: String
     @Binding var color: Color
     @State var size: CGFloat = 36
     private let letters = "MTWTFSS"
     
+    
+    // MARK: - Body
     
     var body: some View {
         HStack {
@@ -19,6 +23,9 @@ struct DaySelector: View {
         )
         .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
     }
+    
+    
+    // MARK: - Private Views
     
     private var dayButtons: some View {
         ForEach(Array(days.enumerated()), id: \.offset) { day in
@@ -40,12 +47,15 @@ struct DaySelector: View {
         }
         .frame(width: size, height: size)
         .background(
-            RoundedRectangle( cornerRadius: 12.5)
+            RoundedRectangle(cornerRadius: 12.5)
                 .frame(width: size, height: size)
                 .foregroundStyle(String(day.element) == "0" ? Color.gray.opacity(0.0001) : Color.gray.opacity(0.5))
         )
         .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
     }
+    
+    
+    // MARK: - Private Methods
     
     private func toggleBinaryAtIndex(_ index: Int) {
         let currentIndex = days.index(days.startIndex, offsetBy: index)

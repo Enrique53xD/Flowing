@@ -11,7 +11,9 @@ import SwiftData
 import OctoKit
 
 struct IssueObj: View {
-
+    
+    // MARK: - Environment and State Properties
+    
     @Environment(\.colorScheme) var colorScheme
     
     @State var login: String
@@ -27,43 +29,45 @@ struct IssueObj: View {
     
     @State private var editing = false
     @State private var buttonOpacity = 1.0
-
+    
     @State private var sheetContentHeight = CGFloat(0)
     
+    // MARK: - Body View
+    
     var body: some View {
-        HStack{
+        HStack {
             statusImageView
-            .delaysTouches(for: 0.05) {
-                withAnimation {
-                    if !editing {
-                        toggleStatus()
-                    }
-                }
-            }
-            .gesture(longPressGesture)
-            .opacity(buttonOpacity)
-            .sensoryFeedback(trigger: editing) { _,_  in
-                if editing == true {
-                    return .impact
-                } else {
-                    return .none
-                }
-            }
-            .sheet(isPresented: $editing, content: {
-                EditIssue(config: config, login: login, repo: repoName, num: num, color: status == "closed" ? Color.purple : Color.green, name: $name, description: $description, url: url)
-                    .presentationDragIndicator(.visible)
-                    .padding()
-                    .background {
-                        //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
-                        GeometryReader { proxy in
-                            Color.clear
-                                .task {
-                                    sheetContentHeight = proxy.size.height
-                                }
+                .delaysTouches(for: 0.05) {
+                    withAnimation {
+                        if !editing {
+                            toggleStatus()
                         }
                     }
-                    .presentationDetents([.height(sheetContentHeight)])
-            })
+                }
+                .gesture(longPressGesture)
+                .opacity(buttonOpacity)
+                .sensoryFeedback(trigger: editing) { _,_  in
+                    if editing == true {
+                        return .impact
+                    } else {
+                        return .none
+                    }
+                }
+                .sheet(isPresented: $editing, content: {
+                    EditIssue(config: config, login: login, repo: repoName, num: num, color: status == "closed" ? Color.purple : Color.green, name: $name, description: $description, url: url)
+                        .presentationDragIndicator(.visible)
+                        .padding()
+                        .background {
+                            // This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                            GeometryReader { proxy in
+                                Color.clear
+                                    .task {
+                                        sheetContentHeight = proxy.size.height
+                                    }
+                            }
+                        }
+                        .presentationDetents([.height(sheetContentHeight)])
+                })
             
             Text(name)
                 .foregroundStyle(textColor)
@@ -78,6 +82,8 @@ struct IssueObj: View {
         }
         .padding(.horizontal)
     }
+    
+    // MARK: - Status Image View
     
     var statusImageView: some View {
         Image(systemName: status == "closed" ? "checkmark.circle" : "smallcircle.filled.circle")
@@ -95,6 +101,8 @@ struct IssueObj: View {
             )
             .frame(width: 60, height: 60)
     }
+    
+    // MARK: - Long Press Gesture
     
     var longPressGesture: some Gesture {
         LongPressGesture(minimumDuration: 0.2)
@@ -115,6 +123,8 @@ struct IssueObj: View {
             }
     }
     
+    // MARK: - Toggle Status
+    
     func toggleStatus() {
         if status == "open" {
             status = "closed"
@@ -124,6 +134,8 @@ struct IssueObj: View {
             updateStatus(to: .open)
         }
     }
+    
+    // MARK: - Update Status
     
     func updateStatus(to state: Openness) {
         Octokit(config).patchIssue(owner: login, repository: repoName, number: num, state: state) { response in
@@ -135,6 +147,4 @@ struct IssueObj: View {
             }
         }
     }
-    
-    
 }

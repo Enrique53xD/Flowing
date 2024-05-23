@@ -10,11 +10,14 @@ import SymbolPicker
 import SwiftData
 
 struct EditTask: View {
+    // Environment variable
     @Environment(\.colorScheme) var colorScheme
     
+    // Properties
     var item: taskItem
     var context: ModelContext
-
+    
+    // State variables
     @State var color: Color = .red
     @State var name: String = ""
     @State var description: String = ""
@@ -22,7 +25,7 @@ struct EditTask: View {
     @State var start: Int = 0
     @State var end: Int = 0
     @State var days: String = ""
-
+    
     @State private var dateS = Date()
     @State private var dateE = Date()
     @State private var dateSPicking = false
@@ -35,22 +38,22 @@ struct EditTask: View {
     @FocusState private var descripting: Bool
     @FocusState private var naming: Bool
     
+    // Environment object
     @EnvironmentObject var timeVariables: freeTimesVariables
-
+    
+    // Animation properties
     @State var buttonOpacity = 1.0
     @State var buttonProgress = 0.0
     @State var hasPressed = false
     
     var body: some View {
-        VStack{
-            
-            HStack{
-                
+        VStack {
+            // Color picker and name text field
+            HStack {
                 ColorPicker(selection: $color, supportsOpacity: false, label: {Text("")})
                     .labelsHidden()
                     .padding(.horizontal)
                     .frame(width: 60)
-                
                 
                 TextField("Name", text: $name)
                     .font(.title)
@@ -61,7 +64,7 @@ struct EditTask: View {
                     .background(Color.gray.opacity(0.3))
                     .focused($naming)
                     .onTapGesture {
-                        withAnimation{
+                        withAnimation {
                             naming = true
                         }
                     }
@@ -79,10 +82,8 @@ struct EditTask: View {
             }
             .padding(.vertical, 7)
             
-            
-            
-            HStack{
-                
+            // Start and end time pickers
+            HStack {
                 Button(action: {dateSPicking=true}, label: {
                     Text("\(dateS.toHoursAndMinutes())")
                         .fontWeight(.heavy)
@@ -90,7 +91,6 @@ struct EditTask: View {
                         .fontDesign(.rounded)
                         .frame(width: 90)
                         .foregroundStyle(color)
-                    
                 })
                 .frame(width: 115, height: 45)
                 .background(Color.gray.opacity(0.3))
@@ -101,18 +101,13 @@ struct EditTask: View {
                         .labelsHidden()
                         .datePickerStyle(.wheel)
                         .presentationDetents([.fraction(0.3)])
-                    
-                    
-                    
                 })
-                
                 
                 Text("-")
                     .font(.title)
                     .fontWeight(.semibold)
                     .fontDesign(.rounded)
                     .padding(.horizontal, 10)
-                
                 
                 Button(action: {dateEPicking=true}, label: {
                     Text("\(dateE.toHoursAndMinutes())")
@@ -131,20 +126,16 @@ struct EditTask: View {
                         .labelsHidden()
                         .datePickerStyle(.wheel)
                         .presentationDetents([.fraction(0.3)])
-                    
-                    
                 })
-                
-                
             }
             .padding(.vertical, 7)
             
+            // Day selector
             DaySelector(days: $days, color: $color)
                 .padding(.horizontal)
                 .padding(.vertical, 7)
             
-            
-            
+            // Description text field
             TextField("Description...", text: $description, axis: .vertical)
                 .font(.title2)
                 .fontDesign(.rounded)
@@ -153,7 +144,7 @@ struct EditTask: View {
                 .background(Color.gray.opacity(0.3))
                 .focused($descripting)
                 .onTapGesture {
-                    withAnimation{
+                    withAnimation {
                         descripting = true
                     }
                 }
@@ -161,21 +152,16 @@ struct EditTask: View {
                 .padding(.horizontal)
                 .padding(.vertical, 7)
             
-            
+            // Delete button
             if !naming && !descripting {
-                
-                
                 ZStack {
-                    
-                    ZStack(alignment: .leading){
-                        
+                    ZStack(alignment: .leading) {
                         Rectangle().foregroundStyle(Color.red)
                             .frame(width: buttonProgress, height: 60)
-
+                        
                         Rectangle().foregroundStyle(Color.red)
                             .frame(width: 330, height: 60)
                             .opacity(buttonOpacity)
-                        
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                     
@@ -187,39 +173,35 @@ struct EditTask: View {
                         .background(RoundedRectangle(cornerRadius: 12.5).foregroundStyle(Color.red.opacity(0.01)))
                         .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
                         .sensoryFeedback(.impact, trigger: deleted)
-                        .onLongPressGesture(minimumDuration: 2, maximumDistance: 20, pressing: {
-                            pressing in
+                        .onLongPressGesture(minimumDuration: 2, maximumDistance: 20, pressing: { pressing in
                             self.hasPressed = pressing
                             if pressing {
-                                
-                                withAnimation{
+                                withAnimation {
                                     buttonOpacity = 0.5
                                 }
-                                withAnimation(.easeOut(duration: 2)){
+                                withAnimation(.easeOut(duration: 2)) {
                                     buttonProgress = 330
                                 }
                             }
                             if !pressing {
-                                withAnimation(.easeInOut){
+                                withAnimation(.easeInOut) {
                                     buttonOpacity = 1
                                     buttonProgress = 0
-                                    
                                 }
-                               
-                                
-                                
                             }
-                        }, perform: {deleted = true; context.delete(item); timeVariables.update.toggle()})
+                        }, perform: {
+                            deleted = true
+                            context.delete(item)
+                            timeVariables.update.toggle()
+                        })
                         .padding(.horizontal)
                         .padding(.vertical, 7)
                 }
             }
-            
         }
-        
         .scrollDisabled(true)
-        .onAppear{
-            
+        .onAppear {
+            // Initialize properties with item values
             color = Color(hex: item.color)!
             name = item.name
             description = item.desc
@@ -228,17 +210,23 @@ struct EditTask: View {
             end = item.end
             days = item.days
             
-            
-            
+            // Initialize date variables
             formatter.dateFormat = "yyyy/MM/dd HH:mm"
-            dateS = formatter.date(from: "2016/10/08 \(transforMinutes(minute: start))") ?? formatter.date(from: "2016/10/08 22:31")!
-            dateE = formatter.date(from: "2016/10/08 \(transforMinutes(minute: end))") ?? formatter.date(from: "2016/10/08 22:31")!
+            dateS = formatter.date(from: "2016/10/08 \(transformMinutes(minute: start))") ?? formatter.date(from: "2016/10/08 22:31")!
+            dateE = formatter.date(from: "2016/10/08 \(transformMinutes(minute: end))") ?? formatter.date(from: "2016/10/08 22:31")!
         }
-        
-        .onDisappear{
-            
-            withAnimation(.bouncy){
-                if start>end {(start, end)=(end, start)}; if dateS>dateE {(dateS, dateE)=(dateE, dateS)}
+        .onDisappear {
+            withAnimation(.bouncy) {
+                // Swap start and end if necessary
+                if start > end {
+                    (start, end) = (end, start)
+                }
+                // Swap dateS and dateE if necessary
+                if dateS > dateE {
+                    (dateS, dateE) = (dateE, dateS)
+                }
+                
+                // Update item properties
                 item.color = color.toHex()!
                 item.name = name
                 item.desc = description
@@ -251,10 +239,6 @@ struct EditTask: View {
             }
             
             try? context.save()
-
         }
- 
     }
-        
 }
-

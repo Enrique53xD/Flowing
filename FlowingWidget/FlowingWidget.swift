@@ -9,37 +9,35 @@ import WidgetKit
 import SwiftUI
 import SwiftData
 
+// MARK: - Timeline Entry
+
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
 }
 
+// MARK: - Flowing Widget View
+
 struct FlowingWidgetView: View {
-    
     let entry: SimpleEntry
     
-    
     var body: some View {
-        
         HomeScreenWidgetView(entry: entry)
             .containerBackground(.fill.quinary, for: .widget)
-        
     }
 }
 
+// MARK: - Home Screen Widget View
 
 struct HomeScreenWidgetView : View {
-    
     @Environment(\.modelContext) private var context
     @Query(animation: .bouncy) private var taskItems: [taskItem]
     
     var entry: Provider.Entry
     
     var body: some View {
-        
         VStack {
             if let firstMatchingItem = taskItems.first(where: { (isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end)) || ($0.days == "0000000" && checkCurrentTime(start: $0.start, end: $0.end))}) {
-                
                 let color: Color = Color(hex: firstMatchingItem.color)!
                 
                 if entry.configuration.topText?.use == "Name" {
@@ -48,16 +46,16 @@ struct HomeScreenWidgetView : View {
                         .fontWeight(.bold)
                         .fontDesign(.rounded)
                         .foregroundStyle(color.opacity(0.75))
-                    
                 } else if entry.configuration.topText?.use == "Time Range" {
                     Text(formatTaskTime(start: firstMatchingItem.start, end: firstMatchingItem.end))
                         .font(.callout)
                         .fontWeight(.bold)
                         .fontDesign(.rounded)
                         .foregroundStyle(color.opacity(0.75))
-                    
                 }
+                
                 Spacer()
+                
                 Image(systemName: firstMatchingItem.symbol)
                     .font(.system(size: 65))
                     .fontWeight(.heavy)
@@ -65,23 +63,20 @@ struct HomeScreenWidgetView : View {
                     .frame(width: 60, height: 60)
                 
                 Spacer()
+                
                 if entry.configuration.bottomText?.use == "Name" {
                     Text(firstMatchingItem.name)
                         .font(.callout)
                         .fontWeight(.bold)
                         .fontDesign(.rounded)
                         .foregroundStyle(color.opacity(0.75))
-
-                    
                 } else if entry.configuration.bottomText?.use == "Time Range" {
                     Text(formatTaskTime(start: firstMatchingItem.start, end: firstMatchingItem.end))
                         .font(.callout)
                         .fontWeight(.bold)
                         .fontDesign(.rounded)
                         .foregroundStyle(color.opacity(0.75))
-                    
                 }
-                
             } else {
                 Image(systemName: "clock")
                     .font(.system(size: 65))
@@ -92,6 +87,7 @@ struct HomeScreenWidgetView : View {
     }
 }
 
+// MARK: - Provider
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
@@ -103,15 +99,13 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        
         let entry = SimpleEntry(date: Date(), configuration: configuration)
         let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(5)))
-
         return timeline
     }
 }
 
-
+// MARK: - Flowing Widget
 
 struct FlowingWidget: Widget {
     let kind: String = "FlowingWidget"
@@ -128,6 +122,3 @@ struct FlowingWidget: Widget {
         ])
     }
 }
-
-
-
