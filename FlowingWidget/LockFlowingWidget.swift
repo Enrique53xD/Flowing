@@ -126,7 +126,7 @@ struct LockFlowingWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: LockProvider()) { entry in
             LockFlowingWidgetView(entry: entry)
-                .modelContainer(for: [taskItem.self, toDoItem.self, progressiveItem.self, settingsItem.self] )
+                .modelContainer(for: [taskItem.self, toDoItem.self, progressiveItem.self, settingsItem1.self] )
         }
         .configurationDisplayName("Flowing Widget")
         .description("Shows the current task.")

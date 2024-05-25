@@ -16,6 +16,6 @@ struct FlowingApp: App {
         WindowGroup {
             MainView()
         }
-        .modelContainer(for: [taskItem.self, toDoItem.self, progressiveItem.self, settingsItem.self])  // Load the container items into the view
+        .modelContainer(for: [taskItem.self, toDoItem.self, progressiveItem.self, settingsItem1.self])  // Load the container items into the view
     }
 }

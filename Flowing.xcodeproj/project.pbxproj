@@ -11,7 +11,7 @@
 		3E0359F02B62288D003ABF17 /* ToDoObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0359EE2B62288D003ABF17 /* ToDoObj.swift */; };
 		3E0359F62B630CAC003ABF17 /* ProgressiveObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0359F52B630CAC003ABF17 /* ProgressiveObj.swift */; };
 		3E14F6F02BEACE6E00C28F7E /* OctoKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3E14F6EF2BEACE6E00C28F7E /* OctoKit */; };
-		3E14F6F22BEACF4D00C28F7E /* Github Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E14F6F12BEACF4D00C28F7E /* Github Tests.swift */; };
+		3E14F6F22BEACF4D00C28F7E /* GithubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E14F6F12BEACF4D00C28F7E /* GithubView.swift */; };
 		3E1CDA122B9EC87B00039E9A /* CreateTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1CDA112B9EC87B00039E9A /* CreateTask.swift */; };
 		3E1FD06B2B9FABB90035F06C /* CreateToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FD06A2B9FABB90035F06C /* CreateToDo.swift */; };
 		3E1FD06D2BA003270035F06C /* CreateProgressive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FD06C2BA003270035F06C /* CreateProgressive.swift */; };
@@ -78,7 +78,7 @@
 		3E0359ED2B62288D003ABF17 /* EditToDo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditToDo.swift; sourceTree = "<group>"; };
 		3E0359EE2B62288D003ABF17 /* ToDoObj.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoObj.swift; sourceTree = "<group>"; };
 		3E0359F52B630CAC003ABF17 /* ProgressiveObj.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressiveObj.swift; sourceTree = "<group>"; };
-		3E14F6F12BEACF4D00C28F7E /* Github Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Github Tests.swift"; sourceTree = "<group>"; };
+		3E14F6F12BEACF4D00C28F7E /* GithubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubView.swift; sourceTree = "<group>"; };
 		3E1CDA112B9EC87B00039E9A /* CreateTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTask.swift; sourceTree = "<group>"; };
 		3E1FD06A2B9FABB90035F06C /* CreateToDo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateToDo.swift; sourceTree = "<group>"; };
 		3E1FD06C2BA003270035F06C /* CreateProgressive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProgressive.swift; sourceTree = "<group>"; };
@@ -226,6 +226,7 @@
 				3E6C2D612BFE7118006964A1 /* SettingsView.swift */,
 				3E6C2D5F2BFE64BF006964A1 /* ToDoView.swift */,
 				3E6C2D5D2BFBF250006964A1 /* HomeView.swift */,
+				3E14F6F12BEACF4D00C28F7E /* GithubView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -233,7 +234,6 @@
 		3E6C2D642BFE7D11006964A1 /* GitHub */ = {
 			isa = PBXGroup;
 			children = (
-				3E14F6F12BEACF4D00C28F7E /* Github Tests.swift */,
 				3E3B7E7F2BF296CD0051EB94 /* IssueObj.swift */,
 				3E2EBD852BF2A1B8001DCD37 /* EditIssue.swift */,
 				3EB9E6EF2BF665FF009D8871 /* CreateIssue.swift */,
@@ -403,7 +403,7 @@
 				3E1FD06B2B9FABB90035F06C /* CreateToDo.swift in Sources */,
 				3E1FD06F2BA21D0A0035F06C /* TestView.swift in Sources */,
 				3E3B7E802BF296CD0051EB94 /* IssueObj.swift in Sources */,
-				3E14F6F22BEACF4D00C28F7E /* Github Tests.swift in Sources */,
+				3E14F6F22BEACF4D00C28F7E /* GithubView.swift in Sources */,
 				3E4059582B51B63E00BA643E /* MainView.swift in Sources */,
 				3E1CDA122B9EC87B00039E9A /* CreateTask.swift in Sources */,
 				3E38C3102B608188009E160D /* DaySelector.swift in Sources */,

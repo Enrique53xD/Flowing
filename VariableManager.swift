@@ -111,7 +111,7 @@ class progressiveItem: Identifiable {
 // MARK: - Settings Object
 
 @Model
-class settingsItem: Identifiable {
+class settingsItem1: Identifiable {
     
     //Variables
     
@@ -122,10 +122,12 @@ class settingsItem: Identifiable {
     var textColor: String
     var showFreeTimes: Bool
     var customHome: Bool
+    var githubEnabled: Bool
+    var githubApiKey: String
     
     //Initialization
     
-    init(customMainColor: Bool, mainColor: String, textColor: String, customTextColor: Bool, showFreeTimes: Bool, customHome: Bool) {
+    init(customMainColor: Bool, mainColor: String, textColor: String, customTextColor: Bool, showFreeTimes: Bool, customHome: Bool, githubEnabled: Bool, githubApiKey: String) {
         self.id = UUID().uuidString
         self.customMainColor = customMainColor
         self.mainColor = mainColor
@@ -133,6 +135,8 @@ class settingsItem: Identifiable {
         self.textColor = textColor
         self.showFreeTimes = showFreeTimes
         self.customHome = customHome
+        self.githubEnabled = githubEnabled
+        self.githubApiKey = githubApiKey
     }
 }
 
@@ -160,6 +164,7 @@ class freeTimesVariables : ObservableObject {
     @Published var tasks = [taskItem]()
     @Published var freeTimes = [(Int,Int)]()
     @Published var update = false
+    @Published var updateGitHub = false
 }
 
 // MARK: - Personalization Variables
@@ -173,6 +178,8 @@ struct personalizationVariables {
     var customIcon: String = "clock"
     var allTasks: Bool = false
     var showFreeTimes: Bool = false
+    var githubEnabled: Bool = false
+    var githubApiKey: String = ""
 }
 
 // MARK: - Creating Variables

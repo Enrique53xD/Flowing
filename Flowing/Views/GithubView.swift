@@ -1,5 +1,5 @@
 //
-//  Github Tests.swift
+//  GithubView.swift
 //  Flowing
 //
 //  Created by Saúl González on 7/05/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 import OctoKit
 
-struct Github_Tests: View {
+struct GithubView: View {
     //Environment Variables
     @Environment(\.colorScheme) var colorScheme
     @Binding var customTextColor: Bool

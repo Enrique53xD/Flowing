@@ -163,7 +163,7 @@ func newProgressive(_ context: ModelContext, name: String, color: String, desc: 
 
 // Function to create a new Settings Object
 func newSettings(_ context: ModelContext) {
-    let item = settingsItem(customMainColor: false, mainColor: Color.red.toHex()!, textColor: Color.cyan.toHex()!, customTextColor: false, showFreeTimes: false, customHome: false)
+    let item = settingsItem1(customMainColor: false, mainColor: Color.red.toHex()!, textColor: Color.cyan.toHex()!, customTextColor: false, showFreeTimes: false, customHome: false, githubEnabled: false, githubApiKey: "")
     context.insert(item)
 }
 

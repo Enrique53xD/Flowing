@@ -7,23 +7,32 @@
 
 import SwiftUI
 import SwiftData
+import OctoKit
 
 struct SettingsView: View {
     //Environment Variables
     @Environment(\.modelContext) private var context
+    @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject var timeVariables: freeTimesVariables
     
     //State Variables
     @Binding var personalization: personalizationVariables
     @Binding var objects: taskObjectVariables
     @State private var defaultColor: Color = .primary
+    @State var api: String = ""
+    @State private var apiIng: Bool = false
+    
+    @State var deleted = false
+    @State var buttonOpacity = 1.0
+    @State var buttonProgress = 0.0
+    @State var hasPressed = false
     
     //Fetch Request
-    @Query() private var settingsItems: [settingsItem]
+    @Query() private var settingsItems: [settingsItem1]
     
     var body: some View {
         ScrollView {
-            VStack {
+            
                 // MARK: - Personalization Section
                 Group {
                     Text("Personalization")
@@ -216,13 +225,138 @@ struct SettingsView: View {
                             }
                     }
                 }
+                
+                // MARK: - GitHub Section
+                Group {
+                    Text("GitHub")
+                        .fontDesign(.rounded)
+                        .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
+                        .font(.title)
+                        .opacity(0.5)
+                        .fontWeight(.heavy)
+                        .scrollTransition { content, phase in
+                            content
+                                .opacity(phase.isIdentity ? 1 : 0)
+                                .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                .blur(radius: phase.isIdentity ? 0 : 10)
+                        }
+                        .frame(height: 40)
+                    
+                    // Toggle for showing GitHub settings
+                    Toggle(isOn: $personalization.githubEnabled) {
+                        Text("Enable GitHub Connection")
+                            .fontDesign(.rounded)
+                            .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                    }
+                    .onChange(of: personalization.githubEnabled) {
+                        settingsItems.first?.githubEnabled = personalization.githubEnabled
+                        try? context.save()
+                        
+                        timeVariables.updateGitHub.toggle()
+                    }
+                    .scrollTransition { content, phase in
+                        content
+                            .opacity(phase.isIdentity ? 1 : 0)
+                            .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                            .blur(radius: phase.isIdentity ? 0 : 10)
+                    }
+                    .frame(height: 60)
+                    
+                    // Day selector for specific tasks
+                    if personalization.githubEnabled {
+                        
+                        if personalization.githubApiKey == "" {
+                            
+                            SecureField("ApiKey", text: $api)
+                                .font(.title)
+                                .fontDesign(.rounded)
+                                .fontWeight(.bold)
+                                .multilineTextAlignment(.center)
+                                .padding(5)
+                                .background(Color.gray.opacity(0.3))
+                                
+                                .animation(.easeInOut, value: apiIng)
+                                .onTapGesture {
+                                    withAnimation(){
+                                        
+                                        apiIng = true
+                                        
+                                    }
+                                }
+                                .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
+                                .onSubmit {
+                                    withAnimation(){
+                                        apiIng = false
+                                        personalization.githubApiKey = api
+                                        settingsItems.first?.githubApiKey = personalization.githubApiKey
+                                        try? context.save()
+                                        
+                                        timeVariables.updateGitHub.toggle()
+                                    }
+                                }
+                            
+                        } else {
+                            ZStack {
+                                ZStack(alignment: .leading) {
+                                    Rectangle().foregroundStyle(Color.red)
+                                        .frame(width: buttonProgress, height: 60)
+                                    
+                                    Rectangle().foregroundStyle(Color.red)
+                                        .frame(width: 330, height: 60)
+                                        .opacity(buttonOpacity)
+                                }
+                                .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
+                                
+                                Text("DELETE API KEY")
+                                    .font(.title2)
+                                    .fontDesign(.rounded)
+                                    .fontWeight(.heavy)
+                                    .frame(width: 330, height: 60)
+                                    .background(RoundedRectangle(cornerRadius: 12.5).foregroundStyle(Color.red.opacity(0.01)))
+                                    .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                                    .sensoryFeedback(.impact, trigger: deleted)
+                                    .onLongPressGesture(minimumDuration: 2, maximumDistance: 20, pressing: { pressing in
+                                        self.hasPressed = pressing
+                                        if pressing {
+                                            withAnimation {
+                                                buttonOpacity = 0.5
+                                            }
+                                            withAnimation(.easeOut(duration: 2)) {
+                                                buttonProgress = 330
+                                            }
+                                        }
+                                        if !pressing {
+                                            withAnimation(.easeInOut) {
+                                                buttonOpacity = 1
+                                                buttonProgress = 0
+                                            }
+                                        }
+                                    }, perform: {
+                                        withAnimation(.bouncy){
+                                            deleted = true
+                                            api = ""
+                                            personalization.githubApiKey = api
+                                            settingsItems.first?.githubApiKey = personalization.githubApiKey
+                                            try? context.save()
+                                            
+                                            timeVariables.updateGitHub.toggle()
+                                        }
+                                    })
+                                    
+                                    .padding(.vertical, 7)
+                            }
+                        }
+                    }
+                
             }
         }
         .padding(.horizontal)
         .scrollClipDisabled()
         .scrollIndicators(.hidden)
-        .frame(height: UIScreen.screenHeight-150)
-        .offset(y: 50)
+        .frame(height: apiIng ? UIScreen.screenHeight-50 : UIScreen.screenHeight-150)
+        .offset(y: apiIng ? 0 : 50)
     }
 }
 

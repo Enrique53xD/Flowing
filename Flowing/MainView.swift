@@ -21,10 +21,9 @@ struct MainView: View {
     @Query(sort: [SortDescriptor(\taskItem.start), SortDescriptor(\taskItem.end), SortDescriptor(\taskItem.name)]) var taskItems: [taskItem]
     @Query(sort: \toDoItem.name) private var toDoItems: [toDoItem]
     @Query(sort: \progressiveItem.name) private var progressiveItems: [progressiveItem]
-    @Query() private var settingsItems: [settingsItem]
+    @Query() private var settingsItems: [settingsItem1]
     
     //GitHub Variables
-    let config = TokenConfiguration("")
     @State private var login: String?
     @State private var repos = [reposWithIssues]()
     
@@ -33,7 +32,7 @@ struct MainView: View {
     @State var menu: Int = 0
     
     //Personalization Variables
-    @State var settings: settingsItem?
+    @State var settings: settingsItem1?
     @State var personalization = personalizationVariables()
     
     //Object Variables
@@ -62,11 +61,17 @@ struct MainView: View {
                         personalization.textColor = Color(hex: settings!.textColor)!
                         personalization.showFreeTimes = settings!.showFreeTimes
                         personalization.customHome = settings!.customHome
+                        personalization.githubEnabled = settings!.githubEnabled
+                        personalization.githubApiKey = settings!.githubApiKey
+                        
+                        if settings!.githubEnabled {
+                            refreshData()
+                        }
                     } else {
                         print("Error: settingsItems is still empty after calling newSettings")
                     }
                     
-                    refreshData()
+                    
                 }
                 .onChange(of: deg) {
                     if (deg == 60) { deg = -30 }
@@ -78,6 +83,9 @@ struct MainView: View {
                         else if (deg == -30){ menu = 2 }
                     }
                 }
+                .onChange(of: timeVariables.updateGitHub) {
+                    refreshData()
+                }
             
             // MARK: - Home View
             if(menu == 0){
@@ -87,12 +95,15 @@ struct MainView: View {
             // MARK: - To-Do View
             else if (menu == 1) {
                 ScrollView{
-                    Github_Tests(customTextColor: $personalization.customTextColor, textColor: $personalization.textColor, config: config, login: $login, repos: $repos, customColor: personalization.customColor, mainColor: personalization.mainColor, defaultColor: Color.primary)
-                        .padding(.bottom, 10)
+                    
+                    if personalization.githubEnabled {
+                        GithubView(customTextColor: $personalization.customTextColor, textColor: $personalization.textColor, config: TokenConfiguration(personalization.githubApiKey), login: $login, repos: $repos, customColor: personalization.customColor, mainColor: personalization.mainColor, defaultColor: Color.primary)
+                            .padding(.bottom, 10)
+                    }
                     
                     ToDoView(personalization: $personalization, objects: $objects, creation: $creation)
                     
-                    if login != nil && login != "" && login != "Error" {
+                    if login != nil && login != "" && login != "Error" && personalization.githubEnabled {
                         Button(action: { withAnimation{creation.creatingIssue.toggle()} }, label: {
                             Image(systemName: "smallcircle.filled.circle")
                                 .font(.title)
@@ -111,7 +122,7 @@ struct MainView: View {
                                 .blur(radius: phase.isIdentity ? 0 : 10)
                         }
                         .sheet(isPresented: $creation.creatingIssue, content: {
-                            CreateIssue(config: config, login: login ?? "")
+                            CreateIssue(config: TokenConfiguration(personalization.githubApiKey), login: login ?? "")
                                 .presentationDragIndicator(.visible)
                                 .padding()
                                 .background {
@@ -194,8 +205,8 @@ struct MainView: View {
             repos = []
         }
         Task {
-            login = await getLogin(config)
-            let temp = await getRepos(config, login ?? "")
+            login = await getLogin(TokenConfiguration(personalization.githubApiKey))
+            let temp = await getRepos(TokenConfiguration(personalization.githubApiKey), login ?? "")
             withAnimation(.smooth){
                 repos = temp
             }
