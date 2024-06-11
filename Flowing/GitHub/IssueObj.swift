@@ -90,7 +90,7 @@ struct IssueObj: View {
             .font(.title)
             .fontWeight(.heavy)
             .foregroundStyle(
-                (colorScheme == .dark ? (status == "closed" ? Color.black.opacity(0.5) : Color.green) : (status == "closed" ? Color.white.opacity(0.5) : Color.purple))
+                (colorScheme == .dark ? (status == "closed" ? Color.black.opacity(0.5) : Color.green) : (status == "closed" ? Color.white.opacity(0.5) : Color.green))
             )
             .background(
                 RoundedRectangle(cornerRadius: 45)

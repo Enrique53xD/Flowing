@@ -102,19 +102,27 @@ struct MainView: View {
                     }
                     
                     ToDoView(personalization: $personalization, objects: $objects, creation: $creation)
-                    
+                   
                     if login != nil && login != "" && login != "Error" && personalization.githubEnabled {
-                        Button(action: { withAnimation{creation.creatingIssue.toggle()} }, label: {
+                        Button(action: {  withAnimation(.bouncy){
+                            if creation.creatingSome {
+                                creation.creatingSome.toggle()
+                                creation.creatingIssue.toggle()
+                            }
+                        } }, label: {
                             Image(systemName: "smallcircle.filled.circle")
                                 .font(.title)
                                 .fontWeight(.black)
-                                .frame(width: 358, height: 60)
+                                .frame(width: 358, height: creation.creatingSome ? 60 : 0)
                                 .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
                                 .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(personalization.customColor ? personalization.mainColor : Color.primary))
                                 .padding()
                                 .sensoryFeedback(.impact(intensity: creation.creatingIssue ? 0 : 1), trigger: creation.creatingIssue)
+                                
                         })
                         .padding(0)
+                        .opacity(creation.creatingSome ? 1 : 0)
+                        .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in withAnimation(.bouncy){creation.creatingSome.toggle()}}))
                         .scrollTransition { content, phase in
                             content
                                 .opacity(phase.isIdentity ? 1 : 0)
@@ -136,6 +144,7 @@ struct MainView: View {
                     }
                 }
                 .refreshable(action: {refreshData()})
+                
                 .animation(.bouncy, value: progressiveItems)
                 .animation(.bouncy, value: toDoItems)
                 .scrollClipDisabled()

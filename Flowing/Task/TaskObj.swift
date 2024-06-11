@@ -164,7 +164,7 @@ struct TaskObj: View {
             }
             
             timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { _ in
-                withAnimation(.bouncy) {
+                withAnimation() {
                     active = checkCurrentTime(start: item.start, end: item.end)
                     
                     let dateFormatter = DateFormatter()
