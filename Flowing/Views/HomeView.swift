@@ -23,6 +23,8 @@ struct HomeView: View {
     
     //Other Variables
     @State private var sheetContentHeight = CGFloat(0)
+    @State private var buttonSize = 1.0
+    @State private var buttonOpacity = 1.0
     
     //Environment Object
     @EnvironmentObject var timeVariables: freeTimesVariables
@@ -87,16 +89,42 @@ struct HomeView: View {
             }
             
             // Button to add a task
-            Button(action: { withAnimation{creation.creatingTask.toggle()} }, label: {
-                Image(systemName: "plus")
-                    .font(.title)
-                    .fontWeight(.black)
-                    .frame(width: 358, height: 60)
-                    .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                    .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(personalization.customColor ? personalization.mainColor : Color.primary))
-                    .padding()
-                    .sensoryFeedback(.impact(intensity: creation.creatingTask ? 0 : 1), trigger: creation.creatingTask)
-            })
+            Image(systemName: "plus")
+                .font(.title)
+                .scaleEffect(buttonSize)
+                .fontWeight(.black)
+                .frame(width: 358, height: 60)
+                .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(personalization.customColor ? personalization.mainColor.opacity(buttonOpacity) : Color.primary.opacity(buttonOpacity)))
+                .scaleEffect(buttonSize)
+                .padding()
+                .sensoryFeedback(.impact(intensity: creation.creatingTask ? 0 : 1), trigger: creation.creatingTask)
+                .onTapGesture{
+                    
+                    withAnimation(.bouncy) {
+                        creation.creatingTask.toggle()
+                    }
+                }
+                .onLongPressGesture(minimumDuration: 0.2, maximumDistance: 10.0, pressing: { pressing in
+                        if pressing {
+                            withAnimation(.bouncy) {
+                                buttonOpacity = 0.5
+                                buttonSize = 0.9
+                            }
+                        } else {
+                            withAnimation(.bouncy) {
+                                buttonOpacity = 1
+                                buttonSize = 1
+                            }
+                        }
+                    }) {
+                        withAnimation(.bouncy) {
+                            buttonOpacity = 1
+                            buttonSize = 1
+                        }
+                    }
+            
+
             .scrollTransition { content, phase in
                 content
                     .opacity(phase.isIdentity ? 1 : 0)

@@ -20,11 +20,10 @@ struct TaskObj: View {
     @State private var editing = false
     @State private var active = false
     @State private var timer: Timer?
-    @State private var buttonOpacity = 1.0
     @State var textColor: Color
     
     // Other variables
-    var item: taskItem
+    @State var item: taskItem
     var context: ModelContext
     @State private var sheetContentHeight = CGFloat(0)
     
@@ -33,58 +32,19 @@ struct TaskObj: View {
     var body: some View {
         ZStack {
             if active {
-                RoundedRectangle(cornerRadius: 45)
+                RoundedRectangle(cornerRadius: 45, style: .circular)
                     .padding(.horizontal)
                     .opacity(0.2)
             }
             
             HStack {
                 // Symbol and Button
-                ZStack {
-                    RoundedRectangle(cornerRadius: 45)
-                        .frame(width: 60, height: 60)
-                        .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+
                     
-                    Image(systemName: item.symbol)
-                        .font(.title)
-                        .fontWeight(.heavy)
-                        .foregroundStyle(
-                            (colorScheme == .dark ? (item.done ? Color.black.opacity(0.5) : Color(hex: item.color)) : (item.done ? Color.white.opacity(0.5) : Color(hex: item.color))) ?? Color.clear
-                        )
-                        .background(
-                            RoundedRectangle(cornerRadius: 45)
-                                .frame(width: 60, height: 60)
-                        )
-                        .foregroundStyle(
-                            (item.done ? Color(hex: item.color) : Color(hex: item.color)?.opacity(0.5)) ?? Color.clear
-                        )
-                        .frame(width: 60, height: 60)
-                        .delaysTouches(for: 0.05) {}
-                        .gesture(LongPressGesture(minimumDuration: 0.2)
-                            .onChanged({ _ in
-                                withAnimation(.linear(duration: 0.1)) {
-                                    buttonOpacity = 0.1
-                                }
-                                withAnimation(.linear(duration: 0.4)) {
-                                    buttonOpacity = 1
-                                }
-                            })
-                            .onEnded({ _ in
-                                withAnimation {
-                                    editing.toggle()
-                                }
-                            })
-                        )
-                        .opacity(buttonOpacity)
+                    
+                CircleSymbol(symbol: $item.symbol, color: $item.color, done: $item.done, editing: $editing)
                         .onChange(of: active) {
                             WidgetCenter.shared.reloadAllTimelines()
-                        }
-                        .sensoryFeedback(trigger: editing) { _, _  in
-                            if editing {
-                                return .impact
-                            } else {
-                                return .none
-                            }
                         }
                         .sheet(isPresented: $editing, content: {
                             EditTask(item: item, context: context)
@@ -118,7 +78,7 @@ struct TaskObj: View {
                                     }
                                 }
                         })
-                }
+                
                 
                 // Task Name
                 Text(item.name)

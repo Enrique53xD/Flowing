@@ -29,6 +29,7 @@ struct IssueObj: View {
     
     @State private var editing = false
     @State private var buttonOpacity = 1.0
+    @State private var buttonSize = 1.0
     
     @State private var sheetContentHeight = CGFloat(0)
     
@@ -37,14 +38,34 @@ struct IssueObj: View {
     var body: some View {
         HStack {
             statusImageView
-                .delaysTouches(for: 0.05) {
-                    withAnimation {
-                        if !editing {
-                            toggleStatus()
+                .onTapGesture{
+                        withAnimation(.bouncy) {
+                            if !editing {
+                                toggleStatus()
+                            }
+                        }
+                    
+                }
+                .onLongPressGesture(minimumDuration: 0.2, maximumDistance: 10.0, pressing: { pressing in
+                        if pressing {
+                            withAnimation(.bouncy) {
+                                buttonOpacity = 0.5
+                                buttonSize = 0.9
+                            }
+                        } else {
+                            withAnimation(.bouncy) {
+                                buttonOpacity = 1
+                                buttonSize = 1
+                            }
+                        }
+                    }) {
+                        withAnimation(.bouncy) {
+                            buttonOpacity = 1
+                            buttonSize = 1
+                            editing.toggle()
                         }
                     }
-                }
-                .gesture(longPressGesture)
+
                 .opacity(buttonOpacity)
                 .sensoryFeedback(trigger: editing) { _,_  in
                     if editing == true {
@@ -99,29 +120,10 @@ struct IssueObj: View {
             .foregroundStyle(
                 (status == "closed" ? Color.purple : Color.green.opacity(0.5))
             )
+            .scaleEffect(buttonSize)
             .frame(width: 60, height: 60)
     }
-    
-    // MARK: - Long Press Gesture
-    
-    var longPressGesture: some Gesture {
-        LongPressGesture(minimumDuration: 0.2)
-            .onChanged({_ in
-                withAnimation(.linear(duration: 0.1)){
-                    buttonOpacity = 0.1
-                }
-                withAnimation(.linear(duration: 0.4)){
-                    buttonOpacity = 1
-                }
-                
-            })
-            .onEnded(){_ in
-                withAnimation{
-                    editing.toggle()
-                    
-                }
-            }
-    }
+
     
     // MARK: - Toggle Status
     
@@ -140,7 +142,7 @@ struct IssueObj: View {
     func updateStatus(to state: Openness) {
         Octokit(config).patchIssue(owner: login, repository: repoName, number: num, state: state) { response in
             switch response {
-            case .success(let issue):
+            case .success(_):
                 print(state == .open ? "opened" : "closed")
             case .failure:
                 print("error")

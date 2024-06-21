@@ -261,62 +261,6 @@ func checkDate(_ first: String, _ second: String) -> Bool {
     return first != second
 }
 
-// To delay the long press of the buttons
-extension View {
-    func delaysTouches(for duration: TimeInterval = 0.25, onTap action: @escaping () -> Void = {}) -> some View {
-        modifier(DelaysTouches(duration: duration, action: action))
-    }
-}
-
-// To delay the long press of the buttons
-struct DelaysTouches: ViewModifier {
-    @State private var disabled = false
-    @State private var touchDownDate: Date? = nil
-
-    var duration: TimeInterval
-    var action: () -> Void
-
-    func body(content: Content) -> some View {
-        Button(action: action) {
-            content
-        }
-        .buttonStyle(DelaysTouchesButtonStyle(disabled: $disabled, duration: duration, touchDownDate: $touchDownDate))
-        .disabled(disabled)
-    }
-}
-
-// To delay the long press of the buttons
-fileprivate struct DelaysTouchesButtonStyle: ButtonStyle {
-    @Binding var disabled: Bool
-    var duration: TimeInterval
-    @Binding var touchDownDate: Date?
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .onChange(of: configuration.isPressed) { handleIsPressed(isPressed: configuration.isPressed)}
-    }
-
-    private func handleIsPressed(isPressed: Bool) {
-        if isPressed {
-            let date = Date()
-            touchDownDate = date
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + max(duration, 0)) {
-                if date == touchDownDate {
-                    disabled = true
-
-                    DispatchQueue.main.async {
-                        disabled = false
-                    }
-                }
-            }
-        } else {
-            touchDownDate = nil
-            disabled = false
-        }
-    }
-}
-
 // Modifier to limit the input length of a TextField
 struct TextFieldLimitModifer: ViewModifier {
     @Binding var value: String

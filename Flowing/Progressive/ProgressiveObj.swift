@@ -13,18 +13,21 @@ struct ProgressiveObj: View {
     
     @Environment(\.colorScheme) var colorScheme
     
-    var item: progressiveItem
+    @State var item: progressiveItem
     var context: ModelContext
     
     @State var changing = false
     @State var done = false
     
     @State private var editing = false
-    @State private var buttonOpacity = 1.0
     
     @State var textColor: Color
     
     @State private var sheetContentHeight = CGFloat(0)
+    
+    let myAction = {
+      print("This is the action being performed!")
+    }
     
     // MARK: - Body
     
@@ -37,7 +40,7 @@ struct ProgressiveObj: View {
             // Display the main content when changing is false
             HStack {
                 // Display the image symbol
-                Image(systemName: item.symbol)
+                CircleSymbol(symbol: $item.symbol, color: $item.color, done: $done, editing: $editing, tapAction: {changing.toggle()})
                     .onAppear {
                         // Check if the date matches and reset progress if necessary
                         if checkDate(item.date, dateStr(Date.now)) && item.daily {
@@ -50,49 +53,6 @@ struct ProgressiveObj: View {
                             done = true
                         } else {
                             done = false
-                        }
-                    }
-                    .font(.title)
-                    .fontWeight(.heavy)
-                    .foregroundStyle(
-                        (colorScheme == .dark ? (done ? Color.black.opacity(0.5) : Color(hex: item.color)) : (done ? Color.white.opacity(0.5) : Color(hex: item.color))) ?? Color.clear
-                    )
-                    .background(
-                        RoundedRectangle(cornerRadius: 45)
-                            .frame(width: 60, height: 60)
-                    )
-                    .foregroundStyle(
-                        (done ? Color(hex: item.color) : Color(hex: item.color)?.opacity(0.5)) ?? Color.clear
-                    )
-                    .opacity(buttonOpacity)
-                    .frame(width: 60, height: 60)
-                    .delaysTouches(for: 0.05) {
-                        withAnimation {
-                            if !editing {
-                                changing.toggle()
-                            }
-                        }
-                    }
-                    .gesture(LongPressGesture(minimumDuration: 0.2)
-                        .onChanged({ _ in
-                            withAnimation(.linear(duration: 0.1)) {
-                                buttonOpacity = 0.1
-                            }
-                            withAnimation(.linear(duration: 0.4)) {
-                                buttonOpacity = 1
-                            }
-                        })
-                        .onEnded({ _ in
-                            withAnimation {
-                                editing.toggle()
-                            }
-                        })
-                    )
-                    .sensoryFeedback(trigger: editing) { _, _ in
-                        if editing {
-                            return .impact
-                        } else {
-                            return .none
                         }
                     }
                     .sheet(isPresented: $editing, content: {
