@@ -10,7 +10,7 @@ import SwiftData
 
 
 struct CircleSymbol: View {
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) private var colorScheme
     @State private var buttonSize = 1.0
     @State private var buttonOpacity = 1.0
     @Binding var symbol: String

@@ -40,6 +40,34 @@ struct MainView: View {
     @State var objects = taskObjectVariables()
     @StateObject var timeVariables = freeTimesVariables()
     
+    @State var watchConnected = false
+    var watchConnection = WatchConnection()
+    
+
+    func sendMessageToWatch() {
+        if self.watchConnection.session.isReachable {
+            print("WatchOS - Watch is available")
+            
+            // Filter tasks for today
+            let todaysTasks = taskItems.filter { task in
+                isToday(task.days)
+            }
+            
+            do {
+                let encoder = JSONEncoder()
+                let tasksData = try encoder.encode(todaysTasks)
+                
+                // Send the data directly
+                self.watchConnection.session.transferUserInfo(["tasks": tasksData])
+                print("Tasks sent to watch")
+            } catch {
+                print("Error encoding task items: \(error.localizedDescription)")
+            }
+        } else {
+            print("WatchOS - Watch is unavailable")
+        }
+    }
+    
     var body: some View {
         
         ZStack {
@@ -71,6 +99,7 @@ struct MainView: View {
                         print("Error: settingsItems is still empty after calling newSettings")
                     }
                     
+                    sendMessageToWatch()
                     
                 }
                 .onChange(of: deg) {
@@ -89,8 +118,10 @@ struct MainView: View {
             
             // MARK: - Home View
             if(menu == 0){
+               
                 HomeView(objects: $objects, personalization: $personalization, creation: $creation)
                     .environmentObject(timeVariables)
+                
             }
             // MARK: - To-Do View
             else if (menu == 1) {
@@ -205,6 +236,8 @@ struct MainView: View {
                 personalization.customIcon = "clock"
             }
         }
+        
+        sendMessageToWatch()
     }
     
     // MARK: - Refresh Data Function

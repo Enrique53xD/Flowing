@@ -28,6 +28,14 @@
 		3E580D2B2B4E4CA9004534BF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E580D2A2B4E4CA9004534BF /* Preview Assets.xcassets */; };
 		3E58724A2BC5A71F00C44031 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5872492BC5A71F00C44031 /* AppIntent.swift */; };
 		3E58724C2BC5B4FD00C44031 /* LockFlowingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E58724B2BC5B4FD00C44031 /* LockFlowingWidget.swift */; };
+		3E5CB5672C26808D005EE6FC /* FlowingAWApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5CB5662C26808D005EE6FC /* FlowingAWApp.swift */; };
+		3E5CB5692C26808D005EE6FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5CB5682C26808D005EE6FC /* ContentView.swift */; };
+		3E5CB56B2C268094005EE6FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E5CB56A2C268094005EE6FC /* Assets.xcassets */; };
+		3E5CB56E2C268094005EE6FC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E5CB56D2C268094005EE6FC /* Preview Assets.xcassets */; };
+		3E5CB5712C268094005EE6FC /* FlowingAW Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 3E5CB5642C26808C005EE6FC /* FlowingAW Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3E5CB5792C2683FB005EE6FC /* WatchConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5CB5782C2683FB005EE6FC /* WatchConnection.swift */; };
+		3E5CB57B2C26864B005EE6FC /* PhoneConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5CB57A2C26864B005EE6FC /* PhoneConnection.swift */; };
+		3E5CB57E2C2693BB005EE6FC /* OctoKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3E5CB57D2C2693BB005EE6FC /* OctoKit */; };
 		3E6C2D5E2BFBF250006964A1 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6C2D5D2BFBF250006964A1 /* HomeView.swift */; };
 		3E6C2D602BFE64C0006964A1 /* ToDoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6C2D5F2BFE64BF006964A1 /* ToDoView.swift */; };
 		3E6C2D622BFE7118006964A1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6C2D612BFE7118006964A1 /* SettingsView.swift */; };
@@ -52,6 +60,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3E5CB56F2C268094005EE6FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E580D162B4E4CA6004534BF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3E5CB5632C26808C005EE6FC;
+			remoteInfo = "FlowingAW Watch App";
+		};
 		3EB7A5442BBDCD0300093B1B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3E580D162B4E4CA6004534BF /* Project object */;
@@ -62,6 +77,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		3E5CB5722C268094005EE6FC /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				3E5CB5712C268094005EE6FC /* FlowingAW Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3E6992132BB33AB0001A4241 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -98,6 +124,13 @@
 		3E580D2D2B4E4CA9004534BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E5872492BC5A71F00C44031 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
 		3E58724B2BC5B4FD00C44031 /* LockFlowingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockFlowingWidget.swift; sourceTree = "<group>"; };
+		3E5CB5642C26808C005EE6FC /* FlowingAW Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FlowingAW Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E5CB5662C26808D005EE6FC /* FlowingAWApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowingAWApp.swift; sourceTree = "<group>"; };
+		3E5CB5682C26808D005EE6FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3E5CB56A2C268094005EE6FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3E5CB56D2C268094005EE6FC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3E5CB5782C2683FB005EE6FC /* WatchConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnection.swift; sourceTree = "<group>"; };
+		3E5CB57A2C26864B005EE6FC /* PhoneConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConnection.swift; sourceTree = "<group>"; };
 		3E6992022BB33AAC001A4241 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		3E6C2D5D2BFBF250006964A1 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		3E6C2D5F2BFE64BF006964A1 /* ToDoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoView.swift; sourceTree = "<group>"; };
@@ -127,6 +160,14 @@
 			files = (
 				3E14F6F02BEACE6E00C28F7E /* OctoKit in Frameworks */,
 				3EB9B8AF2BD1DEBA0098C00F /* SymbolPicker in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3E5CB5612C26808C005EE6FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E5CB57E2C2693BB005EE6FC /* OctoKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,6 +213,7 @@
 				3EC18BD72B4E4EB900C9FA4B /* Functions.swift */,
 				3E580D202B4E4CA6004534BF /* Flowing */,
 				3EB7A53A2BBDCD0000093B1B /* FlowingWidget */,
+				3E5CB5652C26808D005EE6FC /* FlowingAW Watch App */,
 				3E6991FF2BB33AAC001A4241 /* Frameworks */,
 				3E580D1F2B4E4CA6004534BF /* Products */,
 			);
@@ -182,6 +224,7 @@
 			children = (
 				3E580D1E2B4E4CA6004534BF /* Flowing.app */,
 				3EB7A5362BBDCD0000093B1B /* FlowingWidgetExtension.appex */,
+				3E5CB5642C26808C005EE6FC /* FlowingAW Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -191,6 +234,7 @@
 			children = (
 				3E580D212B4E4CA6004534BF /* FlowingApp.swift */,
 				3E4059572B51B63E00BA643E /* MainView.swift */,
+				3E5CB5782C2683FB005EE6FC /* WatchConnection.swift */,
 				3E6C2D5C2BFBF224006964A1 /* Views */,
 				3E6C2D642BFE7D11006964A1 /* GitHub */,
 				3E0359F42B630C83003ABF17 /* Progressive */,
@@ -210,6 +254,26 @@
 			children = (
 				3E1FD06E2BA21D0A0035F06C /* TestView.swift */,
 				3E580D2A2B4E4CA9004534BF /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		3E5CB5652C26808D005EE6FC /* FlowingAW Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				3E5CB5662C26808D005EE6FC /* FlowingAWApp.swift */,
+				3E5CB57A2C26864B005EE6FC /* PhoneConnection.swift */,
+				3E5CB5682C26808D005EE6FC /* ContentView.swift */,
+				3E5CB56A2C268094005EE6FC /* Assets.xcassets */,
+				3E5CB56C2C268094005EE6FC /* Preview Content */,
+			);
+			path = "FlowingAW Watch App";
+			sourceTree = "<group>";
+		};
+		3E5CB56C2C268094005EE6FC /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				3E5CB56D2C268094005EE6FC /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -290,11 +354,13 @@
 				3E580D1B2B4E4CA6004534BF /* Frameworks */,
 				3E580D1C2B4E4CA6004534BF /* Resources */,
 				3E6992132BB33AB0001A4241 /* Embed Foundation Extensions */,
+				3E5CB5722C268094005EE6FC /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				3EB7A5452BBDCD0300093B1B /* PBXTargetDependency */,
+				3E5CB5702C268094005EE6FC /* PBXTargetDependency */,
 			);
 			name = Flowing;
 			packageProductDependencies = (
@@ -303,6 +369,26 @@
 			);
 			productName = Flowing;
 			productReference = 3E580D1E2B4E4CA6004534BF /* Flowing.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3E5CB5632C26808C005EE6FC /* FlowingAW Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3E5CB5752C268094005EE6FC /* Build configuration list for PBXNativeTarget "FlowingAW Watch App" */;
+			buildPhases = (
+				3E5CB5602C26808C005EE6FC /* Sources */,
+				3E5CB5612C26808C005EE6FC /* Frameworks */,
+				3E5CB5622C26808C005EE6FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "FlowingAW Watch App";
+			packageProductDependencies = (
+				3E5CB57D2C2693BB005EE6FC /* OctoKit */,
+			);
+			productName = "FlowingAW Watch App";
+			productReference = 3E5CB5642C26808C005EE6FC /* FlowingAW Watch App.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3EB7A5352BBDCD0000093B1B /* FlowingWidgetExtension */ = {
@@ -332,11 +418,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1530;
+				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					3E580D1D2B4E4CA6004534BF = {
 						CreatedOnToolsVersion = 15.0.1;
+					};
+					3E5CB5632C26808C005EE6FC = {
+						CreatedOnToolsVersion = 15.4;
 					};
 					3EB7A5352BBDCD0000093B1B = {
 						CreatedOnToolsVersion = 15.3;
@@ -362,6 +451,7 @@
 			targets = (
 				3E580D1D2B4E4CA6004534BF /* Flowing */,
 				3EB7A5352BBDCD0000093B1B /* FlowingWidgetExtension */,
+				3E5CB5632C26808C005EE6FC /* FlowingAW Watch App */,
 			);
 		};
 /* End PBXProject section */
@@ -374,6 +464,15 @@
 				3E7584342C180DBF0038FC87 /* Launch Screen.storyboard in Resources */,
 				3E580D2B2B4E4CA9004534BF /* Preview Assets.xcassets in Resources */,
 				3E580D282B4E4CA9004534BF /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3E5CB5622C26808C005EE6FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E5CB56E2C268094005EE6FC /* Preview Assets.xcassets in Resources */,
+				3E5CB56B2C268094005EE6FC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +504,7 @@
 				3E0359F02B62288D003ABF17 /* ToDoObj.swift in Sources */,
 				3ECA8C642BEAF7FB009EA4E2 /* AppDelegate.swift in Sources */,
 				3E1FD06B2B9FABB90035F06C /* CreateToDo.swift in Sources */,
+				3E5CB5792C2683FB005EE6FC /* WatchConnection.swift in Sources */,
 				3E1FD06F2BA21D0A0035F06C /* TestView.swift in Sources */,
 				3E3B7E802BF296CD0051EB94 /* IssueObj.swift in Sources */,
 				3E14F6F22BEACF4D00C28F7E /* GithubView.swift in Sources */,
@@ -418,6 +518,16 @@
 				3EC18BDA2B4E504B00C9FA4B /* TaskObj.swift in Sources */,
 				3E1FD06D2BA003270035F06C /* CreateProgressive.swift in Sources */,
 				3E6C2D622BFE7118006964A1 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3E5CB5602C26808C005EE6FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E5CB5692C26808D005EE6FC /* ContentView.swift in Sources */,
+				3E5CB5672C26808D005EE6FC /* FlowingAWApp.swift in Sources */,
+				3E5CB57B2C26864B005EE6FC /* PhoneConnection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,6 +547,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3E5CB5702C268094005EE6FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3E5CB5632C26808C005EE6FC /* FlowingAW Watch App */;
+			targetProxy = 3E5CB56F2C268094005EE6FC /* PBXContainerItemProxy */;
+		};
 		3EB7A5452BBDCD0300093B1B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3EB7A5352BBDCD0000093B1B /* FlowingWidgetExtension */;
@@ -634,6 +749,66 @@
 			};
 			name = Release;
 		};
+		3E5CB5732C268094005EE6FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"FlowingAW Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = T9Q68QP6GV;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FlowingAW;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "enrique53-xd.Flowing";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "enrique53-xd.Flowing.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Debug;
+		};
+		3E5CB5742C268094005EE6FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"FlowingAW Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = T9Q68QP6GV;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FlowingAW;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "enrique53-xd.Flowing";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "enrique53-xd.Flowing.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Release;
+		};
 		3EB7A5482BBDCD0300093B1B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -713,6 +888,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		3E5CB5752C268094005EE6FC /* Build configuration list for PBXNativeTarget "FlowingAW Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3E5CB5732C268094005EE6FC /* Debug */,
+				3E5CB5742C268094005EE6FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3EB7A5472BBDCD0300093B1B /* Build configuration list for PBXNativeTarget "FlowingWidgetExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -750,6 +934,11 @@
 			productName = OctoKit;
 		};
 		3E2EBD872BF41835001DCD37 /* OctoKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3E14F6EE2BEACE6E00C28F7E /* XCRemoteSwiftPackageReference "octokit" */;
+			productName = OctoKit;
+		};
+		3E5CB57D2C2693BB005EE6FC /* OctoKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3E14F6EE2BEACE6E00C28F7E /* XCRemoteSwiftPackageReference "octokit" */;
 			productName = OctoKit;

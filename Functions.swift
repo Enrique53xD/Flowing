@@ -73,12 +73,7 @@ extension Color {
     }
 }
 
-// Extension to get the screen size
-extension UIScreen {
-    static let screenWidth = UIScreen.main.bounds.size.width
-    static let screenHeight = UIScreen.main.bounds.size.height
-    static let screenSize = UIScreen.main.bounds.size
-}
+
 
 // Extension to transform a Date variable to HH:mm format
 extension Date {
@@ -215,6 +210,13 @@ func getFreeTimes(_ vars: [taskItem], days: String, allTasks: Bool) -> [(Int, In
         
         return pairs
     }
+}
+
+// Extension to get the screen size was put here due to incompatibility with apple watch membership
+extension UIScreen {
+    static let screenWidth = UIScreen.main.bounds.size.width
+    static let screenHeight = UIScreen.main.bounds.size.height
+    static let screenSize = UIScreen.main.bounds.size
 }
 
 // Function that returns true if the current day of the week has a 1 value in a string of 7 characters that represent the days of the week
