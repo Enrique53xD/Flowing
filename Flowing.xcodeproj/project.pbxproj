@@ -23,6 +23,9 @@
 		3E3B7E802BF296CD0051EB94 /* IssueObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3B7E7F2BF296CD0051EB94 /* IssueObj.swift */; };
 		3E4059532B50EB3D00BA643E /* EditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4059522B50EB3D00BA643E /* EditTask.swift */; };
 		3E4059582B51B63E00BA643E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4059572B51B63E00BA643E /* MainView.swift */; };
+		3E4748F72C28823300E5D20E /* Customs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4748F62C28823300E5D20E /* Customs.swift */; };
+		3E4748F82C28823300E5D20E /* Customs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4748F62C28823300E5D20E /* Customs.swift */; };
+		3E4748F92C28823300E5D20E /* Customs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4748F62C28823300E5D20E /* Customs.swift */; };
 		3E580D222B4E4CA6004534BF /* FlowingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E580D212B4E4CA6004534BF /* FlowingApp.swift */; };
 		3E580D282B4E4CA9004534BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E580D272B4E4CA9004534BF /* Assets.xcassets */; };
 		3E580D2B2B4E4CA9004534BF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E580D2A2B4E4CA9004534BF /* Preview Assets.xcassets */; };
@@ -32,7 +35,7 @@
 		3E5CB5692C26808D005EE6FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5CB5682C26808D005EE6FC /* ContentView.swift */; };
 		3E5CB56B2C268094005EE6FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E5CB56A2C268094005EE6FC /* Assets.xcassets */; };
 		3E5CB56E2C268094005EE6FC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E5CB56D2C268094005EE6FC /* Preview Assets.xcassets */; };
-		3E5CB5712C268094005EE6FC /* FlowingAW Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 3E5CB5642C26808C005EE6FC /* FlowingAW Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3E5CB5712C268094005EE6FC /* Flowing.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 3E5CB5642C26808C005EE6FC /* Flowing.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3E5CB5792C2683FB005EE6FC /* WatchConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5CB5782C2683FB005EE6FC /* WatchConnection.swift */; };
 		3E5CB57B2C26864B005EE6FC /* PhoneConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5CB57A2C26864B005EE6FC /* PhoneConnection.swift */; };
 		3E5CB57E2C2693BB005EE6FC /* OctoKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3E5CB57D2C2693BB005EE6FC /* OctoKit */; };
@@ -83,7 +86,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				3E5CB5712C268094005EE6FC /* FlowingAW Watch App.app in Embed Watch Content */,
+				3E5CB5712C268094005EE6FC /* Flowing.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -116,6 +119,7 @@
 		3E3B7E7F2BF296CD0051EB94 /* IssueObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueObj.swift; sourceTree = "<group>"; };
 		3E4059522B50EB3D00BA643E /* EditTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTask.swift; sourceTree = "<group>"; };
 		3E4059572B51B63E00BA643E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		3E4748F62C28823300E5D20E /* Customs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Customs.swift; sourceTree = SOURCE_ROOT; };
 		3E580D1E2B4E4CA6004534BF /* Flowing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flowing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E580D212B4E4CA6004534BF /* FlowingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowingApp.swift; sourceTree = "<group>"; };
 		3E580D272B4E4CA9004534BF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -124,7 +128,7 @@
 		3E580D2D2B4E4CA9004534BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E5872492BC5A71F00C44031 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
 		3E58724B2BC5B4FD00C44031 /* LockFlowingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockFlowingWidget.swift; sourceTree = "<group>"; };
-		3E5CB5642C26808C005EE6FC /* FlowingAW Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FlowingAW Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E5CB5642C26808C005EE6FC /* Flowing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flowing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E5CB5662C26808D005EE6FC /* FlowingAWApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowingAWApp.swift; sourceTree = "<group>"; };
 		3E5CB5682C26808D005EE6FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3E5CB56A2C268094005EE6FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -211,6 +215,7 @@
 				3EB7A54C2BBDE30100093B1B /* FlowingWidgetExtension.entitlements */,
 				3E38C30D2B5AE487009E160D /* VariableManager.swift */,
 				3EC18BD72B4E4EB900C9FA4B /* Functions.swift */,
+				3E4748F62C28823300E5D20E /* Customs.swift */,
 				3E580D202B4E4CA6004534BF /* Flowing */,
 				3EB7A53A2BBDCD0000093B1B /* FlowingWidget */,
 				3E5CB5652C26808D005EE6FC /* FlowingAW Watch App */,
@@ -224,7 +229,7 @@
 			children = (
 				3E580D1E2B4E4CA6004534BF /* Flowing.app */,
 				3EB7A5362BBDCD0000093B1B /* FlowingWidgetExtension.appex */,
-				3E5CB5642C26808C005EE6FC /* FlowingAW Watch App.app */,
+				3E5CB5642C26808C005EE6FC /* Flowing.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -388,7 +393,7 @@
 				3E5CB57D2C2693BB005EE6FC /* OctoKit */,
 			);
 			productName = "FlowingAW Watch App";
-			productReference = 3E5CB5642C26808C005EE6FC /* FlowingAW Watch App.app */;
+			productReference = 3E5CB5642C26808C005EE6FC /* Flowing.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3EB7A5352BBDCD0000093B1B /* FlowingWidgetExtension */ = {
@@ -517,6 +522,7 @@
 				3EC18BD82B4E4EB900C9FA4B /* Functions.swift in Sources */,
 				3EC18BDA2B4E504B00C9FA4B /* TaskObj.swift in Sources */,
 				3E1FD06D2BA003270035F06C /* CreateProgressive.swift in Sources */,
+				3E4748F72C28823300E5D20E /* Customs.swift in Sources */,
 				3E6C2D622BFE7118006964A1 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -527,6 +533,7 @@
 			files = (
 				3E5CB5692C26808D005EE6FC /* ContentView.swift in Sources */,
 				3E5CB5672C26808D005EE6FC /* FlowingAWApp.swift in Sources */,
+				3E4748F92C28823300E5D20E /* Customs.swift in Sources */,
 				3E5CB57B2C26864B005EE6FC /* PhoneConnection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -540,6 +547,7 @@
 				3EB7A54A2BBDD9AD00093B1B /* VariableManager.swift in Sources */,
 				3EB7A5402BBDCD0000093B1B /* FlowingWidget.swift in Sources */,
 				3EB7A54B2BBDD9B000093B1B /* Functions.swift in Sources */,
+				3E4748F82C28823300E5D20E /* Customs.swift in Sources */,
 				3E58724C2BC5B4FD00C44031 /* LockFlowingWidget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -702,6 +710,7 @@
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -736,6 +745,7 @@
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -760,7 +770,6 @@
 				DEVELOPMENT_TEAM = T9Q68QP6GV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = FlowingAW;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "enrique53-xd.Flowing";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -769,7 +778,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "enrique53-xd.Flowing.watchkitapp";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Flowing;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -790,7 +799,6 @@
 				DEVELOPMENT_TEAM = T9Q68QP6GV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = FlowingAW;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "enrique53-xd.Flowing";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -799,7 +807,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "enrique53-xd.Flowing.watchkitapp";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Flowing;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

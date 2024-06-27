@@ -132,7 +132,7 @@ struct EditIssue: View {
     func updateIssue() {
         Octokit(config).patchIssue(owner: login, repository: repo, number: num, title: name, body: description) { response in
             switch response {
-            case .success(let issue):
+            case .success(_):
                 print("edited")
             case .failure:
                 print("")

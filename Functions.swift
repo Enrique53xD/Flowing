@@ -124,6 +124,22 @@ func convertToMinutes(from timeString: String) -> Int {
     return 0 // Default return
 }
 
+func minutesPassedToday() -> Int {
+    // Get the current date and time
+    let now = Date()
+
+    // Get the start of today (midnight)
+    let today = Calendar.current.startOfDay(for: now)
+
+    // Calculate the time interval between the start of today and now
+    let interval = now.timeIntervalSince(today)
+
+    // Convert the interval to minutes
+    let minutes = Int(interval / 60)
+
+    return minutes
+}
+
 // Function to get the start and end Integers to be HH:mm or HH:mm - HH:mm
 func formatTaskTime(start: Int, end: Int) -> String {
     if start == end {

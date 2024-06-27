@@ -1,70 +1,29 @@
-//
-//  AppIntent.swift
-//
-//  Created by Saúl González on 9/04/24.
-//
-
-import WidgetKit
 import AppIntents
-import SwiftUI
+import WidgetKit
 
-// Define a struct for WidgetOptions that conforms to the AppEntity protocol
-struct WidgetOptions: AppEntity {
-    var id: String
-    var use: String
+enum WidgetOption: String, CaseIterable, AppEnum {
+    case option1 = "Nothing"
+    case option2 = "Name"
+    case option3 = "Time Range"
     
-    // Define a static variable for the type display representation
-    static var typeDisplayRepresentation: TypeDisplayRepresentation = "Widget Options"
-    
-    // Define a static variable for the default query
-    static var defaultQuery = WidgetQuery()
-    
-    // Define a computed property for the display representation
-    var displayRepresentation: DisplayRepresentation {
-        DisplayRepresentation(title: "\(id)")
-    }
-    
-    // Define some sample options
-    static let options: [WidgetOptions] = [
-        WidgetOptions(id: "Nothing", use: "Nothing"),
-        WidgetOptions(id: "Name", use: "Name"),
-        WidgetOptions(id: "Time Range", use: "Time Range")
+    static var typeDisplayRepresentation: TypeDisplayRepresentation = "Widget Option"
+    static var caseDisplayRepresentations: [WidgetOption : DisplayRepresentation] = [
+        .option1: "Nothing",
+        .option2: "Name",
+        .option3: "Time Range"
     ]
 }
 
-// Define a struct for WidgetQuery that conforms to the EntityQuery protocol
-struct WidgetQuery: EntityQuery {
-    // Implement the entities(for:) method to return entities for the given identifiers
-    func entities(for identifiers: [WidgetOptions.ID]) async throws -> [WidgetOptions] {
-        WidgetOptions.options.filter {
-            identifiers.contains($0.id)
-        }
-    }
-    
-    // Implement the suggestedEntities() method to return suggested entities
-    func suggestedEntities() async throws -> [WidgetOptions] {
-        WidgetOptions.options
-    }
-    
-    // Implement the defaultResult() method to return the default result
-    func defaultResult() async -> WidgetOptions? {
-        WidgetOptions.options.first
-    }
-}
-
-// Define a struct for ConfigurationAppIntent that conforms to the WidgetConfigurationIntent protocol
 struct ConfigurationAppIntent: WidgetConfigurationIntent {
-    // Define a static variable for the title
-    static var title: LocalizedStringResource = "Configuration"
+    static var title: LocalizedStringResource = "Select Widget Option"
+    static var description = IntentDescription("Choose an option for the widget")
+
+    @Parameter(title: "Top Text", default: .option1)
+    var topText: WidgetOption
     
-    // Define a static variable for the description
-    static var description = IntentDescription("This is an example widget.")
+    @Parameter(title: "Bottom Text", default: .option1)
+    var bottomText: WidgetOption
     
-    // Define a configurable parameter for the top text
-    @Parameter(title: "Top Text")
-    var topText: WidgetOptions?
-    
-    // Define a configurable parameter for the bottom text
-    @Parameter(title: "Bottom Text")
-    var bottomText: WidgetOptions?
+    @Parameter(title: "Progress Ring", default: false)
+    var pRing: Bool
 }

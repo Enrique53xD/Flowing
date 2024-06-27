@@ -32,6 +32,7 @@ struct FlowingWidgetView: View {
 struct HomeScreenWidgetView : View {
     @Environment(\.modelContext) private var context
     @Query(animation: .bouncy) private var taskItems: [taskItem]
+    @State private var scaleValue = 1.0
     
     var entry: Provider.Entry
     
@@ -40,42 +41,67 @@ struct HomeScreenWidgetView : View {
             if let firstMatchingItem = taskItems.first(where: { (isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end)) || ($0.days == "0000000" && checkCurrentTime(start: $0.start, end: $0.end))}) {
                 let color: Color = Color(hex: firstMatchingItem.color)!
                 
-                if entry.configuration.topText?.use == "Name" {
+                if entry.configuration.topText.rawValue == "Name" {
                     Text(firstMatchingItem.name)
                         .font(.callout)
                         .fontWeight(.bold)
                         .fontDesign(.rounded)
                         .foregroundStyle(color.opacity(0.75))
-                } else if entry.configuration.topText?.use == "Time Range" {
+                        .onAppear{scaleValue -= 0.175}
+                    
+                } else if entry.configuration.topText.rawValue == "Time Range" {
                     Text(formatTaskTime(start: firstMatchingItem.start, end: firstMatchingItem.end))
                         .font(.callout)
                         .fontWeight(.bold)
                         .fontDesign(.rounded)
                         .foregroundStyle(color.opacity(0.75))
+                        .onAppear{scaleValue -= 0.175}
                 }
                 
                 Spacer()
                 
-                Image(systemName: firstMatchingItem.symbol)
-                    .font(.system(size: 65))
-                    .fontWeight(.heavy)
-                    .foregroundStyle(Color(hex: firstMatchingItem.color)!)
-                    .frame(width: 60, height: 60)
+                ZStack {
+                    
+                    if entry.configuration.pRing{
+                        ProgressCircle(progress: (Double(minutesPassedToday() - firstMatchingItem.start)/Double(firstMatchingItem.end - firstMatchingItem.start)), color: Color(hex: firstMatchingItem.color), lineWidth: 12)
+                            .frame(width: 105, height: 105)
+                        
+                        Image(systemName: firstMatchingItem.symbol)
+                            .font(.system(size: 50))
+                            .fontWeight(.heavy)
+                            .foregroundStyle(Color(hex: firstMatchingItem.color)!)
+                            .frame(width: 70, height: 70)
+                    } else {
+                        Image(systemName: firstMatchingItem.symbol)
+                            .font(.system(size: 75))
+                            .fontWeight(.heavy)
+                            .foregroundStyle(Color(hex: firstMatchingItem.color)!)
+                            .frame(width: 75, height: 75)
+                    }
+                    
+                    
+                }
+                .scaleEffect(scaleValue)
+                .frame(width: 110 * scaleValue, height: 110 * scaleValue)
                 
-                Spacer()
+               Spacer()
                 
-                if entry.configuration.bottomText?.use == "Name" {
+                if entry.configuration.bottomText.rawValue == "Name" {
                     Text(firstMatchingItem.name)
                         .font(.callout)
                         .fontWeight(.bold)
                         .fontDesign(.rounded)
                         .foregroundStyle(color.opacity(0.75))
-                } else if entry.configuration.bottomText?.use == "Time Range" {
+                        .onAppear{scaleValue -= 0.175}
+                    
+                } else if entry.configuration.bottomText.rawValue == "Time Range" {
                     Text(formatTaskTime(start: firstMatchingItem.start, end: firstMatchingItem.end))
                         .font(.callout)
                         .fontWeight(.bold)
                         .fontDesign(.rounded)
                         .foregroundStyle(color.opacity(0.75))
+                        .onAppear{scaleValue -= 0.175}
+                    
                 }
             } else {
                 Image(systemName: "clock")
@@ -83,7 +109,8 @@ struct HomeScreenWidgetView : View {
                     .fontWeight(.heavy)
                     .frame(width: 60, height: 60)
             }
-        }
+            
+        }.padding([.top, .bottom])
     }
 }
 

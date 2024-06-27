@@ -45,26 +45,27 @@ struct MainView: View {
     
 
     func sendMessageToWatch() {
-        if self.watchConnection.session.isReachable {
-            print("WatchOS - Watch is available")
+        // Filter tasks for today
+        let todaysTasks = taskItems.filter { task in
+            isToday(task.days)
+        }
+        
+        do {
+            let encoder = JSONEncoder()
+            let tasksData = try encoder.encode(todaysTasks)
             
-            // Filter tasks for today
-            let todaysTasks = taskItems.filter { task in
-                isToday(task.days)
-            }
+            // Send the data using transferUserInfo
+            self.watchConnection.session.transferUserInfo(["tasks": tasksData])
+            print("Tasks sent to watch")
             
-            do {
-                let encoder = JSONEncoder()
-                let tasksData = try encoder.encode(todaysTasks)
-                
-                // Send the data directly
-                self.watchConnection.session.transferUserInfo(["tasks": tasksData])
-                print("Tasks sent to watch")
-            } catch {
-                print("Error encoding task items: \(error.localizedDescription)")
+            // Optional: Check if the watch is reachable for immediate feedback
+            if self.watchConnection.session.isReachable {
+                print("WatchOS - Watch is available for immediate transfer")
+            } else {
+                print("WatchOS - Watch is not immediately reachable, data will be transferred when available")
             }
-        } else {
-            print("WatchOS - Watch is unavailable")
+        } catch {
+            print("Error encoding task items: \(error.localizedDescription)")
         }
     }
     
@@ -121,6 +122,9 @@ struct MainView: View {
                
                 HomeView(objects: $objects, personalization: $personalization, creation: $creation)
                     .environmentObject(timeVariables)
+                    .onChange(of: timeVariables.update) {
+                        sendMessageToWatch()
+                    }
                 
             }
             // MARK: - To-Do View

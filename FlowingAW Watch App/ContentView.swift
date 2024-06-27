@@ -2,41 +2,130 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var phoneConnection = PhoneConnection()
+    @State private var scrolledToUndone = false
+    @State private var timer: Timer?
+    @State private var refresh = false
+    
+    var firstUndoneTaskId: String? {
+        phoneConnection.tasks.first(where: { $0.end > minutesPassedToday() })?.id
+    }
     
     var body: some View {
-        ScrollView {
-            ForEach(phoneConnection.tasks) { task in
-                VStack {
-                    CircleSymbol(symbol: task.symbol, color: task.color, done: task.done, desc: task.desc)
+        ScrollViewReader { proxy in
+            List {
+                ForEach(phoneConnection.tasks) { task in
+                    HStack {
+                        CircleSymbol(symbol: task.symbol, color: task.color, done: isDone(end: task.end), desc: task.desc)
                         
-                    Text(task.name)
-                        .fontWeight(.heavy)
-                        
-                }
-                
-                .scrollTransition { content, phase in
-                    content
-                        .opacity(phase.isIdentity ? 1 : 0)
-                        .scaleEffect(phase.isIdentity ? 1 : 0.75)
-                        .blur(radius: phase.isIdentity ? 0 : 10)
+                        VStack(alignment: .leading) {
+                            Text(task.name)
+                                .lineLimit(2)
+                                .fontDesign(.rounded)
+                                .opacity(task.done ? 0.7 : 1)
+                                .fontWeight(.heavy)
+                            
+                            Text("\(formatTaskTime(start: task.start, end: task.end))")
+                                .fontWeight(.heavy)
+                                .fontDesign(.rounded)
+                                .font(.system(size: 11))
+                                .opacity(0.7)
+                        }
+                    }
+                    .id(task.id)
+                    .listRowBackground(Color.clear)
+                    .padding()
+                    .padding([.top, .bottom], 5)
                 }
             }
-        }
-        .scrollClipDisabled()
-        .padding()
-        .onAppear {
-            // Try to load tasks from UserDefaults when the view appears
-            if let storedTasksData = UserDefaults.standard.data(forKey: "tasks") {
-                do {
-                    let decodedTasks = try JSONDecoder().decode([taskItem].self, from: storedTasksData)
-                    phoneConnection.tasks = decodedTasks
-                    print("Loaded \(decodedTasks.count) tasks from UserDefaults")
-                } catch {
-                    print("Error decoding stored tasks: \(error)")
+            .listStyle(.carousel)
+            .onAppear {
+                loadTasksFromUserDefaults()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    scrollToFirstUndoneTask(proxy: proxy)
+                }
+                
+                timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { _ in
+                    withAnimation() {
+                        refresh.toggle()
+                    }
+                }
+            }
+            .onDisappear{
+                timer?.invalidate()
+            }
+            .onChange(of: firstUndoneTaskId) {
+                scrolledToUndone = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    scrollToFirstUndoneTask(proxy: proxy)
                 }
             }
         }
     }
+    
+    private func isDone(end: Int) -> Bool {
+        if end < minutesPassedToday() {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    private func minutesPassedToday() -> Int {
+        // Get the current date and time
+        let now = Date()
+
+        // Get the start of today (midnight)
+        let today = Calendar.current.startOfDay(for: now)
+
+        // Calculate the time interval between the start of today and now
+        let interval = now.timeIntervalSince(today)
+
+        // Convert the interval to minutes
+        let minutes = Int(interval / 60)
+
+        return minutes
+    }
+    
+    private func loadTasksFromUserDefaults() {
+        if let storedTasksData = UserDefaults.standard.data(forKey: "tasks") {
+            do {
+                let decodedTasks = try JSONDecoder().decode([taskItem].self, from: storedTasksData)
+                phoneConnection.tasks = decodedTasks
+                print("Loaded \(decodedTasks.count) tasks from UserDefaults")
+            } catch {
+                print("Error decoding stored tasks: \(error)")
+            }
+        }
+    }
+    
+    private func scrollToFirstUndoneTask(proxy: ScrollViewProxy) {
+        if let id = firstUndoneTaskId, !scrolledToUndone {
+            withAnimation(.easeInOut(duration: 0.5)) {
+                proxy.scrollTo(id, anchor: .center)
+            }
+            scrolledToUndone = true
+        }
+    }
+}
+
+func formatTaskTime(start: Int, end: Int) -> String {
+    if start == end {
+        return "\(transformMinutes(minute: start))"
+    } else {
+        return "\(transformMinutes(minute: start)) - \(transformMinutes(minute: end))"
+    }
+}
+
+func transformMinutes(minute: Int) -> String {
+    var minutes = minute
+    var hours = 0
+    
+    while minutes >= 60 {
+        minutes -= 60
+        hours += 1
+    }
+    
+    return "\(String(format: "%02d", hours)):\(String(format: "%02d", minutes))"
 }
 
 // Extension to convert a Color variable to a hex
@@ -114,19 +203,19 @@ struct CircleSymbol: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 45)
-                .frame(width: 80*buttonSize, height: 80*buttonSize)
+                .frame(width: 70*buttonSize, height: 70*buttonSize)
                 .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
                 .opacity(buttonOpacity)
             
             Image(systemName: symbol)
-                .font(.title)
+                .font(.title2)
                 .fontWeight(.heavy)
                 .foregroundStyle(
                     (colorScheme == .dark ? (done ? Color.black.opacity(0.5) : Color(hex: color)) : (done ? Color.white.opacity(0.5) : Color(hex: color))) ?? Color.clear
                 )
                 .background(
                     RoundedRectangle(cornerRadius: 45)
-                        .frame(width: 80, height: 80)
+                        .frame(width: 70, height: 70)
                 )
                 .foregroundStyle(
                     (done ? Color(hex: color) : Color(hex: color)?.opacity(0.5)) ?? Color.clear
@@ -135,7 +224,7 @@ struct CircleSymbol: View {
                            Button("OK", role: .cancel) { }
                        }
                 .scaleEffect(buttonSize)
-                .frame(width: 80, height: 80)
+                .frame(width: 70, height: 70)
                 .onTapGesture{
                         withAnimation(.bouncy) {
                             if !editing {

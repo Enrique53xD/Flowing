@@ -121,7 +121,7 @@ struct CreateIssue: View {
             // Create issue using Octokit
             Octokit(config).postIssue(owner: login, repository: repo, title: name, body: description) { response in
                 switch response {
-                case .success(let issue):
+                case .success(_):
                     print("Issue created")
                 case .failure:
                     print("Failed to create issue")
