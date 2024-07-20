@@ -192,12 +192,13 @@ struct reposWithIssues: Hashable {
 class freeTimesVariables : ObservableObject {
     
     //Variables
-    
     @Published var tasks = [taskItem]()
     @Published var freeTimes = [(Int,Int)]()
     @Published var update = false
     @Published var updateGitHub = false
 }
+
+
 
 // MARK: - Personalization Variables
 

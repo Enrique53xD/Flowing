@@ -1,13 +1,17 @@
 import SwiftUI
 
+class publicVars: ObservableObject {
+    @Published var time = 0
+}
+
 struct ContentView: View {
     @StateObject var phoneConnection = PhoneConnection()
     @State private var scrolledToUndone = false
     @State private var timer: Timer?
-    @State private var refresh = false
+    @StateObject var vars = publicVars()
     
     var firstUndoneTaskId: String? {
-        phoneConnection.tasks.first(where: { $0.end > minutesPassedToday() })?.id
+        phoneConnection.tasks.first(where: { $0.end >= vars.time })?.id
     }
     
     var body: some View {
@@ -15,13 +19,14 @@ struct ContentView: View {
             List {
                 ForEach(phoneConnection.tasks) { task in
                     HStack {
-                        CircleSymbol(symbol: task.symbol, color: task.color, done: isDone(end: task.end), desc: task.desc)
+                        CircleSymbol(symbol: task.symbol, color: task.color, end: task.end, desc: task.desc)
+                            .environmentObject(vars)
                         
                         VStack(alignment: .leading) {
                             Text(task.name)
                                 .lineLimit(2)
                                 .fontDesign(.rounded)
-                                .opacity(task.done ? 0.7 : 1)
+                                .opacity((task.end < vars.time) ? 0.7 : 1)
                                 .fontWeight(.heavy)
                             
                             Text("\(formatTaskTime(start: task.start, end: task.end))")
@@ -39,6 +44,7 @@ struct ContentView: View {
             }
             .listStyle(.carousel)
             .onAppear {
+                vars.time = minutesPassedToday()
                 loadTasksFromUserDefaults()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                     scrollToFirstUndoneTask(proxy: proxy)
@@ -46,7 +52,7 @@ struct ContentView: View {
                 
                 timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { _ in
                     withAnimation() {
-                        refresh.toggle()
+                        vars.time = minutesPassedToday()
                     }
                 }
             }
@@ -194,9 +200,10 @@ struct CircleSymbol: View {
     @State private var buttonOpacity = 1.0
     @State var symbol: String
     @State var color: String
-    @State var done: Bool
+    @State var end: Int
     @State var editing: Bool = false
     @State var desc: String
+    @EnvironmentObject var vars: publicVars
     
     @State var tapAction = {}
     @State var holdAction = {}
@@ -211,14 +218,14 @@ struct CircleSymbol: View {
                 .font(.title2)
                 .fontWeight(.heavy)
                 .foregroundStyle(
-                    (colorScheme == .dark ? (done ? Color.black.opacity(0.5) : Color(hex: color)) : (done ? Color.white.opacity(0.5) : Color(hex: color))) ?? Color.clear
+                    (colorScheme == .dark ? ((end < vars.time) ? Color.black.opacity(0.5) : Color(hex: color)) : ((end < vars.time) ? Color.white.opacity(0.5) : Color(hex: color))) ?? Color.clear
                 )
                 .background(
                     RoundedRectangle(cornerRadius: 45)
                         .frame(width: 70, height: 70)
                 )
                 .foregroundStyle(
-                    (done ? Color(hex: color) : Color(hex: color)?.opacity(0.5)) ?? Color.clear
+                    ((end < vars.time) ? Color(hex: color) : Color(hex: color)?.opacity(0.5)) ?? Color.clear
                 )
                 .alert(desc == "" ? "No description" : desc, isPresented: $editing) {
                            Button("OK", role: .cancel) { }

@@ -123,6 +123,7 @@ struct MainView: View {
                 HomeView(objects: $objects, personalization: $personalization, creation: $creation)
                     .environmentObject(timeVariables)
                     .onChange(of: timeVariables.update) {
+                        updateAllTasks()
                         sendMessageToWatch()
                     }
                 
@@ -223,6 +224,7 @@ struct MainView: View {
     
     // MARK: - Function to Update Tasks
     func updateAllTasks(){
+        print("A")
         timeVariables.tasks = taskItems
         timeVariables.freeTimes = getFreeTimes(taskItems, days: objects.days, allTasks: personalization.allTasks)
         

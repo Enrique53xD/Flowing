@@ -29,26 +29,6 @@ struct HomeView: View {
     //Environment Object
     @EnvironmentObject var timeVariables: freeTimesVariables
     
-    //Helper Functions
-    func updateAllTasks() {
-        timeVariables.tasks = taskItems
-        timeVariables.freeTimes = getFreeTimes(taskItems, days: objects.days, allTasks: personalization.allTasks)
-        
-        for free in timeVariables.freeTimes {
-            timeVariables.tasks.append(taskItem(name: "fR33t1M3", color: "FFFFFF", desc: "u93fgbreiuwrg3", symbol: "clock", start: free.0, end: free.1, done: false, days: "1111111"))
-        }
-        
-        timeVariables.tasks = timeVariables.tasks.sorted { $0.end < $1.end }
-        timeVariables.tasks = timeVariables.tasks.sorted { $0.start < $1.start }
-
-        withAnimation() {
-            if let firstMatchingItem = taskItems.first(where: { (isToday($0.days) && checkCurrentTime(start: $0.start, end: $0.end)) || ($0.days == "0000000" && checkCurrentTime(start: $0.start, end: $0.end))}) {
-                personalization.customIcon = firstMatchingItem.symbol
-            } else {
-                personalization.customIcon = "clock"
-            }
-        }
-    }
     
     // MARK: - Body
     var body: some View {
@@ -130,9 +110,6 @@ struct HomeView: View {
                     .opacity(phase.isIdentity ? 1 : 0)
                     .scaleEffect(phase.isIdentity ? 1 : 0.75)
                     .blur(radius: phase.isIdentity ? 0 : 10)
-            }
-            .onChange(of: timeVariables.update) {
-                updateAllTasks()
             }
             .sheet(isPresented: $creation.creatingTask) {
                 CreateTask(context: context)

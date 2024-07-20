@@ -105,9 +105,9 @@ struct HomeScreenWidgetView : View {
                 }
             } else {
                 Image(systemName: "clock")
-                    .font(.system(size: 65))
+                    .font(.system(size: 75))
                     .fontWeight(.heavy)
-                    .frame(width: 60, height: 60)
+                    .frame(width: 75, height: 75)
             }
             
         }.padding([.top, .bottom])

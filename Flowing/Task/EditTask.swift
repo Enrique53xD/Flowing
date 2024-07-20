@@ -236,9 +236,11 @@ struct EditTask: View {
                 item.days = days
                 
                 timeVariables.update.toggle()
+                
+                try? context.save()
             }
             
-            try? context.save()
+            
         }
     }
 }
