@@ -68,8 +68,16 @@ struct GithubView: View {
                         
                         // Display the issues of the repository
                         if showIssues[repo.name] ?? false {
-                            ForEach(repo.issues.sorted(by: { $0.state!.rawValue > $1.state!.rawValue }), id: \.self) { issu in
-                                IssueObj(login: login ?? "", repoName: repo.name, num: issu.number, config: config, textColor: customTextColor ? textColor : Color.primary, url: issu.htmlURL!, status: issu.state?.rawValue ?? "", name: issu.title ?? "", description: issu.body ?? "")
+                            ForEach(Array(repo.issues.sorted(by: { $0.state!.rawValue > $1.state!.rawValue }).enumerated()), id: \.offset) { index, issue in
+                                IssueObj(login: login ?? "",
+                                         repoName: repo.name,
+                                         num: issue.number,
+                                         config: config,
+                                         textColor: customTextColor ? textColor : Color.primary,
+                                         url: issue.htmlURL!,
+                                         status: issue.state?.rawValue ?? "",
+                                         name: issue.title ?? "",
+                                         description: issue.body ?? "")
                                     .scrollTransition { content, phase in
                                         content
                                             .opacity(phase.isIdentity ? 1 : 0)
