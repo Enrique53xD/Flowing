@@ -28,7 +28,7 @@ struct ToDoObj: View {
     var body: some View {
         HStack {
             // Symbol image
-            CircleSymbol(symbol: $item.symbol, color: $item.color, done: $item.done, editing: $editing, tapAction: {item.done.toggle()})
+            CircleSymbol(symbol: $item.symbol, color: $item.color, done: $item.done, editing: $editing, tapAction: {item.done.toggle(); print(item.id)})
                 .onAppear {
                     // Reset item's done status and date if it's a daily task and the date has changed
                     if checkDate(item.date, dateStr(Date.now)) && item.daily {

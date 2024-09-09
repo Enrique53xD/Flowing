@@ -41,7 +41,7 @@ struct TaskObj: View {
             
             HStack {
                 // Symbol and Button
-                CircleSymbol(symbol: $item.symbol, color: $item.color, done: $testDone, editing: $editing)
+                CircleSymbol(symbol: $item.symbol, color: $item.color, done: .constant(item.end < minutesPassedToday()), editing: $editing)
                     .onAppear(){
                         testDone = (item.end < minutesPassedToday())
                     }

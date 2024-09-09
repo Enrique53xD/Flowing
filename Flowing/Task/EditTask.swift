@@ -190,6 +190,7 @@ struct EditTask: View {
                                 }
                             }
                         }, perform: {
+                            deleteTaskNotifications(item.id)
                             deleted = true
                             context.delete(item)
                             timeVariables.update.toggle()
@@ -216,30 +217,33 @@ struct EditTask: View {
             dateE = formatter.date(from: "2016/10/08 \(transformMinutes(minute: end))") ?? formatter.date(from: "2016/10/08 22:31")!
         }
         .onDisappear {
-            withAnimation(.bouncy) {
-                // Swap start and end if necessary
-                if start > end {
-                    (start, end) = (end, start)
+            if (!deleted){
+                withAnimation(.bouncy) {
+                    // Swap start and end if necessary
+                    if start > end {
+                        (start, end) = (end, start)
+                    }
+                    // Swap dateS and dateE if necessary
+                    if dateS > dateE {
+                        (dateS, dateE) = (dateE, dateS)
+                    }
+                    
+                    // Update item properties
+                    item.color = color.toHex()!
+                    item.name = name
+                    item.desc = description
+                    item.symbol = symbol
+                    item.start = start
+                    item.end = end
+                    item.days = days
+                    
+                    timeVariables.update.toggle()
+                    
+                    scheduleNotification(title: item.name, body: item.desc, days: item.days, time: item.start, id: item.id)
+                    
+                    try? context.save()
                 }
-                // Swap dateS and dateE if necessary
-                if dateS > dateE {
-                    (dateS, dateE) = (dateE, dateS)
-                }
-                
-                // Update item properties
-                item.color = color.toHex()!
-                item.name = name
-                item.desc = description
-                item.symbol = symbol
-                item.start = start
-                item.end = end
-                item.days = days
-                
-                timeVariables.update.toggle()
-                
-                try? context.save()
             }
-            
             
         }
     }

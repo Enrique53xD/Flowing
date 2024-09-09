@@ -83,6 +83,28 @@ extension Date {
         let dateString = dateFormatter.string(from: self)
         return dateString
     }
+    func timeComponents() -> DateComponents {
+        let calendar = Calendar.current
+        let hours = calendar.dateComponents([.hour, .minute, .second], from: self)
+        return hours
+    }
+
+}
+
+extension Int {
+    enum TimeUnit {
+        case hours
+        case minutes
+    }
+    
+    func toTime(_ unit: TimeUnit) -> Int {
+        switch unit {
+        case .hours:
+            return self / 60
+        case .minutes:
+            return self % 60
+        }
+    }
 }
 
 // MARK: Functions
@@ -158,6 +180,8 @@ func formatProgressive(preffix: String = "", suffix: String = "", progress: Int,
 func newTask(_ context: ModelContext, name: String, color: String, desc: String, symbol: String, start: Int, end: Int, days: String) {
     let item = taskItem(name: name, color: color, desc: desc, symbol: symbol, start: start, end: end, done: checkCurrentTime(start: start, end: end), days: days)
     context.insert(item)
+    
+    scheduleNotification(title: item.name, body: item.desc, days: item.days, time: item.start, id: item.id)
 }
 
 // Function to create a new ToDo Object
@@ -354,3 +378,41 @@ func getIssues(repoName: String, login: String, config: TokenConfiguration) asyn
     return issuesArr!
 }
 
+func scheduleNotification(title: String, body: String, days: String, time: Int, id: String) {
+    for (index, day) in days.enumerated() {
+        if day == "1"{
+            var date = DateComponents()
+            date.weekday = index == 6 ? 1 : index + 2
+            date.hour = time.toTime(.hours)
+            date.minute = time.toTime(.minutes)
+            let content = UNMutableNotificationContent()
+            content.title = title
+            content.body = body == "" ? "\(title) starts now!" : body
+            content.sound = .default
+            
+            
+            let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
+            
+            let request = UNNotificationRequest(identifier: id+"\(index)", content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request) { error in
+                if let error = error {
+                    print("Error scheduling notification: \(error)")
+                } else {
+                    print("\(title) notification scheduled successfully")
+                }
+            }
+        } else {
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id+"\(index)"])
+            print(id+"\(index) deleted successfully")
+        }
+    }
+}
+
+func deleteTaskNotifications(_ id: String){
+    
+    for i in 0...6 {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id+"\(i)"])
+        print(id+"\(i) deleted successfully")
+    }
+}
