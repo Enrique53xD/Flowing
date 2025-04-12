@@ -21,7 +21,7 @@ struct MainView: View {
     @Query(sort: [SortDescriptor(\taskItem.start), SortDescriptor(\taskItem.end), SortDescriptor(\taskItem.name)]) var taskItems: [taskItem]
     @Query(sort: \toDoItem.name) private var toDoItems: [toDoItem]
     @Query(sort: \progressiveItem.name) private var progressiveItems: [progressiveItem]
-    @Query() private var settingsItems: [settingsItem1]
+    @Query() private var settingsItems: [settingsItem]
     
     //GitHub Variables
     @State private var login: String?
@@ -32,7 +32,7 @@ struct MainView: View {
     @State var menu: Int = 0
     
     //Personalization Variables
-    @State var settings: settingsItem1?
+    @State var settings: settingsItem?
     @State var personalization = personalizationVariables()
     
     //Object Variables

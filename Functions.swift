@@ -10,6 +10,7 @@ import SwiftUI
 import SwiftData
 import UIKit
 import OctoKit
+import UserNotifications
 
 // MARK: Extensions
 
@@ -181,7 +182,12 @@ func newTask(_ context: ModelContext, name: String, color: String, desc: String,
     let item = taskItem(name: name, color: color, desc: desc, symbol: symbol, start: start, end: end, done: checkCurrentTime(start: start, end: end), days: days)
     context.insert(item)
     
-    scheduleNotification(title: item.name, body: item.desc, days: item.days, time: item.start, id: item.id)
+    // Check if notifications are enabled before scheduling
+    let fetchDescriptor = FetchDescriptor<settingsItem>()
+    if let settings = try? context.fetch(fetchDescriptor).first, settings.notify {
+        // Use the new smart notification scheduling system
+        setupNotificationsForUpcomingTasks(context)
+    }
 }
 
 // Function to create a new ToDo Object
@@ -198,7 +204,7 @@ func newProgressive(_ context: ModelContext, name: String, color: String, desc: 
 
 // Function to create a new Settings Object
 func newSettings(_ context: ModelContext) {
-    let item = settingsItem1(customMainColor: false, mainColor: Color.red.toHex()!, textColor: Color.cyan.toHex()!, customTextColor: false, showFreeTimes: false, customHome: false, githubEnabled: false, githubApiKey: "")
+    let item = settingsItem(customMainColor: false, mainColor: Color.red.toHex()!, textColor: Color.cyan.toHex()!, customTextColor: false, showFreeTimes: false, customHome: false, githubEnabled: false, githubApiKey: "", notify: false)
     context.insert(item)
 }
 
@@ -378,33 +384,226 @@ func getIssues(repoName: String, login: String, config: TokenConfiguration) asyn
     return issuesArr!
 }
 
-func scheduleNotification(title: String, body: String, days: String, time: Int, id: String) {
-    for (index, day) in days.enumerated() {
+// MARK: - Notification Functions
+
+// This function schedules the next occurrence for each task
+func scheduleSmartNotifications(_ tasks: [taskItem], before: Int = 5) {
+    print("Smart scheduling notifications with \(before) minutes advance notice")
+    
+    // Clear all pending notifications first
+    UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    
+    // Current date components
+    let calendar = Calendar.current
+    let now = Date()
+    let currentWeekday = calendar.component(.weekday, from: now) // 1 is Sunday, 2 is Monday, etc.
+    let adjustedWeekday = currentWeekday == 1 ? 6 : currentWeekday - 2 // Convert to 0-6 index where 0 is Monday
+    
+    // For tracking how many notifications we've scheduled
+    var scheduledCount = 0
+    let maxNotifications = 60 // Keeping a buffer below the 64 limit
+    
+    for task in tasks {
+        // Skip if we're at the notification limit
+        if scheduledCount >= maxNotifications {
+            print("⚠️ Notification limit reached! Some tasks won't be notified.")
+            break
+        }
+        
+        // Check all weekdays, starting with today
+        for offset in 0..<7 {
+            // Calculate the day index (0-6) we're checking, wrapping around the week
+            let dayIndex = (adjustedWeekday + offset) % 7
+            
+            // Check if this task is scheduled for this day
+            if task.days[task.days.index(task.days.startIndex, offsetBy: dayIndex)] == "1" {
+                let dayName = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][dayIndex]
+                
+                // Set up the notification date
+                var dateComponents = DateComponents()
+                dateComponents.weekday = dayIndex == 6 ? 1 : dayIndex + 2 // Convert to Calendar.weekday (1-7, 1 is Sunday)
+                dateComponents.hour = task.start.toTime(.hours)
+                dateComponents.minute = task.start.toTime(.minutes)
+                
+                // For same-day notifications, check if the time has already passed
+                if offset == 0 {
+                    let taskTimeToday = calendar.date(bySettingHour: task.start.toTime(.hours),
+                                                      minute: task.start.toTime(.minutes),
+                                                      second: 0,
+                                                      of: now)!
+                    
+                    if taskTimeToday <= now {
+                        print("⏭️ Skipping today's notification for \(task.name) - time already passed")
+                        continue // Skip to next day
+                    }
+                }
+                
+                // Schedule notification at task start time
+                let content = UNMutableNotificationContent()
+                content.title = task.name
+                content.body = task.desc == "" ? "\(task.name) starts now!" : task.desc
+                content.sound = .default
+                
+                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+                let identifier = "\(task.id)_\(dayIndex)_start"
+                
+                let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request) { error in
+                    if let error = error {
+                        print("❌ Error scheduling notification for \(task.name): \(error)")
+                    } else {
+                        print("✅ Scheduled \(task.name) on \(dayName) at \(task.start.toTime(.hours)):\(task.start.toTime(.minutes))")
+                    }
+                }
+                scheduledCount += 1
+                
+                // Schedule notification before task start
+                if before > 0 && scheduledCount < maxNotifications {
+                    // Calculate time before task
+                    let beforeTime = task.start - before
+                    
+                    // If the "before" time would be on the previous day, skip this notification
+                    if beforeTime < 0 {
+                        continue
+                    }
+                    
+                    var beforeComponents = DateComponents()
+                    beforeComponents.weekday = dayIndex == 6 ? 1 : dayIndex + 2
+                    beforeComponents.hour = beforeTime.toTime(.hours)
+                    beforeComponents.minute = beforeTime.toTime(.minutes)
+                    
+                    // For same-day notifications, check if the time has already passed
+                    if offset == 0 {
+                        let beforeTimeToday = calendar.date(bySettingHour: beforeTime.toTime(.hours),
+                                                           minute: beforeTime.toTime(.minutes),
+                                                           second: 0,
+                                                           of: now)!
+                        
+                        if beforeTimeToday <= now {
+                            print("⏭️ Skipping today's reminder for \(task.name) - time already passed")
+                            continue // Skip this notification
+                        }
+                    }
+                    
+                    let beforeContent = UNMutableNotificationContent()
+                    beforeContent.title = task.name
+                    beforeContent.body = "\(task.name) starts in \(before) minutes!"
+                    beforeContent.sound = .default
+                    
+                    let beforeTrigger = UNCalendarNotificationTrigger(dateMatching: beforeComponents, repeats: false)
+                    let beforeIdentifier = "\(task.id)_\(dayIndex)_before"
+                    
+                    let beforeRequest = UNNotificationRequest(identifier: beforeIdentifier, content: beforeContent, trigger: beforeTrigger)
+                    
+                    UNUserNotificationCenter.current().add(beforeRequest) { error in
+                        if let error = error {
+                            print("❌ Error scheduling reminder for \(task.name): \(error)")
+                        } else {
+                            print("⏰ Scheduled reminder for \(task.name) on \(dayName) at \(beforeTime.toTime(.hours)):\(beforeTime.toTime(.minutes))")
+                        }
+                    }
+                    scheduledCount += 1
+                }
+                
+                // Only schedule the next occurrence of this task and then break
+                break
+            }
+        }
+    }
+    
+    print("📲 Scheduled \(scheduledCount) notifications")
+}
+
+// Add this function for app launch and to be called when the app comes to foreground
+func setupNotificationsForUpcomingTasks(_ context: ModelContext, before: Int = 5) {
+    // Check if notifications are enabled in settings
+    let settingsFetchDescriptor = FetchDescriptor<settingsItem>()
+    guard let settings = try? context.fetch(settingsFetchDescriptor).first, settings.notify else {
+        print("ℹ️ Notifications are disabled in settings")
+        return
+    }
+    
+    // Fetch all tasks
+    let tasksFetchDescriptor = FetchDescriptor<taskItem>(sortBy: [SortDescriptor(\taskItem.start)])
+    guard let tasks = try? context.fetch(tasksFetchDescriptor) else {
+        print("❌ Could not fetch tasks")
+        return
+    }
+    
+    // Schedule the next occurrence of each task
+    scheduleSmartNotifications(tasks, before: before)
+}
+
+// MARK: - Legacy Notification Functions (Commented out)
+
+/*
+func scheduleAll(_ tasks: [taskItem], before: Int? = nil){
+    // Clear existing notifications first
+    UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    
+    // Get the notification time (in minutes)
+    let notificationTime = before ?? 5
+    
+    // Schedule notifications for each task
+    for task in tasks {
+        scheduleTaskNotifications(task, beforeStart: notificationTime)
+    }
+}
+
+func scheduleTaskNotifications(_ task: taskItem, beforeStart: Int? = nil, ends: Bool? = false){
+    for (index, day) in task.days.enumerated() {
+        
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [task.id+"\(index)"+"a"])
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [task.id+"\(index)"+"b"])
+        
         if day == "1"{
+            
+            // Schedule notification for when the task starts
             var date = DateComponents()
             date.weekday = index == 6 ? 1 : index + 2
-            date.hour = time.toTime(.hours)
-            date.minute = time.toTime(.minutes)
-            let content = UNMutableNotificationContent()
-            content.title = title
-            content.body = body == "" ? "\(title) starts now!" : body
-            content.sound = .default
+            date.hour = task.start.toTime(.hours)
+            date.minute = task.start.toTime(.minutes)
             
+            let content = UNMutableNotificationContent()
+            content.title = task.name
+            content.body = task.desc == "" ? "\(task.name) starts now!" : task.desc
             
             let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
             
-            let request = UNNotificationRequest(identifier: id+"\(index)", content: content, trigger: trigger)
+            let request = UNNotificationRequest(identifier: task.id+"\(index)"+"a", content: content, trigger: trigger)
             
             UNUserNotificationCenter.current().add(request) { error in
                 if let error = error {
                     print("Error scheduling notification: \(error)")
                 } else {
-                    print("\(title) notification scheduled successfully")
+                    print("\(task.name) at \(String(date.hour!)):\(String(date.minute!))")
                 }
             }
-        } else {
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id+"\(index)"])
-            print(id+"\(index) deleted successfully")
+            
+            // Schedule notification 5 minutes before the task starts
+            if beforeStart != nil {
+                var date = DateComponents()
+                date.weekday = index == 6 ? 1 : index + 2
+                date.hour = (task.start-beforeStart!).toTime(.hours)
+                date.minute = (task.start-beforeStart!).toTime(.minutes)
+                
+                let content = UNMutableNotificationContent()
+                content.title = task.name
+                content.body = "\(task.name) starts in \(String(beforeStart!)) minutes!"
+                
+                let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
+                
+                let request = UNNotificationRequest(identifier: task.id+"\(index)"+"b", content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request) { error in
+                    if let error = error {
+                        print("Error scheduling notification: \(error)")
+                    } else {
+                        print("\(task.name) at \(String(date.hour!)):\(String(date.minute!))")
+                    }
+                }
+            }
         }
     }
 }
@@ -412,7 +611,9 @@ func scheduleNotification(title: String, body: String, days: String, time: Int, 
 func deleteTaskNotifications(_ id: String){
     
     for i in 0...6 {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id+"\(i)"])
-        print(id+"\(i) deleted successfully")
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id+"\(i)"+"a"])
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id+"\(i)"+"b"])
     }
+    print("\(id) deleted successfully")
 }
+*/

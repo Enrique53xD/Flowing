@@ -145,6 +145,7 @@ struct EditProgressive: View {
                 .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
                 .padding(.horizontal)
                 .padding(.vertical, 7)
+                .onAppear{goal = String(Int(item.goal))} //had to do this because the value doesnt uodate in the window onappear
             
             // Description
             TextField("Description...", text: $description, axis: .vertical)

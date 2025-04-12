@@ -140,7 +140,7 @@ struct FlowingWidget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             FlowingWidgetView(entry: entry)
-                .modelContainer(for: [taskItem.self, toDoItem.self, progressiveItem.self, settingsItem1.self] )
+                .modelContainer(for: [taskItem.self, toDoItem.self, progressiveItem.self, settingsItem.self] )
         }
         .configurationDisplayName("Flowing Widget")
         .description("Shows the current task.")

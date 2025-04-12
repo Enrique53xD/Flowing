@@ -190,9 +190,16 @@ struct EditTask: View {
                                 }
                             }
                         }, perform: {
-                            deleteTaskNotifications(item.id)
+                            // Cancel notifications for this task by removing it
                             deleted = true
                             context.delete(item)
+                            
+                            // Refresh notifications for remaining tasks
+                            let fetchDescriptor = FetchDescriptor<settingsItem>()
+                            if let settings = try? context.fetch(fetchDescriptor).first, settings.notify {
+                                setupNotificationsForUpcomingTasks(context)
+                            }
+                            
                             timeVariables.update.toggle()
                         })
                         .padding(.horizontal)
@@ -237,14 +244,18 @@ struct EditTask: View {
                     item.end = end
                     item.days = days
                     
-                    timeVariables.update.toggle()
-                    
-                    scheduleNotification(title: item.name, body: item.desc, days: item.days, time: item.start, id: item.id)
-                    
                     try? context.save()
+                    
+                    // Check if notifications are enabled before scheduling
+                    let fetchDescriptor = FetchDescriptor<settingsItem>()
+                    if let settings = try? context.fetch(fetchDescriptor).first, settings.notify {
+                        // Use the new notification system to reschedule notifications
+                        setupNotificationsForUpcomingTasks(context)
+                    }
+                    
+                    timeVariables.update.toggle()
                 }
             }
-            
         }
     }
 }

@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftData
 import OctoKit
+import UserNotifications
+import UserNotificationsUI
 
 struct SettingsView: View {
     //Environment Variables
@@ -18,6 +20,7 @@ struct SettingsView: View {
     //State Variables
     @Binding var personalization: personalizationVariables
     @Binding var objects: taskObjectVariables
+    @State var notify = false
     @State private var defaultColor: Color = .primary
     @State var api: String = ""
     @State private var apiIng: Bool = false
@@ -27,8 +30,13 @@ struct SettingsView: View {
     @State var buttonProgress = 0.0
     @State var hasPressed = false
     
+    @State var beforeTask = "5"
+    @State private var showSettingsAlert = false
+    @State private var notificationPermissionStatus: UNAuthorizationStatus = .notDetermined
+    
     //Fetch Request
-    @Query() private var settingsItems: [settingsItem1]
+    @Query() private var settingsItems: [settingsItem]
+    @Query(sort: [SortDescriptor(\taskItem.start), SortDescriptor(\taskItem.end), SortDescriptor(\taskItem.name)]) var taskItems: [taskItem]
     
     var body: some View {
         ScrollView {
@@ -51,7 +59,7 @@ struct SettingsView: View {
                     
                     // Toggle for custom home icon
                     Toggle(isOn: $personalization.customHome.animation(.bouncy)) {
-                        Text("Home icon is active task")
+                        Text("Home icon as active task")
                             .fontDesign(.rounded)
                             .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
                             .font(.title2)
@@ -224,6 +232,96 @@ struct SettingsView: View {
                                     .blur(radius: phase.isIdentity ? 0 : 10)
                             }
                     }
+                    
+                    // Toggle for notifications
+                    Toggle(isOn: $personalization.notify.animation(.bouncy)) {
+                        Text("Enable notifications")
+                            .fontDesign(.rounded)
+                            .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                    }
+                    .onChange(of: personalization.notify) {
+                        if personalization.notify {
+                            // If user is trying to enable notifications, check permissions
+                            UNUserNotificationCenter.current().getNotificationSettings { settings in
+                                DispatchQueue.main.async {
+                                    switch settings.authorizationStatus {
+                                    case .authorized, .provisional:
+                                        // We have permission, enable and schedule
+                                        settingsItems.first?.notify = true
+                                        try? context.save()
+                                        setupNotificationsForUpcomingTasks(context, before: Int(beforeTask) ?? 5)
+                                    case .denied:
+                                        // We don't have permission, show settings alert
+                                        personalization.notify = false
+                                        showSettingsAlert = true
+                                    case .notDetermined:
+                                        // First time asking, request permission
+                                        requestNotificationPermission()
+                                    default:
+                                        personalization.notify = false
+                                    }
+                                }
+                            }
+                        } else {
+                            // User disabled notifications, cancel all scheduled notifications
+                            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                            settingsItems.first?.notify = false
+                            try? context.save()
+                        }
+                    }
+                    .frame(height: 60)
+                    .scrollTransition { content, phase in
+                        content
+                            .opacity(phase.isIdentity ? 1 : 0)
+                            .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                            .blur(radius: phase.isIdentity ? 0 : 10)
+                    }
+                    
+                    // Notification minutes setting
+                    if personalization.notify {
+                        HStack {
+                            Text("Notification time")
+                                .fontDesign(.rounded)
+                                .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
+                                .font(.title2)
+                                .fontWeight(.bold)
+                            
+                            Spacer()
+                            
+                            TextField("5", text: $beforeTask)
+                                .keyboardType(.numberPad)
+                                .frame(width: 50, height: 28)
+                                .multilineTextAlignment(.center)
+                                .background(Color.gray.opacity(0.3))
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .limitInputLength(value: $beforeTask, length: 2)
+                                .fontWeight(.bold)
+                            
+                            Text("min")
+                                .fontDesign(.rounded)
+                                .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
+                                .font(.title3)
+                        }
+                        .onChange(of: beforeTask) { _, newValue in
+                            if !newValue.isEmpty {
+                                // Auto-reschedule when the value changes and is valid
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    rescheduleAllNotifications()
+                                }
+                            }
+                        }
+                        .frame(height: 60)
+                        .scrollTransition { content, phase in
+                            content
+                                .opacity(phase.isIdentity ? 1 : 0)
+                                .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                .blur(radius: phase.isIdentity ? 0 : 10)
+                        }
+                    }
+                    
+                    
                 }
                 
                 // MARK: - GitHub Section
@@ -243,7 +341,7 @@ struct SettingsView: View {
                         .frame(height: 40)
                     
                     // Toggle for showing GitHub settings
-                    Toggle(isOn: $personalization.githubEnabled) {
+                    Toggle(isOn: $personalization.githubEnabled.animation(.bouncy)) {
                         Text("Enable GitHub Connection")
                             .fontDesign(.rounded)
                             .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
@@ -357,6 +455,94 @@ struct SettingsView: View {
         .scrollIndicators(.hidden)
         .frame(height: apiIng ? UIScreen.screenHeight-50 : UIScreen.screenHeight-150)
         .offset(y: apiIng ? 0 : 50)
+        .onAppear {
+            checkNotificationStatus()
+        }
+        .alert(isPresented: $showSettingsAlert) {
+            Alert(
+                title: Text("Notifications Disabled"),
+                message: Text("To enable notifications, you need to allow them in Settings."),
+                primaryButton: .default(Text("Settings")) {
+                    if let appSettings = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(appSettings)
+                    }
+                },
+                secondaryButton: .cancel() {
+                    personalization.notify = false
+                    settingsItems.first?.notify = false
+                    try? context.save()
+                }
+            )
+        }
+    }
+    
+    // Check if notifications are already authorized
+    private func checkNotificationStatus() {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                notificationPermissionStatus = settings.authorizationStatus
+                
+                switch settings.authorizationStatus {
+                case .authorized, .provisional, .ephemeral:
+                    personalization.notify = settingsItems.first?.notify ?? false
+                case .denied, .notDetermined:
+                    personalization.notify = false
+                    if let settings = settingsItems.first, settings.notify {
+                        settings.notify = false
+                        try? context.save()
+                    }
+                @unknown default:
+                    personalization.notify = false
+                }
+            }
+        }
+    }
+    
+    // Request notification permission
+    private func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { success, error in
+            DispatchQueue.main.async {
+                if success {
+                    personalization.notify = true
+                    settingsItems.first?.notify = true
+                    try? context.save()
+                    
+                    // Schedule notifications for all tasks with current time setting
+                    let minutesBefore = Int(beforeTask) ?? 5
+                    setupNotificationsForUpcomingTasks(context, before: minutesBefore)
+                } else {
+                    // User denied permission during the request
+                    personalization.notify = false
+                    settingsItems.first?.notify = false
+                    try? context.save()
+                }
+                
+                // Update permission status
+                UNUserNotificationCenter.current().getNotificationSettings { settings in
+                    DispatchQueue.main.async {
+                        notificationPermissionStatus = settings.authorizationStatus
+                    }
+                }
+            }
+        }
+    }
+    
+    // Reschedule all notifications with the current time setting
+    private func rescheduleAllNotifications() {
+        guard personalization.notify else { return }
+        
+        let minutesBefore = Int(beforeTask) ?? 5
+        
+        // First cancel all existing notifications
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        
+        // Update the settings
+        if let settings = settingsItems.first {
+            settings.notify = true
+            try? context.save()
+        }
+        
+        // Schedule notifications for all tasks
+        setupNotificationsForUpcomingTasks(context, before: minutesBefore)
     }
 }
-

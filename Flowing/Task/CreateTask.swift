@@ -10,6 +10,7 @@ import SwiftUI
 import SymbolPicker
 import SwiftData
 import WidgetKit
+import UserNotifications
 
 struct CreateTask: View {
     // MARK: - Properties
@@ -160,13 +161,21 @@ struct CreateTask: View {
                 if dateS > dateE {
                     (dateS, dateE) = (dateE, dateS)
                 }
-                newTask(context, name: name == "" ? "Name" : name, color: color.toHex()!, desc: description, symbol: symbol, start: start, end: end, days: days)
+                
+                // Create the task item
+                let item = taskItem(name: name == "" ? "Name" : name, color: color.toHex()!, desc: description, symbol: symbol, start: start, end: end, done: checkCurrentTime(start: start, end: end), days: days)
+                context.insert(item)
+                
+                // Check if notifications are enabled before scheduling
+                let fetchDescriptor = FetchDescriptor<settingsItem>()
+                if let settings = try? context.fetch(fetchDescriptor).first, settings.notify {
+                    // Schedule notifications for all tasks (including the new one)
+                    setupNotificationsForUpcomingTasks(context)
+                }
                 
                 timeVariables.update.toggle()
-                
                 WidgetCenter.shared.reloadAllTimelines()
             }
         }
     }
 }
-

@@ -143,7 +143,7 @@ class progressiveItem: Identifiable {
 // MARK: - Settings Object
 
 @Model
-class settingsItem1: Identifiable {
+class settingsItem: Identifiable {
     
     //Variables
     
@@ -156,10 +156,11 @@ class settingsItem1: Identifiable {
     var customHome: Bool
     var githubEnabled: Bool
     var githubApiKey: String
+    var notify: Bool
     
     //Initialization
     
-    init(customMainColor: Bool, mainColor: String, textColor: String, customTextColor: Bool, showFreeTimes: Bool, customHome: Bool, githubEnabled: Bool, githubApiKey: String) {
+    init(customMainColor: Bool, mainColor: String, textColor: String, customTextColor: Bool, showFreeTimes: Bool, customHome: Bool, githubEnabled: Bool, githubApiKey: String, notify: Bool) {
         self.id = UUID().uuidString
         self.customMainColor = customMainColor
         self.mainColor = mainColor
@@ -169,6 +170,7 @@ class settingsItem1: Identifiable {
         self.customHome = customHome
         self.githubEnabled = githubEnabled
         self.githubApiKey = githubApiKey
+        self.notify = notify
     }
 }
 
@@ -213,6 +215,7 @@ struct personalizationVariables {
     var showFreeTimes: Bool = false
     var githubEnabled: Bool = false
     var githubApiKey: String = ""
+    var notify: Bool = false
 }
 
 // MARK: - Creating Variables
