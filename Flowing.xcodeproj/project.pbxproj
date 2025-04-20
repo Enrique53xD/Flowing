@@ -59,6 +59,7 @@
 		3EC18BDA2B4E504B00C9FA4B /* TaskObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */; };
 		3ECA8C642BEAF7FB009EA4E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECA8C632BEAF7FB009EA4E2 /* AppDelegate.swift */; };
 		3ECAD69C2BA24B3E00DC6A59 /* Others.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECAD69B2BA24B3E00DC6A59 /* Others.swift */; };
+		3ED812782DAAD6EF00A97137 /* KeyboardExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED812772DAAD6DF00A97137 /* KeyboardExt.swift */; };
 		3ED8CB8D2B7B619300A50A22 /* MenuCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED8CB8C2B7B619300A50A22 /* MenuCircle.swift */; };
 /* End PBXBuildFile section */
 
@@ -154,6 +155,7 @@
 		3EC18BD92B4E504B00C9FA4B /* TaskObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskObj.swift; sourceTree = "<group>"; };
 		3ECA8C632BEAF7FB009EA4E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3ECAD69B2BA24B3E00DC6A59 /* Others.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Others.swift; sourceTree = "<group>"; };
+		3ED812772DAAD6DF00A97137 /* KeyboardExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardExt.swift; sourceTree = "<group>"; };
 		3ED8CB8C2B7B619300A50A22 /* MenuCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCircle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -334,6 +336,7 @@
 				3E9303D82B65A7370087660E /* RoundedSlider.swift */,
 				3ECAD69B2BA24B3E00DC6A59 /* Others.swift */,
 				3ECA8C632BEAF7FB009EA4E2 /* AppDelegate.swift */,
+				3ED812772DAAD6DF00A97137 /* KeyboardExt.swift */,
 			);
 			path = Extras;
 			sourceTree = "<group>";
@@ -496,6 +499,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3ED812782DAAD6EF00A97137 /* KeyboardExt.swift in Sources */,
 				3E9303D92B65A7370087660E /* RoundedSlider.swift in Sources */,
 				3EB9E6F02BF665FF009D8871 /* CreateIssue.swift in Sources */,
 				3E2EBD862BF2A1B8001DCD37 /* EditIssue.swift in Sources */,

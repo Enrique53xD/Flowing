@@ -39,6 +39,7 @@ struct TaskObj: View {
                     .opacity(0.2)
             }
             
+            // Task Name and Time section in the HStack
             HStack {
                 // Symbol and Button
                 CircleSymbol(symbol: $item.symbol, color: $item.color, done: .constant(item.end < minutesPassedToday()), editing: $editing)
@@ -48,65 +49,65 @@ struct TaskObj: View {
                     .onChange(of: item.end) {
                         testDone = (item.end < minutesPassedToday())
                     }
-                        .onChange(of: active) {
-                            WidgetCenter.shared.reloadAllTimelines()
-                        }
-                        .sheet(isPresented: $editing, content: {
-                            EditTask(item: item, context: context)
-                                .presentationDragIndicator(.visible)
-                                .padding()
-                                .background {
-                                    // This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
-                                    GeometryReader { proxy in
-                                        Color.clear
-                                            .task {
-                                                sheetContentHeight = proxy.size.height
-                                            }
-                                    }
-                                }
-                                .presentationDetents([.height(sheetContentHeight)])
-                                .onDisappear {
-                                    WidgetCenter.shared.reloadAllTimelines()
-                                    withAnimation(.bouncy) {
-                                        active = checkCurrentTime(start: item.start, end: item.end)
-                                        
-                                        let dateFormatter = DateFormatter()
-                                        dateFormatter.dateFormat = "HH:mm"
-                                        let currentTime = dateFormatter.string(from: Date())
-                                        let actual = convertToMinutes(from: currentTime)
-                                        
-                                        if item.end < actual {
-                                            item.done = true
-                                        } else {
-                                            item.done = false
+                    .onChange(of: active) {
+                        WidgetCenter.shared.reloadAllTimelines()
+                    }
+                    .sheet(isPresented: $editing, content: {
+                        EditTask(item: item, context: context)
+                            .presentationDragIndicator(.visible)
+                            .padding()
+                            .background {
+                                GeometryReader { proxy in
+                                    Color.clear
+                                        .task {
+                                            sheetContentHeight = proxy.size.height
                                         }
-                                    }
-                                    
-                                    timeVariables.update.toggle()
                                 }
-                        })
+                            }
+                            .presentationDetents([.height(sheetContentHeight)])
+                            .onDisappear {
+                                WidgetCenter.shared.reloadAllTimelines()
+                                withAnimation(.bouncy) {
+                                    active = checkCurrentTime(start: item.start, end: item.end)
+                                    
+                                    let dateFormatter = DateFormatter()
+                                    dateFormatter.dateFormat = "HH:mm"
+                                    let currentTime = dateFormatter.string(from: Date())
+                                    let actual = convertToMinutes(from: currentTime)
+                                    
+                                    if item.end < actual {
+                                        item.done = true
+                                    } else {
+                                        item.done = false
+                                    }
+                                }
+                                
+                                timeVariables.update.toggle()
+                            }
+                    })
                 
-                
-                // Task Name
+                // Task Name - Now set to properly truncate
                 Text(item.name)
                     .foregroundStyle(textColor)
                     .fontDesign(.rounded)
                     .font(.title2)
                     .fontWeight(.bold)
                     .lineLimit(1)
+                    .truncationMode(.tail)
                     .opacity((item.end < minutesPassedToday()) ? 0.7 : 1)
                     .strikethrough((item.end < minutesPassedToday()), color: Color(hex: item.color))
-                
-                Spacer()
-                
-                // Task Time
+                    
+                Spacer(minLength: 8)
+                    
+                // Task Time - With a fixed minimum width that will expand if needed
                 Text(formatTaskTime(start: item.start, end: item.end))
                     .foregroundStyle(checkCurrentTime(start: item.start, end: item.end) ? textColor.opacity(0.8) : textColor.opacity(0.5))
                     .fontDesign(.rounded)
                     .font(.title2)
                     .fontWeight(.bold)
-                    .frame(width: 150, alignment: .trailing)
-                    .padding(.trailing, checkCurrentTime(start: item.start, end: item.end) ? 20 : 0 )
+                    .lineLimit(1)
+                    .fixedSize(horizontal: true, vertical: false) // This ensures the time is never truncated
+                    .padding(.trailing, checkCurrentTime(start: item.start, end: item.end) ? 20 : 0)
             }
             .padding(.horizontal)
         }

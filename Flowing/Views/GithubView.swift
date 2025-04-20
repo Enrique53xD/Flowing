@@ -40,7 +40,6 @@ struct GithubView: View {
                         .blur(radius: phase.isIdentity ? 0 : 10)
                 }
                 .frame(height: 40)
-                .padding(.bottom)
             
             // Display the repositories and their issues
             ForEach(repos, id: \.self) { repo in
@@ -59,7 +58,7 @@ struct GithubView: View {
                                     .scaleEffect(phase.isIdentity ? 1 : 0.75)
                                     .blur(radius: phase.isIdentity ? 0 : 10)
                             }
-                            .frame(height: 20)
+                            .frame(height: 30)
                             .onTapGesture {
                                 withAnimation(.spring(bounce: 0.2)){
                                     showIssues[repo.name] = !(showIssues[repo.name] ?? false)
@@ -89,6 +88,18 @@ struct GithubView: View {
                     }
                 }
             }
+            
+            RoundedRectangle(cornerRadius: 5)
+                .foregroundStyle(customColor ? mainColor : defaultColor)
+                .opacity(0.5)
+                .frame(height: 7)
+                .padding([.top, .horizontal])
+                .scrollTransition { content, phase in
+                    content
+                        .opacity(phase.isIdentity ? 1 : 0)
+                        .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                        .blur(radius: phase.isIdentity ? 0 : 10)
+                }
         }
     }
 }

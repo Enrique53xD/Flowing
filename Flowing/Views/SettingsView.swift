@@ -17,13 +17,15 @@ struct SettingsView: View {
     @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject var timeVariables: freeTimesVariables
     
+    @FocusState private var isFieldFocused: Bool
+    
     //State Variables
     @Binding var personalization: personalizationVariables
     @Binding var objects: taskObjectVariables
     @State var notify = false
     @State private var defaultColor: Color = .primary
     @State var api: String = ""
-    @State private var apiIng: Bool = false
+    @State private var isKeyboardVisible = false // Track keyboard visibility
     
     @State var deleted = false
     @State var buttonOpacity = 1.0
@@ -40,7 +42,7 @@ struct SettingsView: View {
     
     var body: some View {
         ScrollView {
-            
+            VStack {
                 // MARK: - Personalization Section
                 Group {
                     Text("Personalization")
@@ -320,8 +322,6 @@ struct SettingsView: View {
                                 .blur(radius: phase.isIdentity ? 0 : 10)
                         }
                     }
-                    
-                    
                 }
                 
                 // MARK: - GitHub Section
@@ -374,27 +374,40 @@ struct SettingsView: View {
                                 .multilineTextAlignment(.center)
                                 .padding(5)
                                 .background(Color.gray.opacity(0.3))
-                                
-                                .animation(.easeInOut, value: apiIng)
-                                .onTapGesture {
-                                    withAnimation(){
-                                        
-                                        apiIng = true
-                                        
-                                    }
-                                }
                                 .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
-                                .onSubmit {
-                                    withAnimation(){
-                                        apiIng = false
-                                        personalization.githubApiKey = api
-                                        settingsItems.first?.githubApiKey = personalization.githubApiKey
-                                        try? context.save()
+                                .padding(.bottom, 13)
+                                .animation(.easeOut, value: isFieldFocused)
+                                .keyboardType(.default)
+                                .focused($isFieldFocused) // This connects the field to our focus state
+                                .onChange(of: isFieldFocused) { wasFocused, isFocused in
+                                   
+                                    if isFocused {
+                                        withAnimation() {
+                                            isKeyboardVisible = true
+                                        }
+                                    } else {
+                                            withAnimation() {
+                                                isKeyboardVisible = false
+                                            }
                                         
-                                        timeVariables.updateGitHub.toggle()
                                     }
                                 }
-                            
+                                .onSubmit {
+                                    personalization.githubApiKey = api
+                                    settingsItems.first?.githubApiKey = personalization.githubApiKey
+                                    try? context.save()
+                                    timeVariables.updateGitHub.toggle()
+                                    isFieldFocused = false // Dismiss the keyboard by removing focus
+                                    withAnimation() {
+                                        isKeyboardVisible = false
+                                    }
+                                }
+                                .scrollTransition { content, phase in
+                                    content
+                                        .opacity(phase.isIdentity ? 1 : 0)
+                                        .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                        .blur(radius: phase.isIdentity ? 0 : 10)
+                                }
                         } else {
                             ZStack {
                                 ZStack(alignment: .leading) {
@@ -402,7 +415,7 @@ struct SettingsView: View {
                                         .frame(width: buttonProgress, height: 60)
                                     
                                     Rectangle().foregroundStyle(Color.red)
-                                        .frame(width: 330, height: 60)
+                                        .frame(width: 350, height: 60)
                                         .opacity(buttonOpacity)
                                 }
                                 .clipShape(RoundedRectangle(cornerRadius: 12.5, style: .continuous))
@@ -443,18 +456,28 @@ struct SettingsView: View {
                                         }
                                     })
                                     
-                                    .padding(.vertical, 7)
+                                    .padding(.top, 7)
+                                    .padding(.bottom, 13)
+                            }
+                            .scrollTransition { content, phase in
+                                content
+                                    .opacity(phase.isIdentity ? 1 : 0)
+                                    .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                    .blur(radius: phase.isIdentity ? 0 : 10)
                             }
                         }
+                            
                     }
-                
+                }
             }
         }
         .padding(.horizontal)
         .scrollClipDisabled()
         .scrollIndicators(.hidden)
-        .frame(height: apiIng ? UIScreen.screenHeight-50 : UIScreen.screenHeight-150)
-        .offset(y: apiIng ? 0 : 50)
+        .frame(height: isKeyboardVisible ? UIScreen.screenHeight+275 : UIScreen.screenHeight-150)
+        //.frame(height: isKeyboardVisible ? UIScreen.screenHeight+275 : UIScreen.screenHeight-150)
+        .offset(y: isKeyboardVisible ? 30 : 50)
+        .dismissKeyboardOnTap() // Dismiss keyboard when tapping outside input fields
         .onAppear {
             checkNotificationStatus()
         }
@@ -474,6 +497,13 @@ struct SettingsView: View {
                 }
             )
         }
+        
+    }
+    
+    // Hide keyboard when tapping outside the input field
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        isKeyboardVisible = false
     }
     
     // Check if notifications are already authorized
