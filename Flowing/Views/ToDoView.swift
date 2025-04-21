@@ -167,5 +167,7 @@ struct ToDoView: View {
                     .blur(radius: phase.isIdentity ? 0 : 10)
             }
         }
+        .animation(.bouncy, value: toDoItems)
+        .animation(.bouncy, value: progressiveItems)
     }
 }

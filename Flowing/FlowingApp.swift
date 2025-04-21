@@ -11,32 +11,100 @@ import UserNotifications
 
 @main
 struct FlowingApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
-    var body: some Scene {
-        WindowGroup {
-            MainView()
-        }
-        .modelContainer(for: [taskItem.self, toDoItem.self, progressiveItem.self, settingsItem.self])
+  // wire up your AppDelegate for notifications
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
+  // the one-and-only container, built in init()
+  let container: ModelContainer
+
+  init() {
+    // 1) Declare your schema
+    let schema = Schema(
+      [ taskItem.self,
+        toDoItem.self,
+        progressiveItem.self,
+        settingsItem.self ]
+    )
+
+    // 2) Turn on CloudKit sync
+    let config = ModelConfiguration(
+      schema: schema,
+      cloudKitDatabase: .automatic
+    )
+
+    // 3) Build the container
+    do {
+      container = try ModelContainer(
+        for: schema,
+        configurations: [config]
+      )
+    } catch {
+      // if something really goes wrong, crash early
+      fatalError("Unresolved error initializing ModelContainer: \(error)")
     }
+  }
+
+  var body: some Scene {
+    WindowGroup {
+      MainView()
+    }
+    // hand your container into SwiftUI
+    .modelContainer(container)
+  }
 }
+
+
+
 
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         UNUserNotificationCenter.current().delegate = self
         
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if granted {
-                print("Notification permission granted")
-                DispatchQueue.main.async {
-                    UIApplication.shared.registerForRemoteNotifications()
+        // Check if this is the first launch
+        let isFirstLaunch = !UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
+        
+        if isFirstLaunch {
+            // Mark that the app has been launched
+            UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
+            
+            // Request notification permissions
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                if granted {
+                    print("Notification permission granted")
+                    DispatchQueue.main.async {
+                        UIApplication.shared.registerForRemoteNotifications()
+                        
+                        // Auto-enable notifications in app settings
+                        if let modelContainer = try? ModelContainer(for: taskItem.self, settingsItem.self, toDoItem.self, progressiveItem.self) {
+                            let context = modelContainer.mainContext
+                            
+                            // Get the settings and enable notifications
+                            let fetchDescriptor = FetchDescriptor<settingsItem>()
+                            if let settings = try? context.fetch(fetchDescriptor).first {
+                                settings.notify = true
+                                try? context.save()
+                                
+                                // Schedule notifications for tasks
+                                setupNotificationsForUpcomingTasks(context)
+                            }
+                        }
+                    }
+                } else {
+                    print("Permission for push notifications denied.")
                 }
-            } else {
-                print("Permission for push notifications denied.")
+            }
+        } else {
+            // Normal notification permission check for subsequent launches
+            UNUserNotificationCenter.current().getNotificationSettings { settings in
+                if settings.authorizationStatus == .authorized {
+                    DispatchQueue.main.async {
+                        UIApplication.shared.registerForRemoteNotifications()
+                    }
+                }
             }
         }
+        
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-
         return true
     }
     
