@@ -24,12 +24,11 @@ struct MonthlySummaryView: View {
     // Computed properties for monthly statistics
     private var currentMonth: String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MM/yyyy"
+        formatter.dateFormat = "MMMM yyyy"
         return formatter.string(from: Date())
     }
     
     private var monthlyCompletedTodos: Int {
-        let currentMonthStr = getCurrentMonthString()
         return toDoItems.filter { item in
             item.done && isFromCurrentMonth(item.date)
         }.count
@@ -41,10 +40,35 @@ struct MonthlySummaryView: View {
         }.count
     }
     
+    // If there are no todos in current month, show all-time stats instead
+    private var displayCompletedTodos: Int {
+        if monthlyTotalTodos == 0 {
+            return toDoItems.filter { $0.done }.count
+        }
+        return monthlyCompletedTodos
+    }
+    
+    private var displayTotalTodos: Int {
+        if monthlyTotalTodos == 0 {
+            return toDoItems.count
+        }
+        return monthlyTotalTodos
+    }
+    
+    private var displayTitle: String {
+        return monthlyTotalTodos == 0 ? "Completed Todos (All Time)" : "Completed Todos"
+    }
+    
     private var monthlyProgressiveStats: [(String, Double)] {
-        return progressiveItems.compactMap { item in
-            guard isFromCurrentMonth(item.date) else { return nil }
-            let percentage = item.goal > 0 ? (item.progress / item.goal) * 100 : 0
+        let monthlyItems = progressiveItems.filter { item in
+            isFromCurrentMonth(item.date)
+        }
+        
+        // If no monthly items, show all progressive items
+        let itemsToShow = monthlyItems.isEmpty ? progressiveItems : monthlyItems
+        
+        return itemsToShow.compactMap { item in
+            let percentage = item.goal > 0 ? min((item.progress / item.goal) * 100, 100) : 0
             return (item.name, percentage)
         }
     }
@@ -66,7 +90,7 @@ struct MonthlySummaryView: View {
                 
                 Spacer()
                 
-                Text("Monthly Summary")
+                Text(monthlyTotalTodos > 0 ? "Monthly Summary" : "Summary")
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
@@ -81,41 +105,63 @@ struct MonthlySummaryView: View {
             
             ScrollView {
                 VStack(spacing: 16) {
-                    // Todo Summary Card
-                    SummaryCard(
-                        title: "Completed Todos",
-                        value: "\(monthlyCompletedTodos)/\(monthlyTotalTodos)",
-                        icon: "checkmark.circle.fill",
-                        percentage: monthlyTotalTodos > 0 ? Double(monthlyCompletedTodos) / Double(monthlyTotalTodos) : 0,
-                        personalization: personalization
-                    )
-                    
-                    // Progressive Items Summary
-                    if !monthlyProgressiveStats.isEmpty {
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Progressive Items")
-                                .font(.headline)
-                                .fontWeight(.bold)
-                                .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
-                                .padding(.horizontal)
-                            
-                            ForEach(Array(monthlyProgressiveStats.enumerated()), id: \.offset) { index, stat in
-                                ProgressiveStatRow(
-                                    name: stat.0,
-                                    percentage: stat.1,
-                                    personalization: personalization
-                                )
+                    if displayTotalTodos > 0 {
+                        // Todo Summary Card
+                        SummaryCard(
+                            title: displayTitle,
+                            value: "\(displayCompletedTodos)/\(displayTotalTodos)",
+                            icon: "checkmark.circle.fill",
+                            percentage: displayTotalTodos > 0 ? Double(displayCompletedTodos) / Double(displayTotalTodos) : 0,
+                            personalization: personalization
+                        )
+                        
+                        // Progressive Items Summary
+                        if !monthlyProgressiveStats.isEmpty {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Text("Progressive Items")
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
+                                    .padding(.horizontal)
+                                
+                                ForEach(Array(monthlyProgressiveStats.enumerated()), id: \.offset) { index, stat in
+                                    ProgressiveStatRow(
+                                        name: stat.0,
+                                        percentage: stat.1,
+                                        personalization: personalization
+                                    )
+                                }
                             }
                         }
+                        
+                        // Monthly Overview Card
+                        MonthlyOverviewCard(
+                            completedTodos: displayCompletedTodos,
+                            totalTodos: displayTotalTodos,
+                            progressiveItems: monthlyProgressiveStats.count,
+                            personalization: personalization,
+                            isMonthlyData: monthlyTotalTodos > 0
+                        )
+                    } else {
+                        // No data message
+                        VStack(spacing: 16) {
+                            Image(systemName: "tray")
+                                .font(.system(size: 60))
+                                .foregroundStyle(personalization.customTextColor ? personalization.textColor.opacity(0.5) : Color.primary.opacity(0.5))
+                            
+                            Text("No todos found")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
+                            
+                            Text("Create your first todo to see your productivity stats here")
+                                .font(.body)
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(personalization.customTextColor ? personalization.textColor.opacity(0.7) : Color.primary.opacity(0.7))
+                                .padding(.horizontal)
+                        }
+                        .padding(.top, 60)
                     }
-                    
-                    // Monthly Overview Card
-                    MonthlyOverviewCard(
-                        completedTodos: monthlyCompletedTodos,
-                        totalTodos: monthlyTotalTodos,
-                        progressiveItems: monthlyProgressiveStats.count,
-                        personalization: personalization
-                    )
                 }
                 .padding(.horizontal)
             }
@@ -140,15 +186,38 @@ struct MonthlySummaryView: View {
     }
     
     private func isFromCurrentMonth(_ dateString: String) -> Bool {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
+        // First, try with the short date format
+        let shortFormatter = DateFormatter()
+        shortFormatter.dateStyle = .short
         
-        guard let itemDate = formatter.date(from: dateString) else { return false }
+        if let itemDate = shortFormatter.date(from: dateString) {
+            let calendar = Calendar.current
+            let now = Date()
+            return calendar.isDate(itemDate, equalTo: now, toGranularity: .month)
+        }
         
-        let calendar = Calendar.current
-        let now = Date()
+        // If that fails, try with other common formats
+        let formatters = [
+            "MM/dd/yyyy",
+            "dd/MM/yyyy", 
+            "yyyy-MM-dd",
+            "MM/dd/yy",
+            "dd/MM/yy"
+        ]
         
-        return calendar.isDate(itemDate, equalTo: now, toGranularity: .month)
+        for formatString in formatters {
+            let formatter = DateFormatter()
+            formatter.dateFormat = formatString
+            
+            if let itemDate = formatter.date(from: dateString) {
+                let calendar = Calendar.current
+                let now = Date()
+                return calendar.isDate(itemDate, equalTo: now, toGranularity: .month)
+            }
+        }
+        
+        // If all else fails, return false
+        return false
     }
 }
 
@@ -248,12 +317,13 @@ struct MonthlyOverviewCard: View {
     let totalTodos: Int
     let progressiveItems: Int
     let personalization: personalizationVariables
+    let isMonthlyData: Bool
     
     @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Monthly Overview")
+            Text(isMonthlyData ? "Monthly Overview" : "All-Time Overview")
                 .font(.headline)
                 .fontWeight(.bold)
                 .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
@@ -277,13 +347,15 @@ struct MonthlyOverviewCard: View {
                         .foregroundStyle(personalization.customColor ? personalization.mainColor : Color.primary)
                 }
                 
-                HStack {
-                    Text("Progressive Items:")
-                        .foregroundStyle(personalization.customTextColor ? personalization.textColor.opacity(0.8) : Color.primary.opacity(0.8))
-                    Spacer()
-                    Text("\(progressiveItems)")
-                        .fontWeight(.semibold)
-                        .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
+                if isMonthlyData {
+                    HStack {
+                        Text("Progressive Items:")
+                            .foregroundStyle(personalization.customTextColor ? personalization.textColor.opacity(0.8) : Color.primary.opacity(0.8))
+                        Spacer()
+                        Text("\(progressiveItems)")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(personalization.customTextColor ? personalization.textColor : Color.primary)
+                    }
                 }
             }
         }
