@@ -20,7 +20,6 @@ struct MainView: View {
     //Query Variables
     @Query(sort: [SortDescriptor(\taskItem.start), SortDescriptor(\taskItem.end), SortDescriptor(\taskItem.name)]) var taskItems: [taskItem]
     @Query(sort: \toDoItem.name) private var toDoItems: [toDoItem]
-    @Query(sort: \progressiveItem.name) private var progressiveItems: [progressiveItem]
     @Query() private var settingsItems: [settingsItem]
     
     //GitHub Variables
@@ -111,7 +110,7 @@ struct MainView: View {
                         if (deg == 0){ menu = 0 }
                         else if (deg == 30){ menu = 1 }
                         else if (deg == -30){ menu = 2 }
-                        else if (deg == 60){ menu = 3 }
+                        else if (deg == 60 || deg == -60){ menu = 3 }
                     }
                 }
                 .onChange(of: timeVariables.updateGitHub) {
@@ -182,7 +181,6 @@ struct MainView: View {
                 }
                 .refreshable(action: {refreshData()})
                 
-                .animation(.bouncy, value: progressiveItems)
                 .animation(.bouncy, value: toDoItems)
                 .scrollClipDisabled()
                 .scrollIndicators(.hidden)
