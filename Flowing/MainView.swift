@@ -104,13 +104,14 @@ struct MainView: View {
                     
                 }
                 .onChange(of: deg) {
-                    if (deg == 60) { deg = -30 }
-                    else if (deg == -60) { deg = 30 }
+                    if (deg == 90) { deg = -60 }
+                    else if (deg == -90) { deg = 60 }
                     
                     withAnimation(.bouncy){
                         if (deg == 0){ menu = 0 }
                         else if (deg == 30){ menu = 1 }
                         else if (deg == -30){ menu = 2 }
+                        else if (deg == 60){ menu = 3 }
                     }
                 }
                 .onChange(of: timeVariables.updateGitHub) {
@@ -193,6 +194,10 @@ struct MainView: View {
                 SettingsView(personalization: $personalization, objects: $objects)
                     .environmentObject(timeVariables)
             }
+            // MARK: - Progress View
+            else if (menu == 3){
+                ProgressView(personalization: $personalization, objects: $objects, creation: $creation)
+            }
             
         }
         .frame(maxWidth: .infinity, maxHeight: 800)
@@ -202,20 +207,20 @@ struct MainView: View {
                     withAnimation(.bouncy){
                         deg += 30
                     }
-                    if (deg == 60) {
-                        deg = -30
-                    } else if (deg == -60) {
-                        deg = 30
+                    if (deg == 90) {
+                        deg = -60
+                    } else if (deg == -90) {
+                        deg = 60
                     }
                 }
                 if value.translation.width > 50 {
                     withAnimation(.bouncy){
                         deg -= 30
                     }
-                    if (deg == 60) {
-                        deg = -30
-                    } else if (deg == -60) {
-                        deg = 30
+                    if (deg == 90) {
+                        deg = -60
+                    } else if (deg == -90) {
+                        deg = 60
                     }
                 }
             })

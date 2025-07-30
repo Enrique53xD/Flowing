@@ -29,6 +29,21 @@ struct MenuCircle: View {
                         deg = 0
                     }
                 
+                // Progress icon
+                Image(systemName: "chart.bar")
+                    .fontWeight(.heavy)
+                    .foregroundStyle(personalization.customColor ? personalization.mainColor.opacity(deg == 60 || deg == -90 ? 1 : 0.5) : Color.primary.opacity(deg == 60 || deg == -90 ? 1 : 0.5))
+                    .font(deg == 60 || deg == -90 ? .largeTitle : .title2)
+                    .offset(y: 150)
+                    .rotationEffect(.degrees(120))
+                    .onTapGesture {
+                        if deg != 60 {
+                            withAnimation(.bouncy) {
+                                deg += 30
+                            }
+                        }
+                    }
+
                 // Checkmark icon
                 Image(systemName: "checkmark.circle")
                     .fontWeight(.heavy)
@@ -111,6 +126,21 @@ struct MenuCircle: View {
                     .rotationEffect(.degrees(-90))
                     .onTapGesture {
                         deg = 0
+                    }
+                
+                // Progress icon (again)
+                Image(systemName: "chart.bar")
+                    .fontWeight(.heavy)
+                    .foregroundStyle(personalization.customColor ? personalization.mainColor.opacity(deg == 90 || deg == 60 ? 1 : 0.5) : Color.primary.opacity(deg == 90 || deg == 60 ? 1 : 0.5))
+                    .font(deg == 90 || deg == 60 ? .largeTitle : .title2)
+                    .offset(y: 150)
+                    .rotationEffect(.degrees(-120))
+                    .onTapGesture {
+                        if deg != 90 {
+                            withAnimation(.bouncy) {
+                                deg -= 30
+                            }
+                        }
                     }
             }
             .rotationEffect(.degrees(deg))
