@@ -24,150 +24,188 @@ struct ToDoView: View {
     
     @State private var buttonSize = 1.0
     @State private var buttonOpacity = 1.0
+    @State private var showMonthlySummary = false
     
     var body: some View {
-        VStack {
-            // Display ToDo Items
-            ForEach(toDoItems) { item in
-                ToDoObj(item: item, context: context, textColor: personalization.customTextColor ? personalization.textColor : Color.primary)
-                    .scrollTransition { content, phase in
-                        content
-                            .opacity(phase.isIdentity ? 1 : 0)
-                            .scaleEffect(phase.isIdentity ? 1 : 0.75)
-                            .blur(radius: phase.isIdentity ? 0 : 10)
-                    }
-            }
-            
-            // Display Progressive Items
-            ForEach(progressiveItems) { item in
-                ProgressiveObj(item: item, context: context, textColor: personalization.customTextColor ? personalization.textColor : Color.primary)
-                    .scrollTransition { content, phase in
-                        content
-                            .opacity(phase.isIdentity ? 1 : 0)
-                            .scaleEffect(phase.isIdentity ? 1 : 0.75)
-                            .blur(radius: phase.isIdentity ? 0 : 10)
-                    }
-            }
-            
-            // Buttons
-            HStack {
-                // Checkmark Button
-                Button(action: {
-                    if creation.creatingSome {
+        ZStack {
+            VStack {
+                // Monthly Summary Button (top-right corner)
+                HStack {
+                    Spacer()
+                    
+                    Button(action: {
                         withAnimation(.bouncy) {
-                            creation.creatingSome.toggle()
-                            creation.creatingToDo.toggle()
+                            showMonthlySummary.toggle()
                         }
+                    }) {
+                        Image(systemName: "calendar.badge.clock")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(personalization.customColor ? personalization.mainColor : Color.primary)
+                            .padding(8)
+                            .background(
+                                Circle()
+                                    .fill(colorScheme == .dark ? Color.gray.opacity(0.2) : Color.gray.opacity(0.1))
+                            )
                     }
-                }, label: {
-                    Image(systemName: "checkmark.circle")
-                        .font(.largeTitle)
-                        .fontWeight(.heavy)
-                        .frame(width: creation.creatingSome ? 170 : 0, height: 60)
-                        .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                        .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(personalization.customColor ? personalization.mainColor : Color.primary))
-                })
-                .padding(0)
-                .frame(width: creation.creatingSome ? 170 : 0)
-                .opacity(creation.creatingSome ? 1 : 0)
-                .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in withAnimation(.bouncy){creation.creatingSome.toggle()}}))
-                .sheet(isPresented: $creation.creatingToDo){
-                    CreateToDo(context: context)
-                        .presentationDragIndicator(.visible)
-                        .padding()
-                        .background {
-                            //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
-                            GeometryReader { proxy in
-                                Color.clear
-                                    .task {
-                                        objects.sheetContentHeight = proxy.size.height
-                                    }
-                            }
+                }
+                .padding(.horizontal)
+                .padding(.bottom, 5)
+                
+                // Display ToDo Items
+                ForEach(toDoItems) { item in
+                    ToDoObj(item: item, context: context, textColor: personalization.customTextColor ? personalization.textColor : Color.primary)
+                        .scrollTransition { content, phase in
+                            content
+                                .opacity(phase.isIdentity ? 1 : 0)
+                                .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                .blur(radius: phase.isIdentity ? 0 : 10)
                         }
-                        .presentationDetents([.height(objects.sheetContentHeight)])
                 }
                 
-                if creation.creatingSome { Spacer() }
+                // Display Progressive Items
+                ForEach(progressiveItems) { item in
+                    ProgressiveObj(item: item, context: context, textColor: personalization.customTextColor ? personalization.textColor : Color.primary)
+                        .scrollTransition { content, phase in
+                            content
+                                .opacity(phase.isIdentity ? 1 : 0)
+                                .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                                .blur(radius: phase.isIdentity ? 0 : 10)
+                        }
+                }
                 
-                // Plus Button
-
-                    Image(systemName: "plus")
-                        .font(.title)
-                        .fontWeight(.black)
-                        .frame(width: creation.creatingSome ? 0 : 358, height: 60)
-                        .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                        .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(personalization.customColor ? personalization.mainColor.opacity(buttonOpacity) : Color.primary.opacity(buttonOpacity)))
-                        .sensoryFeedback(.impact(), trigger: creation.creatingSome)
-                        .opacity(creation.creatingSome ? 0 : 1)
-                        .scaleEffect(buttonSize)
-                        .onTapGesture{
+                // Buttons
+                HStack {
+                    // Checkmark Button
+                    Button(action: {
+                        if creation.creatingSome {
                             withAnimation(.bouncy) {
                                 creation.creatingSome.toggle()
-                            }
-                            
-                        }
-                        .onLongPressGesture(minimumDuration: 0.2, maximumDistance: 10.0, pressing: { pressing in
-                            withAnimation(.bouncy) {
-                                buttonOpacity = pressing ? 0.5 : 1
-                                buttonSize = pressing ? 0.9 : 1
-                            }
-                            
-                        }) {
-                            withAnimation(.bouncy) {
-                                buttonOpacity = 1
-                                buttonSize = 1
+                                creation.creatingToDo.toggle()
                             }
                         }
-
-                .padding(0)
-                
-                if creation.creatingSome { Spacer() }
-                
-                // Circle Dotted Button
-                Button(action: {
-                    if creation.creatingSome {
-                        withAnimation(.bouncy){
+                    }, label: {
+                        Image(systemName: "checkmark.circle")
+                            .font(.largeTitle)
+                            .fontWeight(.heavy)
+                            .frame(width: creation.creatingSome ? 170 : 0, height: 60)
+                            .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                            .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(personalization.customColor ? personalization.mainColor : Color.primary))
+                    })
+                    .padding(0)
+                    .frame(width: creation.creatingSome ? 170 : 0)
+                    .opacity(creation.creatingSome ? 1 : 0)
+                    .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in withAnimation(.bouncy){creation.creatingSome.toggle()}}))
+                    .sheet(isPresented: $creation.creatingToDo){
+                        CreateToDo(context: context)
+                            .presentationDragIndicator(.visible)
+                            .padding()
+                            .background {
+                                //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                                GeometryReader { proxy in
+                                    Color.clear
+                                        .task {
+                                            objects.sheetContentHeight = proxy.size.height
+                                        }
+                                }
+                            }
+                            .presentationDetents([.height(objects.sheetContentHeight)])
+                    }
+                    
+                    if creation.creatingSome { Spacer() }
+                    
+                    // Plus Button
+                    Button(action: {
+                        withAnimation(.bouncy) {
                             creation.creatingSome.toggle()
-                            creation.creatingProgressive.toggle()
+                        }
+                    }) {
+                        Image(systemName: "plus")
+                            .font(.title)
+                            .fontWeight(.black)
+                            .frame(width: creation.creatingSome ? 0 : 358, height: 60)
+                            .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                            .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(personalization.customColor ? personalization.mainColor.opacity(buttonOpacity) : Color.primary.opacity(buttonOpacity)))
+                    }
+                    .sensoryFeedback(.impact(), trigger: creation.creatingSome)
+                    .opacity(creation.creatingSome ? 0 : 1)
+                    .scaleEffect(buttonSize)
+                    .onLongPressGesture(minimumDuration: 0.2, maximumDistance: 10.0, pressing: { pressing in
+                        withAnimation(.bouncy) {
+                            buttonOpacity = pressing ? 0.5 : 1
+                            buttonSize = pressing ? 0.9 : 1
+                        }
+                    }) {
+                        withAnimation(.bouncy) {
+                            buttonOpacity = 1
+                            buttonSize = 1
                         }
                     }
-                }, label: {
-                    Image(systemName: "circle.dotted")
-                        .font(.largeTitle)
-                        .fontWeight(.heavy)
-                        .frame(width: creation.creatingSome ? 170 : 0, height: 60)
-                        .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
-                        .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(personalization.customColor ? personalization.mainColor : Color.primary))
-                })
-                .padding(0)
-                .frame(width: creation.creatingSome ? 170 : 0)
-                .opacity(creation.creatingSome ? 1 : 0)
-                .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in withAnimation(.bouncy){creation.creatingSome.toggle()}}))
-                .sheet(isPresented: $creation.creatingProgressive){
-                    CreateProgressive(context: context)
-                        .presentationDragIndicator(.visible)
-                        .padding()
-                        .background {
-                            //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
-                            GeometryReader { proxy in
-                                Color.clear
-                                    .task {
-                                        objects.sheetContentHeight = proxy.size.height
-                                    }
+                    .padding(0)
+                    
+                    if creation.creatingSome { Spacer() }
+                    
+                    // Circle Dotted Button
+                    Button(action: {
+                        if creation.creatingSome {
+                            withAnimation(.bouncy){
+                                creation.creatingSome.toggle()
+                                creation.creatingProgressive.toggle()
                             }
                         }
-                        .presentationDetents([.height(objects.sheetContentHeight)])
+                    }, label: {
+                        Image(systemName: "circle.dotted")
+                            .font(.largeTitle)
+                            .fontWeight(.heavy)
+                            .frame(width: creation.creatingSome ? 170 : 0, height: 60)
+                            .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
+                            .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(personalization.customColor ? personalization.mainColor : Color.primary))
+                    })
+                    .padding(0)
+                    .frame(width: creation.creatingSome ? 170 : 0)
+                    .opacity(creation.creatingSome ? 1 : 0)
+                    .simultaneousGesture(LongPressGesture(minimumDuration: 0.8).onEnded({_ in withAnimation(.bouncy){creation.creatingSome.toggle()}}))
+                    .sheet(isPresented: $creation.creatingProgressive){
+                        CreateProgressive(context: context)
+                            .presentationDragIndicator(.visible)
+                            .padding()
+                            .background {
+                                //This is done in the background otherwise GeometryReader tends to expand to all the space given to it like color or shape.
+                                GeometryReader { proxy in
+                                    Color.clear
+                                        .task {
+                                            objects.sheetContentHeight = proxy.size.height
+                                        }
+                                }
+                            }
+                            .presentationDetents([.height(objects.sheetContentHeight)])
+                    }
+                }
+                .padding(creation.creatingSome ? [.horizontal, .top] : [.top])
+                .scrollTransition { content, phase in
+                    content
+                        .opacity(phase.isIdentity ? 1 : 0)
+                        .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                        .blur(radius: phase.isIdentity ? 0 : 10)
                 }
             }
-            .padding(creation.creatingSome ? [.horizontal, .top] : [.top])
-            .scrollTransition { content, phase in
-                content
-                    .opacity(phase.isIdentity ? 1 : 0)
-                    .scaleEffect(phase.isIdentity ? 1 : 0.75)
-                    .blur(radius: phase.isIdentity ? 0 : 10)
+            .animation(.bouncy, value: toDoItems)
+            .animation(.bouncy, value: progressiveItems)
+            .blur(radius: showMonthlySummary ? 3 : 0)
+            .opacity(showMonthlySummary ? 0.3 : 1)
+            
+            // Monthly Summary Overlay
+            if showMonthlySummary {
+                MonthlySummaryView(
+                    personalization: $personalization,
+                    isPresented: $showMonthlySummary
+                )
+                .transition(AnyTransition.asymmetric(
+                    insertion: AnyTransition.move(edge: .trailing).combined(with: AnyTransition.opacity),
+                    removal: AnyTransition.move(edge: .trailing).combined(with: AnyTransition.opacity)
+                ))
+                .zIndex(1)
             }
         }
-        .animation(.bouncy, value: toDoItems)
-        .animation(.bouncy, value: progressiveItems)
     }
 }
