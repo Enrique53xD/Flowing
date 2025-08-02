@@ -115,35 +115,32 @@ struct ToDoView: View {
                     if creation.creatingSome { Spacer() }
                     
                     // Plus Button
-
+                    Button(action: {
+                        withAnimation(.bouncy) {
+                            creation.creatingSome.toggle()
+                        }
+                    }) {
                         Image(systemName: "plus")
                             .font(.title)
                             .fontWeight(.black)
                             .frame(width: creation.creatingSome ? 0 : 358, height: 60)
                             .foregroundStyle(colorScheme == .dark ? Color.black : Color.white)
                             .background(RoundedRectangle(cornerRadius: 45).foregroundStyle(personalization.customColor ? personalization.mainColor.opacity(buttonOpacity) : Color.primary.opacity(buttonOpacity)))
-                            .sensoryFeedback(.impact(), trigger: creation.creatingSome)
-                            .opacity(creation.creatingSome ? 0 : 1)
-                            .scaleEffect(buttonSize)
-                            .onTapGesture{
-                                withAnimation(.bouncy) {
-                                    creation.creatingSome.toggle()
-                                }
-                                
-                            }
-                            .onLongPressGesture(minimumDuration: 0.2, maximumDistance: 10.0, pressing: { pressing in
-                                withAnimation(.bouncy) {
-                                    buttonOpacity = pressing ? 0.5 : 1
-                                    buttonSize = pressing ? 0.9 : 1
-                                }
-                                
-                            }) {
-                                withAnimation(.bouncy) {
-                                    buttonOpacity = 1
-                                    buttonSize = 1
-                                }
-                            }
-
+                    }
+                    .sensoryFeedback(.impact(), trigger: creation.creatingSome)
+                    .opacity(creation.creatingSome ? 0 : 1)
+                    .scaleEffect(buttonSize)
+                    .onLongPressGesture(minimumDuration: 0.2, maximumDistance: 10.0, pressing: { pressing in
+                        withAnimation(.bouncy) {
+                            buttonOpacity = pressing ? 0.5 : 1
+                            buttonSize = pressing ? 0.9 : 1
+                        }
+                    }) {
+                        withAnimation(.bouncy) {
+                            buttonOpacity = 1
+                            buttonSize = 1
+                        }
+                    }
                     .padding(0)
                     
                     if creation.creatingSome { Spacer() }
@@ -203,9 +200,9 @@ struct ToDoView: View {
                     personalization: $personalization,
                     isPresented: $showMonthlySummary
                 )
-                .transition(.asymmetric(
-                    insertion: .move(edge: .trailing).combined(with: .opacity),
-                    removal: .move(edge: .trailing).combined(with: .opacity)
+                .transition(AnyTransition.asymmetric(
+                    insertion: AnyTransition.move(edge: .trailing).combined(with: AnyTransition.opacity),
+                    removal: AnyTransition.move(edge: .trailing).combined(with: AnyTransition.opacity)
                 ))
                 .zIndex(1)
             }
