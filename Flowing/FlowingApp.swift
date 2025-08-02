@@ -11,14 +11,11 @@ import UserNotifications
 
 @main
 struct FlowingApp: App {
-  // wire up your AppDelegate for notifications
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
-  // the one-and-only container, built in init()
   let container: ModelContainer
 
   init() {
-    // 1) Declare your schema
     let schema = Schema(
       [ taskItem.self,
         toDoItem.self,
@@ -26,20 +23,17 @@ struct FlowingApp: App {
         settingsItem.self ]
     )
 
-    // 2) Turn on CloudKit sync
     let config = ModelConfiguration(
       schema: schema,
       cloudKitDatabase: .automatic
     )
 
-    // 3) Build the container
     do {
       container = try ModelContainer(
         for: schema,
         configurations: [config]
       )
     } catch {
-      // if something really goes wrong, crash early
       fatalError("Unresolved error initializing ModelContainer: \(error)")
     }
   }
@@ -52,9 +46,6 @@ struct FlowingApp: App {
     .modelContainer(container)
   }
 }
-
-
-
 
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
